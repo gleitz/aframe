@@ -3,7 +3,7 @@ var registerPrimitive = require('../registerPrimitive');
 var utils = require('../../../utils/');
 
 registerPrimitive('a-image', utils.extendDeep({}, getMeshMixin(), {
-  defaultAttributes: {
+  defaultComponents: {
     geometry: {
       primitive: 'plane'
     },
@@ -17,7 +17,6 @@ registerPrimitive('a-image', utils.extendDeep({}, getMeshMixin(), {
 
   mappings: {
     height: 'geometry.height',
-    translate: 'geometry.translate',
     width: 'geometry.width'
   }
 }));

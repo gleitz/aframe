@@ -20,7 +20,7 @@ function primitiveFactory (definition, cb) {
 suite('registerPrimitive', function () {
   test('initializes default attributes', function (done) {
     primitiveFactory({
-      defaultAttributes: {
+      defaultComponents: {
         geometry: {primitive: 'box'},
         material: {},
         position: '1 2 3'
@@ -34,18 +34,13 @@ suite('registerPrimitive', function () {
   });
 
   test('merges defined components with default components', function (done) {
-    var entity = helpers.entityFactory();
-    var tagName = 'a-test-' + primitiveId++;
-    registerPrimitive(tagName, {
-      defaultAttributes: {
+    primitiveFactory({
+      defaultComponents: {
         material: {color: '#FFF', metalness: 0.63}
       }
-    });
-
-    // Use innerHTML to set everything at once.
-    entity.innerHTML = '<' + tagName + ' material="color: tomato"></' + tagName + '>';
-    entity.addEventListener('loaded', function () {
-      var material = entity.children[0].getAttribute('material');
+    }, function (el) {
+      el.setAttribute('material', 'color', 'tomato');
+      var material = el.getAttribute('material');
       assert.equal(material.color, 'tomato');
       assert.equal(material.metalness, 0.63);
       done();
@@ -56,7 +51,7 @@ suite('registerPrimitive', function () {
     var entity = helpers.entityFactory();
     var tag = 'a-test-' + primitiveId++;
     registerPrimitive(tag, {
-      defaultAttributes: {
+      defaultComponents: {
         material: {color: '#FFF'}
       },
 
@@ -64,10 +59,9 @@ suite('registerPrimitive', function () {
         color: 'material.color'
       }
     });
-
     // Use innerHTML to set everything at once.
     entity.innerHTML = '<' + tag + ' color="red" material="fog: false"></' + tag + '>';
-    entity.addEventListener('loaded', function () {
+    entity.children[0].addEventListener('loaded', function () {
       var material = entity.children[0].getAttribute('material');
       assert.equal(material.color, 'red');
       assert.equal(material.fog, 'false');

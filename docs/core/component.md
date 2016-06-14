@@ -24,12 +24,12 @@ Components provide all of the features and extensibility of A-Frame. There is a 
     - [Single-Property Schemas](#single-property-schemas)
     - [Multi-Property Schemas](#multi-property-schemas)
 - [Lifecycle Methods](#lifecycle-methods)
-    - [Component.init()](#component-init-set-up)
-    - [Component.update(oldData)](#component-update-olddata-modify-the-entity)
-    - [Component.remove()](#component-remove-tear-down)
-    - [Component.tick(time)](#component-tick-time-run-continuously)
-    - [Component.pause()](#component-pause-stop)
-    - [Component.play()](#component-play-go)
+    - [Component.init()](#component-init)
+    - [Component.update(oldData)](#component-update-olddata)
+    - [Component.remove()](#component-remove)
+    - [Component.tick(time)](#component-tick-time)
+    - [Component.pause()](#component-pause-component-play)
+    - [Component.play()](#component-pause-component-play)
 - [Writing a Component](#writing-a-component)
     - [Line Component](#line-component)
     - [Skeleton](#skeleton)
@@ -158,7 +158,7 @@ Given a default value, the schema will infer a property type and inject a parser
 
 ```js
 schema: {
-  default: false
+  default: 32
 }
 
 // Will process to:
@@ -167,7 +167,7 @@ schema: {
   default: 32,
   type: 'number',
   parse: function numberParse (value) {
-    return parseFloat(value, 10);
+    return parseFloat(value);
   },
   stringify: function defaultStringify (value) {
     return value.toString();

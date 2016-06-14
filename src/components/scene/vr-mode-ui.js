@@ -17,15 +17,17 @@ var ORIENTATION_MODAL_CLASS = 'a-orientation-modal';
  * UI for entering VR mode.
  */
 module.exports.Component = registerComponent('vr-mode-ui', {
-  dependencies: [ 'canvas' ],
+  dependencies: ['canvas'],
 
   schema: {
-    enabled: { default: true }
+    enabled: {default: true}
   },
 
   init: function () {
     var self = this;
     var scene = this.el;
+
+    if (utils.getUrlParameter('ui') === 'false') { return; }
 
     this.enterVR = scene.enterVR.bind(scene);
     this.exitVR = scene.exitVR.bind(scene);
@@ -51,7 +53,9 @@ module.exports.Component = registerComponent('vr-mode-ui', {
   update: function () {
     var scene = this.el;
 
-    if (!this.data.enabled || this.insideLoader) { return this.remove(); }
+    if (!this.data.enabled || this.insideLoader || utils.getUrlParameter('ui') === 'false') {
+      return this.remove();
+    }
     if (this.enterVREl || this.orientationModalEl) { return; }
 
     // Add UI if enabled and not already present.
@@ -120,8 +124,7 @@ function createEnterVR (enterVRHandler, isMobile) {
   var compatModal;
   var compatModalLink;
   var compatModalText;
-  // window.hasNonPolyfillWebVRSupport is set in src/index.js.
-  var hasWebVR = isMobile || window.hasNonPolyfillWebVRSupport;
+  var hasWebVR = isMobile || window.hasNativeWebVRImplementation;
   var orientation;
   var vrButton;
   var wrapper;

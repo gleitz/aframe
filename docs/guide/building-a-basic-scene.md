@@ -211,13 +211,13 @@ And that wraps up our basic scene. Once we get past the novelty of placing stati
 [component]: ../core/component.md
 [entity]: ../core/entity.md
 [events]: ../extras/declarative-events.md
-[light]: ../primitives/light.md
+[light]: ../primitives/a-light.md
 [mesh]: ../primitives/mesh-attributes.md
 [mozvr]: http://mozvr.com/#start
-[next]: ./using-and-writing-components.md
+[next]: ../core/component.md 
 [position]: ../components/position.md
 [primitives]: ../primitives/
 [rotation]: ../components/rotation.md
 [scale]: ../components/scale.md
-[sky]: ../primitives/sky.md
+[sky]: ../primitives/a-sky.md
 [threejs]: http://threejs.org

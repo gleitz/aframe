@@ -3,12 +3,12 @@ var registerPrimitive = require('../registerPrimitive');
 var utils = require('../../../utils/');
 
 registerPrimitive('a-videosphere', utils.extendDeep({}, getMeshMixin(), {
-  defaultAttributes: {
+  defaultComponents: {
     geometry: {
       primitive: 'sphere',
-      radius: 5000,
+      radius: 100,
       segmentsWidth: 64,
-      segmentsHeight: 64
+      segmentsHeight: 20
     },
     material: {
       color: '#FFF',

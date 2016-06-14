@@ -27,29 +27,6 @@ module.exports.fireEvent = function (el, name, data) {
 };
 
 /**
- * Throws an error given a message.
- *
- * @param {String} msg Error message.
- */
-module.exports.error = function (msg) {
-  throw new Error(msg);
-};
-
-/**
- * Emits a console warning given passed message argument(s).
- */
-module.exports.warn = function () {
-  console.warn.apply(console, arguments);
-};
-
-/**
- * Emits a console log given passed message argument(s).
- */
-module.exports.log = function () {
-  console.log.apply(console, arguments);
-};
-
-/**
  * Mix the properties of source object(s) into a destination object.
  *
  * @param  {object} dest - The object to which properties will be copied.
@@ -122,12 +99,19 @@ module.exports.isMobile = function () {
     if (isIOS()) {
       check = true;
     }
+    if (isGearVR()) {
+      check = false;
+    }
   })(navigator.userAgent || navigator.vendor || window.opera);
   return check;
 };
 
 var isIOS = module.exports.isIOS = function () {
   return /iPad|iPhone|iPod/.test(navigator.platform);
+};
+
+var isGearVR = module.exports.isGearVR = function () {
+  return /SamsungBrowser.+Mobile VR/i.test(navigator.userAgent);
 };
 
 /**
