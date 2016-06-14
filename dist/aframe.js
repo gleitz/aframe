@@ -1,150 +1,4 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.AFRAME = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
-<<<<<<< HEAD
-// shim for using process in browser
-
-var process = module.exports = {};
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = setTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    clearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        setTimeout(drainQueue, 0);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-=======
-'use strict';
-// For more information about browser field, check out the browser field at https://github.com/substack/browserify-handbook#browser-field.
-
-module.exports = {
-    // Create a <link> tag with optional data attributes
-    createLink: function(href, attributes) {
-        var head = document.head || document.getElementsByTagName('head')[0];
-        var link = document.createElement('link');
-
-        link.href = href;
-        link.rel = 'stylesheet';
-
-        for (var key in attributes) {
-            if ( ! attributes.hasOwnProperty(key)) {
-                continue;
-            }
-            var value = attributes[key];
-            link.setAttribute('data-' + key, value);
-        }
-
-        head.appendChild(link);
-    },
-    // Create a <style> tag with optional data attributes
-    createStyle: function(cssText, attributes) {
-        var head = document.head || document.getElementsByTagName('head')[0],
-            style = document.createElement('style');
-
-        style.type = 'text/css';
-
-        for (var key in attributes) {
-            if ( ! attributes.hasOwnProperty(key)) {
-                continue;
-            }
-            var value = attributes[key];
-            style.setAttribute('data-' + key, value);
-        }
-        
-        if (style.sheet) { // for jsdom and IE9+
-            style.innerHTML = cssText;
-            style.sheet.cssText = cssText;
-            head.appendChild(style);
-        } else if (style.styleSheet) { // for IE8 and below
-            head.appendChild(style);
-            style.styleSheet.cssText = cssText;
-        } else { // for Chrome, Firefox, and Safari
-            style.appendChild(document.createTextNode(cssText));
-            head.appendChild(style);
-        }
-    }
-};
->>>>>>> upstream/master
-
-},{}],2:[function(_dereq_,module,exports){
 
 /**
  * This is the web browser implementation of `debug()`.
@@ -314,7 +168,7 @@ function localstorage(){
   } catch (e) {}
 }
 
-},{"./debug":3}],3:[function(_dereq_,module,exports){
+},{"./debug":2}],2:[function(_dereq_,module,exports){
 
 /**
  * This is the common logic for both the Node.js and web browser
@@ -513,10 +367,7 @@ function coerce(val) {
   return val;
 }
 
-<<<<<<< HEAD
-},{"ms":4}],4:[function(_dereq_,module,exports){
-=======
-},{"ms":7}],4:[function(_dereq_,module,exports){
+},{"ms":6}],3:[function(_dereq_,module,exports){
 'use strict';
 var isObj = _dereq_('is-obj');
 var hasOwnProperty = Object.prototype.hasOwnProperty;
@@ -586,18 +437,17 @@ module.exports = function deepAssign(target) {
 	return target;
 };
 
-},{"is-obj":6}],5:[function(_dereq_,module,exports){
+},{"is-obj":5}],4:[function(_dereq_,module,exports){
 /*! (C) WebReflection Mit Style License */
 (function(t,n,r,i){"use strict";function st(e,t){for(var n=0,r=e.length;n<r;n++)gt(e[n],t)}function ot(e){for(var t=0,n=e.length,r;t<n;t++)r=e[t],it(r,w[at(r)])}function ut(e){return function(t){F(t)&&(gt(t,e),st(t.querySelectorAll(E),e))}}function at(e){var t=R.call(e,"is"),n=e.nodeName.toUpperCase(),r=x.call(b,t?m+t.toUpperCase():v+n);return t&&-1<r&&!ft(n,t)?-1:r}function ft(e,t){return-1<E.indexOf(e+'[is="'+t+'"]')}function lt(e){var t=e.currentTarget,n=e.attrChange,r=e.attrName,i=e.target;Y&&(!i||i===t)&&t.attributeChangedCallback&&r!=="style"&&e.prevValue!==e.newValue&&t.attributeChangedCallback(r,n===e[f]?null:e.prevValue,n===e[c]?null:e.newValue)}function ct(e){var t=ut(e);return function(e){$.push(t,e.target)}}function ht(e){G&&(G=!1,e.currentTarget.removeEventListener(p,ht)),st((e.target||n).querySelectorAll(E),e.detail===u?u:o),j&&vt()}function pt(e,t){var n=this;U.call(n,e,t),Z.call(n,{target:n})}function dt(e,t){P(e,t),nt?nt.observe(e,X):(Q&&(e.setAttribute=pt,e[s]=tt(e),e.addEventListener(d,Z)),e.addEventListener(h,lt)),e.createdCallback&&Y&&(e.created=!0,e.createdCallback(),e.created=!1)}function vt(){for(var e,t=0,n=I.length;t<n;t++)e=I[t],S.contains(e)||(n--,I.splice(t--,1),gt(e,u))}function mt(e){throw new Error("A "+e+" type is already registered")}function gt(e,t){var n,r=at(e);-1<r&&(rt(e,w[r]),r=0,t===o&&!e[o]?(e[u]=!1,e[o]=!0,r=1,j&&x.call(I,e)<0&&I.push(e)):t===u&&!e[u]&&(e[o]=!1,e[u]=!0,r=1),r&&(n=e[t+"Callback"])&&n.call(e))}if(i in n)return;var s="__"+i+(Math.random()*1e5>>0),o="attached",u="detached",a="extends",f="ADDITION",l="MODIFICATION",c="REMOVAL",h="DOMAttrModified",p="DOMContentLoaded",d="DOMSubtreeModified",v="<",m="=",g=/^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$/,y=["ANNOTATION-XML","COLOR-PROFILE","FONT-FACE","FONT-FACE-SRC","FONT-FACE-URI","FONT-FACE-FORMAT","FONT-FACE-NAME","MISSING-GLYPH"],b=[],w=[],E="",S=n.documentElement,x=b.indexOf||function(e){for(var t=this.length;t--&&this[t]!==e;);return t},T=r.prototype,N=T.hasOwnProperty,C=T.isPrototypeOf,k=r.defineProperty,L=r.getOwnPropertyDescriptor,A=r.getOwnPropertyNames,O=r.getPrototypeOf,M=r.setPrototypeOf,_=!!r.__proto__,D=r.create||function yt(e){return e?(yt.prototype=e,new yt):this},P=M||(_?function(e,t){return e.__proto__=t,e}:A&&L?function(){function e(e,t){for(var n,r=A(t),i=0,s=r.length;i<s;i++)n=r[i],N.call(e,n)||k(e,n,L(t,n))}return function(t,n){do e(t,n);while((n=O(n))&&!C.call(n,t));return t}}():function(e,t){for(var n in t)e[n]=t[n];return e}),H=t.MutationObserver||t.WebKitMutationObserver,B=(t.HTMLElement||t.Element||t.Node).prototype,j=!C.call(B,S),F=j?function(e){return e.nodeType===1}:function(e){return C.call(B,e)},I=j&&[],q=B.cloneNode,R=B.getAttribute,U=B.setAttribute,z=B.removeAttribute,W=n.createElement,X=H&&{attributes:!0,characterData:!0,attributeOldValue:!0},V=H||function(e){Q=!1,S.removeEventListener(h,V)},$,J=t.requestAnimationFrame||t.webkitRequestAnimationFrame||t.mozRequestAnimationFrame||t.msRequestAnimationFrame||function(e){setTimeout(e,10)},K=!1,Q=!0,G=!0,Y=!0,Z,et,tt,nt,rt,it;M||_?(rt=function(e,t){C.call(t,e)||dt(e,t)},it=dt):(rt=function(e,t){e[s]||(e[s]=r(!0),dt(e,t))},it=rt),j?(Q=!1,function(){var t=L(B,"addEventListener"),n=t.value,r=function(e){var t=new CustomEvent(h,{bubbles:!0});t.attrName=e,t.prevValue=R.call(this,e),t.newValue=null,t[c]=t.attrChange=2,z.call(this,e),this.dispatchEvent(t)},i=function(t,n){var r=this.hasAttribute(t),i=r&&R.call(this,t);e=new CustomEvent(h,{bubbles:!0}),U.call(this,t,n),e.attrName=t,e.prevValue=r?i:null,e.newValue=n,r?e[l]=e.attrChange=1:e[f]=e.attrChange=0,this.dispatchEvent(e)},o=function(e){var t=e.currentTarget,n=t[s],r=e.propertyName,i;n.hasOwnProperty(r)&&(n=n[r],i=new CustomEvent(h,{bubbles:!0}),i.attrName=n.name,i.prevValue=n.value||null,i.newValue=n.value=t[r]||null,i.prevValue==null?i[f]=i.attrChange=0:i[l]=i.attrChange=1,t.dispatchEvent(i))};t.value=function(e,t,u){e===h&&this.attributeChangedCallback&&this.setAttribute!==i&&(this[s]={className:{name:"class",value:this.className}},this.setAttribute=i,this.removeAttribute=r,n.call(this,"propertychange",o)),n.call(this,e,t,u)},k(B,"addEventListener",t)}()):H||(S.addEventListener(h,V),S.setAttribute(s,1),S.removeAttribute(s),Q&&(Z=function(e){var t=this,n,r,i;if(t===e.target){n=t[s],t[s]=r=tt(t);for(i in r){if(!(i in n))return et(0,t,i,n[i],r[i],f);if(r[i]!==n[i])return et(1,t,i,n[i],r[i],l)}for(i in n)if(!(i in r))return et(2,t,i,n[i],r[i],c)}},et=function(e,t,n,r,i,s){var o={attrChange:e,currentTarget:t,attrName:n,prevValue:r,newValue:i};o[s]=e,lt(o)},tt=function(e){for(var t,n,r={},i=e.attributes,s=0,o=i.length;s<o;s++)t=i[s],n=t.name,n!=="setAttribute"&&(r[n]=t.value);return r})),n[i]=function(t,r){c=t.toUpperCase(),K||(K=!0,H?(nt=function(e,t){function n(e,t){for(var n=0,r=e.length;n<r;t(e[n++]));}return new H(function(r){for(var i,s,o,u=0,a=r.length;u<a;u++)i=r[u],i.type==="childList"?(n(i.addedNodes,e),n(i.removedNodes,t)):(s=i.target,Y&&s.attributeChangedCallback&&i.attributeName!=="style"&&(o=R.call(s,i.attributeName),o!==i.oldValue&&s.attributeChangedCallback(i.attributeName,i.oldValue,o)))})}(ut(o),ut(u)),nt.observe(n,{childList:!0,subtree:!0})):($=[],J(function d(){while($.length)$.shift().call(null,$.shift());J(d)}),n.addEventListener("DOMNodeInserted",ct(o)),n.addEventListener("DOMNodeRemoved",ct(u))),n.addEventListener(p,ht),n.addEventListener("readystatechange",ht),n.createElement=function(e,t){var r=W.apply(n,arguments),i=""+e,s=x.call(b,(t?m:v)+(t||i).toUpperCase()),o=-1<s;return t&&(r.setAttribute("is",t=t.toLowerCase()),o&&(o=ft(i.toUpperCase(),t))),Y=!n.createElement.innerHTMLHelper,o&&it(r,w[s]),r},B.cloneNode=function(e){var t=q.call(this,!!e),n=at(t);return-1<n&&it(t,w[n]),e&&ot(t.querySelectorAll(E)),t}),-2<x.call(b,m+c)+x.call(b,v+c)&&mt(t);if(!g.test(c)||-1<x.call(y,c))throw new Error("The type "+t+" is invalid");var i=function(){return f?n.createElement(l,c):n.createElement(l)},s=r||T,f=N.call(s,a),l=f?r[a].toUpperCase():c,c,h;return f&&-1<x.call(b,v+l)&&mt(l),h=b.push((f?m:v)+c)-1,E=E.concat(E.length?",":"",f?l+'[is="'+t.toLowerCase()+'"]':l),i.prototype=w[h]=N.call(s,"prototype")?s.prototype:D(B),st(n.querySelectorAll(E),o),i}})(window,document,Object,"registerElement");
-},{}],6:[function(_dereq_,module,exports){
+},{}],5:[function(_dereq_,module,exports){
 'use strict';
 module.exports = function (x) {
 	var type = typeof x;
 	return x !== null && (type === 'object' || type === 'function');
 };
 
-},{}],7:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{}],6:[function(_dereq_,module,exports){
 /**
  * Helpers.
  */
@@ -724,92 +574,9 @@ function plural(ms, n, name) {
   return Math.ceil(ms / n) + ' ' + name + 's';
 }
 
-<<<<<<< HEAD
-},{}],5:[function(_dereq_,module,exports){
-'use strict';
-var isObj = _dereq_('is-obj');
-var hasOwnProperty = Object.prototype.hasOwnProperty;
-var propIsEnumerable = Object.prototype.propertyIsEnumerable;
-
-function toObject(val) {
-	if (val === null || val === undefined) {
-		throw new TypeError('Sources cannot be null or undefined');
-	}
-
-	return Object(val);
-}
-
-function assignKey(to, from, key) {
-	var val = from[key];
-
-	if (val === undefined || val === null) {
-		return;
-	}
-
-	if (hasOwnProperty.call(to, key)) {
-		if (to[key] === undefined || to[key] === null) {
-			throw new TypeError('Cannot convert undefined or null to object (' + key + ')');
-		}
-	}
-
-	if (!hasOwnProperty.call(to, key) || !isObj(val)) {
-		to[key] = val;
-	} else {
-		to[key] = assign(Object(to[key]), from[key]);
-	}
-}
-
-function assign(to, from) {
-	if (to === from) {
-		return to;
-	}
-
-	from = Object(from);
-
-	for (var key in from) {
-		if (hasOwnProperty.call(from, key)) {
-			assignKey(to, from, key);
-		}
-	}
-
-	if (Object.getOwnPropertySymbols) {
-		var symbols = Object.getOwnPropertySymbols(from);
-
-		for (var i = 0; i < symbols.length; i++) {
-			if (propIsEnumerable.call(from, symbols[i])) {
-				assignKey(to, from, symbols[i]);
-			}
-		}
-	}
-
-	return to;
-}
-
-module.exports = function deepAssign(target) {
-	target = toObject(target);
-
-	for (var s = 1; s < arguments.length; s++) {
-		assign(target, arguments[s]);
-	}
-
-	return target;
-};
-
-},{"is-obj":6}],6:[function(_dereq_,module,exports){
-'use strict';
-module.exports = function (x) {
-	var type = typeof x;
-	return x !== null && (type === 'object' || type === 'function');
-};
-
 },{}],7:[function(_dereq_,module,exports){
-/*! (C) WebReflection Mit Style License */
-(function(t,n,r,i){"use strict";function st(e,t){for(var n=0,r=e.length;n<r;n++)gt(e[n],t)}function ot(e){for(var t=0,n=e.length,r;t<n;t++)r=e[t],it(r,w[at(r)])}function ut(e){return function(t){F(t)&&(gt(t,e),st(t.querySelectorAll(E),e))}}function at(e){var t=R.call(e,"is"),n=e.nodeName.toUpperCase(),r=x.call(b,t?m+t.toUpperCase():v+n);return t&&-1<r&&!ft(n,t)?-1:r}function ft(e,t){return-1<E.indexOf(e+'[is="'+t+'"]')}function lt(e){var t=e.currentTarget,n=e.attrChange,r=e.attrName,i=e.target;Y&&(!i||i===t)&&t.attributeChangedCallback&&r!=="style"&&e.prevValue!==e.newValue&&t.attributeChangedCallback(r,n===e[f]?null:e.prevValue,n===e[c]?null:e.newValue)}function ct(e){var t=ut(e);return function(e){$.push(t,e.target)}}function ht(e){G&&(G=!1,e.currentTarget.removeEventListener(p,ht)),st((e.target||n).querySelectorAll(E),e.detail===u?u:o),j&&vt()}function pt(e,t){var n=this;U.call(n,e,t),Z.call(n,{target:n})}function dt(e,t){P(e,t),nt?nt.observe(e,X):(Q&&(e.setAttribute=pt,e[s]=tt(e),e.addEventListener(d,Z)),e.addEventListener(h,lt)),e.createdCallback&&Y&&(e.created=!0,e.createdCallback(),e.created=!1)}function vt(){for(var e,t=0,n=I.length;t<n;t++)e=I[t],S.contains(e)||(n--,I.splice(t--,1),gt(e,u))}function mt(e){throw new Error("A "+e+" type is already registered")}function gt(e,t){var n,r=at(e);-1<r&&(rt(e,w[r]),r=0,t===o&&!e[o]?(e[u]=!1,e[o]=!0,r=1,j&&x.call(I,e)<0&&I.push(e)):t===u&&!e[u]&&(e[o]=!1,e[u]=!0,r=1),r&&(n=e[t+"Callback"])&&n.call(e))}if(i in n)return;var s="__"+i+(Math.random()*1e5>>0),o="attached",u="detached",a="extends",f="ADDITION",l="MODIFICATION",c="REMOVAL",h="DOMAttrModified",p="DOMContentLoaded",d="DOMSubtreeModified",v="<",m="=",g=/^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$/,y=["ANNOTATION-XML","COLOR-PROFILE","FONT-FACE","FONT-FACE-SRC","FONT-FACE-URI","FONT-FACE-FORMAT","FONT-FACE-NAME","MISSING-GLYPH"],b=[],w=[],E="",S=n.documentElement,x=b.indexOf||function(e){for(var t=this.length;t--&&this[t]!==e;);return t},T=r.prototype,N=T.hasOwnProperty,C=T.isPrototypeOf,k=r.defineProperty,L=r.getOwnPropertyDescriptor,A=r.getOwnPropertyNames,O=r.getPrototypeOf,M=r.setPrototypeOf,_=!!r.__proto__,D=r.create||function yt(e){return e?(yt.prototype=e,new yt):this},P=M||(_?function(e,t){return e.__proto__=t,e}:A&&L?function(){function e(e,t){for(var n,r=A(t),i=0,s=r.length;i<s;i++)n=r[i],N.call(e,n)||k(e,n,L(t,n))}return function(t,n){do e(t,n);while((n=O(n))&&!C.call(n,t));return t}}():function(e,t){for(var n in t)e[n]=t[n];return e}),H=t.MutationObserver||t.WebKitMutationObserver,B=(t.HTMLElement||t.Element||t.Node).prototype,j=!C.call(B,S),F=j?function(e){return e.nodeType===1}:function(e){return C.call(B,e)},I=j&&[],q=B.cloneNode,R=B.getAttribute,U=B.setAttribute,z=B.removeAttribute,W=n.createElement,X=H&&{attributes:!0,characterData:!0,attributeOldValue:!0},V=H||function(e){Q=!1,S.removeEventListener(h,V)},$,J=t.requestAnimationFrame||t.webkitRequestAnimationFrame||t.mozRequestAnimationFrame||t.msRequestAnimationFrame||function(e){setTimeout(e,10)},K=!1,Q=!0,G=!0,Y=!0,Z,et,tt,nt,rt,it;M||_?(rt=function(e,t){C.call(t,e)||dt(e,t)},it=dt):(rt=function(e,t){e[s]||(e[s]=r(!0),dt(e,t))},it=rt),j?(Q=!1,function(){var t=L(B,"addEventListener"),n=t.value,r=function(e){var t=new CustomEvent(h,{bubbles:!0});t.attrName=e,t.prevValue=R.call(this,e),t.newValue=null,t[c]=t.attrChange=2,z.call(this,e),this.dispatchEvent(t)},i=function(t,n){var r=this.hasAttribute(t),i=r&&R.call(this,t);e=new CustomEvent(h,{bubbles:!0}),U.call(this,t,n),e.attrName=t,e.prevValue=r?i:null,e.newValue=n,r?e[l]=e.attrChange=1:e[f]=e.attrChange=0,this.dispatchEvent(e)},o=function(e){var t=e.currentTarget,n=t[s],r=e.propertyName,i;n.hasOwnProperty(r)&&(n=n[r],i=new CustomEvent(h,{bubbles:!0}),i.attrName=n.name,i.prevValue=n.value||null,i.newValue=n.value=t[r]||null,i.prevValue==null?i[f]=i.attrChange=0:i[l]=i.attrChange=1,t.dispatchEvent(i))};t.value=function(e,t,u){e===h&&this.attributeChangedCallback&&this.setAttribute!==i&&(this[s]={className:{name:"class",value:this.className}},this.setAttribute=i,this.removeAttribute=r,n.call(this,"propertychange",o)),n.call(this,e,t,u)},k(B,"addEventListener",t)}()):H||(S.addEventListener(h,V),S.setAttribute(s,1),S.removeAttribute(s),Q&&(Z=function(e){var t=this,n,r,i;if(t===e.target){n=t[s],t[s]=r=tt(t);for(i in r){if(!(i in n))return et(0,t,i,n[i],r[i],f);if(r[i]!==n[i])return et(1,t,i,n[i],r[i],l)}for(i in n)if(!(i in r))return et(2,t,i,n[i],r[i],c)}},et=function(e,t,n,r,i,s){var o={attrChange:e,currentTarget:t,attrName:n,prevValue:r,newValue:i};o[s]=e,lt(o)},tt=function(e){for(var t,n,r={},i=e.attributes,s=0,o=i.length;s<o;s++)t=i[s],n=t.name,n!=="setAttribute"&&(r[n]=t.value);return r})),n[i]=function(t,r){c=t.toUpperCase(),K||(K=!0,H?(nt=function(e,t){function n(e,t){for(var n=0,r=e.length;n<r;t(e[n++]));}return new H(function(r){for(var i,s,o,u=0,a=r.length;u<a;u++)i=r[u],i.type==="childList"?(n(i.addedNodes,e),n(i.removedNodes,t)):(s=i.target,Y&&s.attributeChangedCallback&&i.attributeName!=="style"&&(o=R.call(s,i.attributeName),o!==i.oldValue&&s.attributeChangedCallback(i.attributeName,i.oldValue,o)))})}(ut(o),ut(u)),nt.observe(n,{childList:!0,subtree:!0})):($=[],J(function d(){while($.length)$.shift().call(null,$.shift());J(d)}),n.addEventListener("DOMNodeInserted",ct(o)),n.addEventListener("DOMNodeRemoved",ct(u))),n.addEventListener(p,ht),n.addEventListener("readystatechange",ht),n.createElement=function(e,t){var r=W.apply(n,arguments),i=""+e,s=x.call(b,(t?m:v)+(t||i).toUpperCase()),o=-1<s;return t&&(r.setAttribute("is",t=t.toLowerCase()),o&&(o=ft(i.toUpperCase(),t))),Y=!n.createElement.innerHTMLHelper,o&&it(r,w[s]),r},B.cloneNode=function(e){var t=q.call(this,!!e),n=at(t);return-1<n&&it(t,w[n]),e&&ot(t.querySelectorAll(E)),t}),-2<x.call(b,m+c)+x.call(b,v+c)&&mt(t);if(!g.test(c)||-1<x.call(y,c))throw new Error("The type "+t+" is invalid");var i=function(){return f?n.createElement(l,c):n.createElement(l)},s=r||T,f=N.call(s,a),l=f?r[a].toUpperCase():c,c,h;return f&&-1<x.call(b,v+l)&&mt(l),h=b.push((f?m:v)+c)-1,E=E.concat(E.length?",":"",f?l+'[is="'+t.toLowerCase()+'"]':l),i.prototype=w[h]=N.call(s,"prototype")?s.prototype:D(B),st(n.querySelectorAll(E),o),i}})(window,document,Object,"registerElement");
-=======
->>>>>>> upstream/master
-},{}],8:[function(_dereq_,module,exports){
-/* eslint-disable no-unused-vars */
 'use strict';
+/* eslint-disable no-unused-vars */
 var hasOwnProperty = Object.prototype.hasOwnProperty;
 var propIsEnumerable = Object.prototype.propertyIsEnumerable;
 
@@ -821,7 +588,51 @@ function toObject(val) {
 	return Object(val);
 }
 
-module.exports = Object.assign || function (target, source) {
+function shouldUseNative() {
+	try {
+		if (!Object.assign) {
+			return false;
+		}
+
+		// Detect buggy property enumeration order in older V8 versions.
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=4118
+		var test1 = new String('abc');  // eslint-disable-line
+		test1[5] = 'de';
+		if (Object.getOwnPropertyNames(test1)[0] === '5') {
+			return false;
+		}
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+		var test2 = {};
+		for (var i = 0; i < 10; i++) {
+			test2['_' + String.fromCharCode(i)] = i;
+		}
+		var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
+			return test2[n];
+		});
+		if (order2.join('') !== '0123456789') {
+			return false;
+		}
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+		var test3 = {};
+		'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
+			test3[letter] = letter;
+		});
+		if (Object.keys(Object.assign({}, test3)).join('') !==
+				'abcdefghijklmnopqrst') {
+			return false;
+		}
+
+		return true;
+	} catch (e) {
+		// We don't expect any of the above to throw, but better to be safe.
+		return false;
+	}
+}
+
+module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 	var from;
 	var to = toObject(target);
 	var symbols;
@@ -848,7 +659,7 @@ module.exports = Object.assign || function (target, source) {
 	return to;
 };
 
-},{}],9:[function(_dereq_,module,exports){
+},{}],8:[function(_dereq_,module,exports){
 (function (global){
 var performance = global.performance || {};
 
@@ -881,18 +692,44 @@ module.exports = present;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{}],10:[function(_dereq_,module,exports){
-<<<<<<< HEAD
-=======
+},{}],9:[function(_dereq_,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+(function () {
+  try {
+    cachedSetTimeout = setTimeout;
+  } catch (e) {
+    cachedSetTimeout = function () {
+      throw new Error('setTimeout is not defined');
+    }
+  }
+  try {
+    cachedClearTimeout = clearTimeout;
+  } catch (e) {
+    cachedClearTimeout = function () {
+      throw new Error('clearTimeout is not defined');
+    }
+  }
+} ())
 var queue = [];
 var draining = false;
 var currentQueue;
 var queueIndex = -1;
 
 function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
     draining = false;
     if (currentQueue.length) {
         queue = currentQueue.concat(queue);
@@ -908,7 +745,7 @@ function drainQueue() {
     if (draining) {
         return;
     }
-    var timeout = setTimeout(cleanUpNextTick);
+    var timeout = cachedSetTimeout(cleanUpNextTick);
     draining = true;
 
     var len = queue.length;
@@ -925,7 +762,7 @@ function drainQueue() {
     }
     currentQueue = null;
     draining = false;
-    clearTimeout(timeout);
+    cachedClearTimeout(timeout);
 }
 
 process.nextTick = function (fun) {
@@ -937,7 +774,7 @@ process.nextTick = function (fun) {
     }
     queue.push(new Item(fun, args));
     if (queue.length === 1 && !draining) {
-        setTimeout(drainQueue, 0);
+        cachedSetTimeout(drainQueue, 0);
     }
 };
 
@@ -976,8 +813,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],11:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{}],10:[function(_dereq_,module,exports){
 (function(root) {
 
 	// Store setTimeout reference so promise-polyfill will be unaffected by
@@ -1173,95 +1009,9 @@ process.umask = function() { return 0; };
 
 })(this);
 
-<<<<<<< HEAD
 },{}],11:[function(_dereq_,module,exports){
-'use strict';
-
-var raf = _dereq_('raf');
-var now = _dereq_('time-now');
-
-exports = module.exports = interval;
-function interval(delay, fn, ctx) {
-  var start = now();
-  var data = Object.create(null);
-  data.id = raf(loop);
-
-  return data;
-
-  function loop() {
-    data.id = raf(loop);
-
-    if ((now() - start) >= delay) {
-      fn.call(ctx);
-      start = now();
-    }
-  }
-}
 
 
-exports.clear = clearInterval;
-function clearInterval(data) {
-  raf.cancel(data.id);
-}
-
-},{"raf":12,"time-now":13}],12:[function(_dereq_,module,exports){
-/**
- * Expose `requestAnimationFrame()`.
- */
-
-exports = module.exports = window.requestAnimationFrame
-  || window.webkitRequestAnimationFrame
-  || window.mozRequestAnimationFrame
-  || fallback;
-
-/**
- * Fallback implementation.
- */
-
-var prev = new Date().getTime();
-function fallback(fn) {
-  var curr = new Date().getTime();
-  var ms = Math.max(0, 16 - (curr - prev));
-  var req = setTimeout(fn, ms);
-  prev = curr;
-  return req;
-}
-
-/**
- * Cancel.
- */
-
-var cancel = window.cancelAnimationFrame
-  || window.webkitCancelAnimationFrame
-  || window.mozCancelAnimationFrame
-  || window.clearTimeout;
-
-exports.cancel = function(id){
-  cancel.call(window, id);
-};
-
-},{}],13:[function(_dereq_,module,exports){
-'use strict';
-
-module.exports = (function() {
-  var perf = window && window.performance;
-  if (perf && perf.now) {
-    return perf.now.bind(perf);
-  } else {
-    return function() {
-      return new Date().getTime();
-    };
-  }
-}());
-
-},{}],14:[function(_dereq_,module,exports){
-
-
-=======
-},{}],12:[function(_dereq_,module,exports){
-
-
->>>>>>> upstream/master
 /*
 
 style-attr
@@ -1360,480 +1110,7 @@ function normalize(str) {
 module.exports.parse = parse;
 module.exports.stringify = stringify;
 module.exports.normalize = normalize;
-<<<<<<< HEAD
-},{}],15:[function(_dereq_,module,exports){
-/**
- * @author dmarcos / https://github.com/dmarcos
- * @author mrdoob / http://mrdoob.com
- */
-
-THREE.VRControls = function ( object, onError ) {
-
-	var scope = this;
-
-	var vrInput;
-
-	function gotVRDevices( devices ) {
-
-		for ( var i = 0; i < devices.length; i ++ ) {
-
-			if ( ( 'VRDisplay' in window && devices[ i ] instanceof VRDisplay ) ||
-				 ( 'PositionSensorVRDevice' in window && devices[ i ] instanceof PositionSensorVRDevice ) ) {
-
-				vrInput = devices[ i ];
-				break;  // We keep the first we encounter
-
-			}
-
-		}
-
-		if ( !vrInput ) {
-
-			if ( onError ) onError( 'VR input not available.' );
-
-		}
-
-	}
-
-	if ( navigator.getVRDisplays ) {
-
-		navigator.getVRDisplays().then( gotVRDevices );
-
-	} else if ( navigator.getVRDevices ) {
-
-		// Deprecated API.
-		navigator.getVRDevices().then( gotVRDevices );
-
-	}
-
-	// the Rift SDK returns the position in meters
-	// this scale factor allows the user to define how meters
-	// are converted to scene units.
-
-	this.scale = 1;
-
-	this.update = function () {
-
-		if ( vrInput ) {
-
-			if ( vrInput.getPose ) {
-
-				var pose = vrInput.getPose();
-
-				if ( pose.orientation !== null ) {
-
-					object.quaternion.fromArray( pose.orientation );
-
-				}
-
-				if ( pose.position !== null ) {
-
-					object.position.fromArray( pose.position ).multiplyScalar( scope.scale );
-
-				}
-
-			} else {
-
-				// Deprecated API.
-				var state = vrInput.getState();
-
-				if ( state.orientation !== null ) {
-
-					object.quaternion.copy( state.orientation );
-
-				}
-
-				if ( state.position !== null ) {
-
-					object.position.copy( state.position ).multiplyScalar( scope.scale );
-
-				}
-
-			}
-
-		}
-
-	};
-
-	this.resetSensor = function () {
-
-		if ( vrInput ) {
-
-			if ( vrInput.resetPose !== undefined ) {
-
-				vrInput.resetPose();
-
-			} else if ( vrInput.resetSensor !== undefined ) {
-
-				// Deprecated API.
-				vrInput.resetSensor();
-
-			} else if ( vrInput.zeroSensor !== undefined ) {
-
-				// Really deprecated API.
-				vrInput.zeroSensor();
-
-			}
-
-		}
-
-	};
-
-	this.zeroSensor = function () {
-
-		console.warn( 'THREE.VRControls: .zeroSensor() is now .resetSensor().' );
-		this.resetSensor();
-
-	};
-
-	this.dispose = function () {
-
-		vrInput = null;
-
-	};
-
-};
-
-},{}],16:[function(_dereq_,module,exports){
-/**
- * @author dmarcos / https://github.com/dmarcos
- * @author mrdoob / http://mrdoob.com
- *
- * WebVR Spec: http://mozvr.github.io/webvr-spec/webvr.html
- *
- * Firefox: http://mozvr.com/downloads/
- * Chromium: https://drive.google.com/folderview?id=0BzudLt22BqGRbW9WTHMtOWMzNjQ&usp=sharing#list
- *
- */
-
-THREE.VREffect = function ( renderer, onError ) {
-
-	var vrHMD;
-	var deprecatedAPI = false;
-	var eyeTranslationL = new THREE.Vector3();
-	var eyeTranslationR = new THREE.Vector3();
-	var renderRectL, renderRectR;
-	var eyeFOVL, eyeFOVR;
-
-	function gotVRDevices( devices ) {
-
-		for ( var i = 0; i < devices.length; i ++ ) {
-
-			if ( 'VRDisplay' in window && devices[ i ] instanceof VRDisplay ) {
-
-				vrHMD = devices[ i ];
-				deprecatedAPI = false;
-				break; // We keep the first we encounter
-
-			} else if ( 'HMDVRDevice' in window && devices[ i ] instanceof HMDVRDevice ) {
-
-				vrHMD = devices[ i ];
-				deprecatedAPI = true;
-				break; // We keep the first we encounter
-
-			}
-
-		}
-
-		if ( vrHMD === undefined ) {
-
-			if ( onError ) onError( 'HMD not available' );
-
-		}
-
-	}
-
-	if ( navigator.getVRDisplays ) {
-
-		navigator.getVRDisplays().then( gotVRDevices );
-
-	} else if ( navigator.getVRDevices ) {
-
-		// Deprecated API.
-		navigator.getVRDevices().then( gotVRDevices );
-
-	}
-
-	//
-
-	this.scale = 1;
-
-	this.setSize = function ( width, height ) {
-
-		renderer.setSize( width, height );
-
-	};
-
-	// fullscreen
-
-	var isPresenting = false;
-
-	var canvas = renderer.domElement;
-	var fullscreenchange = canvas.mozRequestFullScreen ? 'mozfullscreenchange' : 'webkitfullscreenchange';
-
-	document.addEventListener( fullscreenchange, function () {
-
-		if ( vrHMD && deprecatedAPI ) {
-
-			isPresenting = document.mozFullScreenElement || document.webkitFullscreenElement;
-
-		}
-
-	}, false );
-
-	window.addEventListener( 'vrdisplaypresentchange', function () {
-
-		isPresenting = vrHMD && vrHMD.isPresenting;
-
-	}, false );
-
-	this.setFullScreen = function ( boolean ) {
-
-		return new Promise( function ( resolve, reject ) {
-
-			if ( vrHMD === undefined ) {
-
-				reject( new Error( 'No VR hardware found.' ) );
-				return;
-
-			}
-			if ( isPresenting === boolean ) {
-
-				resolve();
-				return;
-
-			}
-
-			if ( !deprecatedAPI ) {
-
-				if ( boolean ) {
-
-					resolve( vrHMD.requestPresent( { source: canvas } ) );
-
-				} else {
-
-					resolve( vrHMD.exitPresent() );
-
-				}
-
-			} else {
-
-				if ( canvas.mozRequestFullScreen ) {
-
-					canvas.mozRequestFullScreen( { vrDisplay: vrHMD } );
-					resolve();
-
-				} else if ( canvas.webkitRequestFullscreen ) {
-
-					canvas.webkitRequestFullscreen( { vrDisplay: vrHMD } );
-					resolve();
-
-				} else {
-
-					console.error( 'No compatible requestFullscreen method found.' );
-					reject( new Error( 'No compatible requestFullscreen method found.' ) );
-
-				}
-
-			}
-
-		});
-
-	};
-
-	this.requestPresent = function () {
-
-		return this.setFullScreen( true );
-
-	};
-
-	this.exitPresent = function () {
-
-		return this.setFullScreen( false );
-
-	};
-
-	// render
-
-	var cameraL = new THREE.PerspectiveCamera();
-	cameraL.layers.enable( 1 );
-
-	var cameraR = new THREE.PerspectiveCamera();
-	cameraR.layers.enable( 2 );
-
-	this.render = function ( scene, camera ) {
-
-		if ( vrHMD && isPresenting ) {
-
-			var autoUpdate = scene.autoUpdate;
-
-			if ( autoUpdate ) {
-
-				scene.updateMatrixWorld();
-				scene.autoUpdate = false;
-
-			}
-
-			var eyeParamsL = vrHMD.getEyeParameters( 'left' );
-			var eyeParamsR = vrHMD.getEyeParameters( 'right' );
-
-			if ( !deprecatedAPI ) {
-
-				eyeTranslationL.fromArray( eyeParamsL.offset );
-				eyeTranslationR.fromArray( eyeParamsR.offset );
-				eyeFOVL = eyeParamsL.fieldOfView;
-				eyeFOVR = eyeParamsR.fieldOfView;
-
-			} else {
-
-				eyeTranslationL.copy( eyeParamsL.eyeTranslation );
-				eyeTranslationR.copy( eyeParamsR.eyeTranslation );
-				eyeFOVL = eyeParamsL.recommendedFieldOfView;
-				eyeFOVR = eyeParamsR.recommendedFieldOfView;
-
-			}
-
-			if ( Array.isArray( scene ) ) {
-
-				console.warn( 'THREE.VREffect.render() no longer supports arrays. Use object.layers instead.' );
-				scene = scene[ 0 ];
-
-			}
-
-			// When rendering we don't care what the recommended size is, only what the actual size
-			// of the backbuffer is.
-			var size = renderer.getSize();
-			renderRectL = { x: 0, y: 0, width: size.width / 2, height: size.height };
-			renderRectR = { x: size.width / 2, y: 0, width: size.width / 2, height: size.height };
-
-			renderer.setScissorTest( true );
-			renderer.clear();
-
-			if ( camera.parent === null ) camera.updateMatrixWorld();
-
-			cameraL.projectionMatrix = fovToProjection( eyeFOVL, true, camera.near, camera.far );
-			cameraR.projectionMatrix = fovToProjection( eyeFOVR, true, camera.near, camera.far );
-
-			camera.matrixWorld.decompose( cameraL.position, cameraL.quaternion, cameraL.scale );
-			camera.matrixWorld.decompose( cameraR.position, cameraR.quaternion, cameraR.scale );
-
-			cameraL.translateX( eyeTranslationL.x * this.scale );
-			cameraR.translateX( eyeTranslationR.x * this.scale );
-
-			// render left eye
-			renderer.setViewport( renderRectL.x, renderRectL.y, renderRectL.width, renderRectL.height );
-			renderer.setScissor( renderRectL.x, renderRectL.y, renderRectL.width, renderRectL.height );
-			renderer.render( scene, cameraL );
-
-			// render right eye
-			renderer.setViewport( renderRectR.x, renderRectR.y, renderRectR.width, renderRectR.height );
-			renderer.setScissor( renderRectR.x, renderRectR.y, renderRectR.width, renderRectR.height );
-			renderer.render( scene, cameraR );
-
-			renderer.setScissorTest( false );
-
-			if ( autoUpdate ) {
-
-				scene.autoUpdate = true;
-
-			}
-
-			if ( !deprecatedAPI ) {
-
-				vrHMD.submitFrame();
-
-			}
-
-			return;
-
-		}
-
-		// Regular render mode if not HMD
-
-		renderer.render( scene, camera );
-
-	};
-
-	//
-
-	function fovToNDCScaleOffset( fov ) {
-
-		var pxscale = 2.0 / ( fov.leftTan + fov.rightTan );
-		var pxoffset = ( fov.leftTan - fov.rightTan ) * pxscale * 0.5;
-		var pyscale = 2.0 / ( fov.upTan + fov.downTan );
-		var pyoffset = ( fov.upTan - fov.downTan ) * pyscale * 0.5;
-		return { scale: [ pxscale, pyscale ], offset: [ pxoffset, pyoffset ] };
-
-	}
-
-	function fovPortToProjection( fov, rightHanded, zNear, zFar ) {
-
-		rightHanded = rightHanded === undefined ? true : rightHanded;
-		zNear = zNear === undefined ? 0.01 : zNear;
-		zFar = zFar === undefined ? 10000.0 : zFar;
-
-		var handednessScale = rightHanded ? - 1.0 : 1.0;
-
-		// start with an identity matrix
-		var mobj = new THREE.Matrix4();
-		var m = mobj.elements;
-
-		// and with scale/offset info for normalized device coords
-		var scaleAndOffset = fovToNDCScaleOffset( fov );
-
-		// X result, map clip edges to [-w,+w]
-		m[ 0 * 4 + 0 ] = scaleAndOffset.scale[ 0 ];
-		m[ 0 * 4 + 1 ] = 0.0;
-		m[ 0 * 4 + 2 ] = scaleAndOffset.offset[ 0 ] * handednessScale;
-		m[ 0 * 4 + 3 ] = 0.0;
-
-		// Y result, map clip edges to [-w,+w]
-		// Y offset is negated because this proj matrix transforms from world coords with Y=up,
-		// but the NDC scaling has Y=down (thanks D3D?)
-		m[ 1 * 4 + 0 ] = 0.0;
-		m[ 1 * 4 + 1 ] = scaleAndOffset.scale[ 1 ];
-		m[ 1 * 4 + 2 ] = - scaleAndOffset.offset[ 1 ] * handednessScale;
-		m[ 1 * 4 + 3 ] = 0.0;
-
-		// Z result (up to the app)
-		m[ 2 * 4 + 0 ] = 0.0;
-		m[ 2 * 4 + 1 ] = 0.0;
-		m[ 2 * 4 + 2 ] = zFar / ( zNear - zFar ) * - handednessScale;
-		m[ 2 * 4 + 3 ] = ( zFar * zNear ) / ( zNear - zFar );
-
-		// W result (= Z in)
-		m[ 3 * 4 + 0 ] = 0.0;
-		m[ 3 * 4 + 1 ] = 0.0;
-		m[ 3 * 4 + 2 ] = handednessScale;
-		m[ 3 * 4 + 3 ] = 0.0;
-
-		mobj.transpose();
-
-		return mobj;
-
-	}
-
-	function fovToProjection( fov, rightHanded, zNear, zFar ) {
-
-		var DEG2RAD = Math.PI / 180.0;
-
-		var fovPort = {
-			upTan: Math.tan( fov.upDegrees * DEG2RAD ),
-			downTan: Math.tan( fov.downDegrees * DEG2RAD ),
-			leftTan: Math.tan( fov.leftDegrees * DEG2RAD ),
-			rightTan: Math.tan( fov.rightDegrees * DEG2RAD )
-		};
-
-		return fovPortToProjection( fovPort, rightHanded, zNear, zFar );
-
-	}
-
-};
-
-},{}],17:[function(_dereq_,module,exports){
-=======
-},{}],13:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{}],12:[function(_dereq_,module,exports){
 /**
 * @author Tim Knip / http://www.floorplanner.com/ / tim at floorplanner.com
 * @author Tony Parisi / http://www.tonyparisi.com/
@@ -7354,11 +6631,7 @@ THREE.ColladaLoader = function () {
 
 };
 
-<<<<<<< HEAD
-},{}],18:[function(_dereq_,module,exports){
-=======
-},{}],14:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{}],13:[function(_dereq_,module,exports){
 /**
  * Loads a Wavefront .mtl file specifying materials
  *
@@ -7777,11 +7050,7 @@ THREE.MTLLoader.MaterialCreator.prototype = {
 
 THREE.EventDispatcher.prototype.apply( THREE.MTLLoader.prototype );
 
-<<<<<<< HEAD
-},{}],19:[function(_dereq_,module,exports){
-=======
-},{}],15:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{}],14:[function(_dereq_,module,exports){
 /**
  * @author mrdoob / http://mrdoob.com/
  */
@@ -8114,16 +7383,10 @@ THREE.OBJLoader.prototype = {
 
 			lineFirstChar = line.charAt( 0 );
 
-<<<<<<< HEAD
-		var object_pattern = /^[og]\s*(.+)?/;
-
-		var smoothing_pattern = /^s\s+(\d+|on|off)/;
-=======
 			// @todo invoke passed in handler if any
 			if ( lineFirstChar === '#' ) continue;
 
 			if ( lineFirstChar === 'v' ) {
->>>>>>> upstream/master
 
 				lineSecondChar = line.charAt( 1 );
 
@@ -8220,12 +7483,8 @@ THREE.OBJLoader.prototype = {
 
 			} else if ( lineFirstChar === "l" ) {
 
-<<<<<<< HEAD
-				var name = result[ 0 ].substr( 1 ).trim();
-=======
 				var lineParts = line.substring( 1 ).trim().split( " " );
 				var lineVertices = [], lineUVs = [];
->>>>>>> upstream/master
 
 				if ( line.indexOf( "/" ) === - 1 ) {
 
@@ -8357,22 +7616,14 @@ THREE.OBJLoader.prototype = {
 
 };
 
-<<<<<<< HEAD
-},{}],20:[function(_dereq_,module,exports){
-=======
-},{}],16:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{}],15:[function(_dereq_,module,exports){
 var self = self || {};// File:src/Three.js
 
 /**
  * @author mrdoob / http://mrdoob.com/
  */
 
-<<<<<<< HEAD
-var THREE = { REVISION: '75' };
-=======
 var THREE = { REVISION: '76' };
->>>>>>> upstream/master
 
 //
 
@@ -8701,14 +7952,11 @@ THREE.RGBM7Encoding = 3004;
 THREE.RGBM16Encoding = 3005;
 THREE.RGBDEncoding = 3006; // MaxRange is 256.
 
-<<<<<<< HEAD
-=======
 // Depth packing strategies
 
 THREE.BasicDepthPacking = 3200;  // for writing to float textures for high precision or for visualizing results in RGB buffers
 THREE.RGBADepthPacking = 3201; // for packing into RGBA buffers.
 
->>>>>>> upstream/master
 // File:src/math/Color.js
 
 /**
@@ -12521,13 +11769,6 @@ THREE.Box3.prototype = {
 
 						}
 
-<<<<<<< HEAD
-					if ( geometry.boundingBox.isEmpty() === false ) {
-
-						box.copy( geometry.boundingBox );
-						box.applyMatrix4( node.matrixWorld );
-						scope.union( box );
-=======
 					} else if ( geometry instanceof THREE.BufferGeometry && geometry.attributes[ 'position' ] !== undefined ) {
 
 						var positions = geometry.attributes[ 'position' ].array;
@@ -12540,7 +11781,6 @@ THREE.Box3.prototype = {
 							scope.expandByPoint( v1 );
 
 						}
->>>>>>> upstream/master
 
 					}
 
@@ -13037,11 +12277,7 @@ THREE.Matrix3.prototype = {
 
 		if ( matrix instanceof THREE.Matrix4 ) {
 
-<<<<<<< HEAD
-			console.warn( "THREE.Matrix3.getInverse no longer takes a Matrix4 argument." );
-=======
 			console.error( "THREE.Matrix3.getInverse no longer takes a Matrix4 argument." );
->>>>>>> upstream/master
 
 		}
 
@@ -29918,14 +29154,7 @@ THREE.MeshStandardMaterial.prototype.copy = function ( source ) {
  * @author WestLangley / http://github.com/WestLangley
  *
  * parameters = {
-<<<<<<< HEAD
- *  opacity: <float>,
- *
- *  wireframe: <boolean>,
- *  wireframeLinewidth: <float>
-=======
  *  reflectivity: <float>
->>>>>>> upstream/master
  * }
  */
 
@@ -29937,47 +29166,7 @@ THREE.MeshPhysicalMaterial = function ( parameters ) {
 
 	this.type = 'MeshPhysicalMaterial';
 
-<<<<<<< HEAD
-THREE.MeshDepthMaterial.prototype = Object.create( THREE.Material.prototype );
-THREE.MeshDepthMaterial.prototype.constructor = THREE.MeshDepthMaterial;
-
-THREE.MeshDepthMaterial.prototype.copy = function ( source ) {
-
-	THREE.Material.prototype.copy.call( this, source );
-
-	this.wireframe = source.wireframe;
-	this.wireframeLinewidth = source.wireframeLinewidth;
-
-	return this;
-
-};
-
-// File:src/materials/MeshNormalMaterial.js
-
-/**
- * @author mrdoob / http://mrdoob.com/
- *
- * parameters = {
- *  opacity: <float>,
- *
- *  wireframe: <boolean>,
- *  wireframeLinewidth: <float>
- * }
- */
-
-THREE.MeshNormalMaterial = function ( parameters ) {
-
-	THREE.Material.call( this, parameters );
-
-	this.type = 'MeshNormalMaterial';
-
-	this.wireframe = false;
-	this.wireframeLinewidth = 1;
-
-	this.morphTargets = false;
-=======
 	this.reflectivity = 0.5; // maps to F0 = 0.04
->>>>>>> upstream/master
 
 	this.setValues( parameters );
 
@@ -30394,11 +29583,7 @@ THREE.Texture = function ( image, mapping, wrapS, wrapT, magFilter, minFilter, f
 	//
 	// Also changing the encoding after already used by a Material will not automatically make the Material
 	// update.  You need to explicitly call Material.needsUpdate to trigger it to recompile.
-<<<<<<< HEAD
-	this.encoding = THREE.LinearEncoding;
-=======
 	this.encoding = encoding !== undefined ? encoding :  THREE.LinearEncoding;
->>>>>>> upstream/master
 
 	this.version = 0;
 	this.onUpdate = null;
@@ -32326,11 +31511,7 @@ THREE.ShaderChunk[ 'alphatest_fragment' ] = "#ifdef ALPHATEST\n	if ( diffuseColo
 
 // File:src/renderers/shaders/ShaderChunk/aomap_fragment.glsl
 
-<<<<<<< HEAD
-THREE.ShaderChunk[ 'aomap_fragment' ] = "#ifdef USE_AOMAP\n	float ambientOcclusion = ( texture2D( aoMap, vUv2 ).r - 1.0 ) * aoMapIntensity + 1.0;\n	reflectedLight.indirectDiffuse *= ambientOcclusion;\n	#if defined( USE_ENVMAP ) && defined( STANDARD )\n		float dotNV = saturate( dot( geometry.normal, geometry.viewDir ) );\n		reflectedLight.indirectSpecular *= computeSpecularOcclusion( dotNV, ambientOcclusion, material.specularRoughness );\n	#endif\n#endif\n";
-=======
 THREE.ShaderChunk[ 'aomap_fragment' ] = "#ifdef USE_AOMAP\n	float ambientOcclusion = ( texture2D( aoMap, vUv2 ).r - 1.0 ) * aoMapIntensity + 1.0;\n	reflectedLight.indirectDiffuse *= ambientOcclusion;\n	#if defined( USE_ENVMAP ) && defined( PHYSICAL )\n		float dotNV = saturate( dot( geometry.normal, geometry.viewDir ) );\n		reflectedLight.indirectSpecular *= computeSpecularOcclusion( dotNV, ambientOcclusion, material.specularRoughness );\n	#endif\n#endif\n";
->>>>>>> upstream/master
 
 // File:src/renderers/shaders/ShaderChunk/aomap_pars_fragment.glsl
 
@@ -32346,11 +31527,7 @@ THREE.ShaderChunk[ 'beginnormal_vertex' ] = "\nvec3 objectNormal = vec3( normal 
 
 // File:src/renderers/shaders/ShaderChunk/bsdfs.glsl
 
-<<<<<<< HEAD
-THREE.ShaderChunk[ 'bsdfs' ] = "bool testLightInRange( const in float lightDistance, const in float cutoffDistance ) {\n	return any( bvec2( cutoffDistance == 0.0, lightDistance < cutoffDistance ) );\n}\nfloat punctualLightIntensityToIrradianceFactor( const in float lightDistance, const in float cutoffDistance, const in float decayExponent ) {\n		if( decayExponent > 0.0 ) {\n#if defined ( PHYSICALLY_CORRECT_LIGHTS )\n			float distanceFalloff = 1.0 / max( pow( lightDistance, decayExponent ), 0.01 );\n			float maxDistanceCutoffFactor = pow2( saturate( 1.0 - pow4( lightDistance / cutoffDistance ) ) );\n			return distanceFalloff * maxDistanceCutoffFactor;\n#else\n			return pow( saturate( -lightDistance / cutoffDistance + 1.0 ), decayExponent );\n#endif\n		}\n		return 1.0;\n}\nvec3 BRDF_Diffuse_Lambert( const in vec3 diffuseColor ) {\n	return RECIPROCAL_PI * diffuseColor;\n}\nvec3 F_Schlick( const in vec3 specularColor, const in float dotLH ) {\n	float fresnel = exp2( ( -5.55473 * dotLH - 6.98316 ) * dotLH );\n	return ( 1.0 - specularColor ) * fresnel + specularColor;\n}\nfloat G_GGX_Smith( const in float alpha, const in float dotNL, const in float dotNV ) {\n	float a2 = pow2( alpha );\n	float gl = dotNL + sqrt( a2 + ( 1.0 - a2 ) * pow2( dotNL ) );\n	float gv = dotNV + sqrt( a2 + ( 1.0 - a2 ) * pow2( dotNV ) );\n	return 1.0 / ( gl * gv );\n}\nfloat D_GGX( const in float alpha, const in float dotNH ) {\n	float a2 = pow2( alpha );\n	float denom = pow2( dotNH ) * ( a2 - 1.0 ) + 1.0;\n	return RECIPROCAL_PI * a2 / pow2( denom );\n}\nvec3 BRDF_Specular_GGX( const in IncidentLight incidentLight, const in GeometricContext geometry, const in vec3 specularColor, const in float roughness ) {\n	float alpha = pow2( roughness );\n	vec3 halfDir = normalize( incidentLight.direction + geometry.viewDir );\n	float dotNL = saturate( dot( geometry.normal, incidentLight.direction ) );\n	float dotNV = saturate( dot( geometry.normal, geometry.viewDir ) );\n	float dotNH = saturate( dot( geometry.normal, halfDir ) );\n	float dotLH = saturate( dot( incidentLight.direction, halfDir ) );\n	vec3 F = F_Schlick( specularColor, dotLH );\n	float G = G_GGX_Smith( alpha, dotNL, dotNV );\n	float D = D_GGX( alpha, dotNH );\n	return F * ( G * D );\n}\nvec3 BRDF_Specular_GGX_Environment( const in GeometricContext geometry, const in vec3 specularColor, const in float roughness ) {\n	float dotNV = saturate( dot( geometry.normal, geometry.viewDir ) );\n	const vec4 c0 = vec4( - 1, - 0.0275, - 0.572, 0.022 );\n	const vec4 c1 = vec4( 1, 0.0425, 1.04, - 0.04 );\n	vec4 r = roughness * c0 + c1;\n	float a004 = min( r.x * r.x, exp2( - 9.28 * dotNV ) ) * r.x + r.y;\n	vec2 AB = vec2( -1.04, 1.04 ) * a004 + r.zw;\n	return specularColor * AB.x + AB.y;\n}\nfloat G_BlinnPhong_Implicit( ) {\n	return 0.25;\n}\nfloat D_BlinnPhong( const in float shininess, const in float dotNH ) {\n	return RECIPROCAL_PI * ( shininess * 0.5 + 1.0 ) * pow( dotNH, shininess );\n}\nvec3 BRDF_Specular_BlinnPhong( const in IncidentLight incidentLight, const in GeometricContext geometry, const in vec3 specularColor, const in float shininess ) {\n	vec3 halfDir = normalize( incidentLight.direction + geometry.viewDir );\n	float dotNH = saturate( dot( geometry.normal, halfDir ) );\n	float dotLH = saturate( dot( incidentLight.direction, halfDir ) );\n	vec3 F = F_Schlick( specularColor, dotLH );\n	float G = G_BlinnPhong_Implicit( );\n	float D = D_BlinnPhong( shininess, dotNH );\n	return F * ( G * D );\n}\nfloat GGXRoughnessToBlinnExponent( const in float ggxRoughness ) {\n	return ( 2.0 / pow2( ggxRoughness + 0.0001 ) - 2.0 );\n}\nfloat BlinnExponentToGGXRoughness( const in float blinnExponent ) {\n	return sqrt( 2.0 / ( blinnExponent + 2.0 ) );\n}\n";
-=======
 THREE.ShaderChunk[ 'bsdfs' ] = "bool testLightInRange( const in float lightDistance, const in float cutoffDistance ) {\n	return any( bvec2( cutoffDistance == 0.0, lightDistance < cutoffDistance ) );\n}\nfloat punctualLightIntensityToIrradianceFactor( const in float lightDistance, const in float cutoffDistance, const in float decayExponent ) {\n		if( decayExponent > 0.0 ) {\n#if defined ( PHYSICALLY_CORRECT_LIGHTS )\n			float distanceFalloff = 1.0 / max( pow( lightDistance, decayExponent ), 0.01 );\n			float maxDistanceCutoffFactor = pow2( saturate( 1.0 - pow4( lightDistance / cutoffDistance ) ) );\n			return distanceFalloff * maxDistanceCutoffFactor;\n#else\n			return pow( saturate( -lightDistance / cutoffDistance + 1.0 ), decayExponent );\n#endif\n		}\n		return 1.0;\n}\nvec3 BRDF_Diffuse_Lambert( const in vec3 diffuseColor ) {\n	return RECIPROCAL_PI * diffuseColor;\n}\nvec3 F_Schlick( const in vec3 specularColor, const in float dotLH ) {\n	float fresnel = exp2( ( -5.55473 * dotLH - 6.98316 ) * dotLH );\n	return ( 1.0 - specularColor ) * fresnel + specularColor;\n}\nfloat G_GGX_Smith( const in float alpha, const in float dotNL, const in float dotNV ) {\n	float a2 = pow2( alpha );\n	float gl = dotNL + sqrt( a2 + ( 1.0 - a2 ) * pow2( dotNL ) );\n	float gv = dotNV + sqrt( a2 + ( 1.0 - a2 ) * pow2( dotNV ) );\n	return 1.0 / ( gl * gv );\n}\nfloat G_GGX_SmithCorrelated( const in float alpha, const in float dotNL, const in float dotNV ) {\n	float a2 = pow2( alpha );\n	float gv = dotNL * sqrt( a2 + ( 1.0 - a2 ) * pow2( dotNV ) );\n	float gl = dotNV * sqrt( a2 + ( 1.0 - a2 ) * pow2( dotNL ) );\n	return 0.5 / max( gv + gl, EPSILON );\n}\nfloat D_GGX( const in float alpha, const in float dotNH ) {\n	float a2 = pow2( alpha );\n	float denom = pow2( dotNH ) * ( a2 - 1.0 ) + 1.0;\n	return RECIPROCAL_PI * a2 / pow2( denom );\n}\nvec3 BRDF_Specular_GGX( const in IncidentLight incidentLight, const in GeometricContext geometry, const in vec3 specularColor, const in float roughness ) {\n	float alpha = pow2( roughness );\n	vec3 halfDir = normalize( incidentLight.direction + geometry.viewDir );\n	float dotNL = saturate( dot( geometry.normal, incidentLight.direction ) );\n	float dotNV = saturate( dot( geometry.normal, geometry.viewDir ) );\n	float dotNH = saturate( dot( geometry.normal, halfDir ) );\n	float dotLH = saturate( dot( incidentLight.direction, halfDir ) );\n	vec3 F = F_Schlick( specularColor, dotLH );\n	float G = G_GGX_SmithCorrelated( alpha, dotNL, dotNV );\n	float D = D_GGX( alpha, dotNH );\n	return F * ( G * D );\n}\nvec3 BRDF_Specular_GGX_Environment( const in GeometricContext geometry, const in vec3 specularColor, const in float roughness ) {\n	float dotNV = saturate( dot( geometry.normal, geometry.viewDir ) );\n	const vec4 c0 = vec4( - 1, - 0.0275, - 0.572, 0.022 );\n	const vec4 c1 = vec4( 1, 0.0425, 1.04, - 0.04 );\n	vec4 r = roughness * c0 + c1;\n	float a004 = min( r.x * r.x, exp2( - 9.28 * dotNV ) ) * r.x + r.y;\n	vec2 AB = vec2( -1.04, 1.04 ) * a004 + r.zw;\n	return specularColor * AB.x + AB.y;\n}\nfloat G_BlinnPhong_Implicit( ) {\n	return 0.25;\n}\nfloat D_BlinnPhong( const in float shininess, const in float dotNH ) {\n	return RECIPROCAL_PI * ( shininess * 0.5 + 1.0 ) * pow( dotNH, shininess );\n}\nvec3 BRDF_Specular_BlinnPhong( const in IncidentLight incidentLight, const in GeometricContext geometry, const in vec3 specularColor, const in float shininess ) {\n	vec3 halfDir = normalize( incidentLight.direction + geometry.viewDir );\n	float dotNH = saturate( dot( geometry.normal, halfDir ) );\n	float dotLH = saturate( dot( incidentLight.direction, halfDir ) );\n	vec3 F = F_Schlick( specularColor, dotLH );\n	float G = G_BlinnPhong_Implicit( );\n	float D = D_BlinnPhong( shininess, dotNH );\n	return F * ( G * D );\n}\nfloat GGXRoughnessToBlinnExponent( const in float ggxRoughness ) {\n	return ( 2.0 / pow2( ggxRoughness + 0.0001 ) - 2.0 );\n}\nfloat BlinnExponentToGGXRoughness( const in float blinnExponent ) {\n	return sqrt( 2.0 / ( blinnExponent + 2.0 ) );\n}\n";
->>>>>>> upstream/master
 
 // File:src/renderers/shaders/ShaderChunk/bumpmap_pars_fragment.glsl
 
@@ -32390,19 +31567,11 @@ THREE.ShaderChunk[ 'color_vertex' ] = "#ifdef USE_COLOR\n	vColor.xyz = color.xyz
 
 // File:src/renderers/shaders/ShaderChunk/common.glsl
 
-<<<<<<< HEAD
-THREE.ShaderChunk[ 'common' ] = "#define PI 3.14159\n#define PI2 6.28318\n#define RECIPROCAL_PI 0.31830988618\n#define RECIPROCAL_PI2 0.15915494\n#define LOG2 1.442695\n#define EPSILON 1e-6\n#define saturate(a) clamp( a, 0.0, 1.0 )\n#define whiteCompliment(a) ( 1.0 - saturate( a ) )\nfloat pow2( const in float x ) { return x*x; }\nfloat pow3( const in float x ) { return x*x*x; }\nfloat pow4( const in float x ) { float x2 = x*x; return x2*x2; }\nfloat average( const in vec3 color ) { return dot( color, vec3( 0.3333 ) ); }\nstruct IncidentLight {\n	vec3 color;\n	vec3 direction;\n	bool visible;\n};\nstruct ReflectedLight {\n	vec3 directDiffuse;\n	vec3 directSpecular;\n	vec3 indirectDiffuse;\n	vec3 indirectSpecular;\n};\nstruct GeometricContext {\n	vec3 position;\n	vec3 normal;\n	vec3 viewDir;\n};\nvec3 transformDirection( in vec3 dir, in mat4 matrix ) {\n	return normalize( ( matrix * vec4( dir, 0.0 ) ).xyz );\n}\nvec3 inverseTransformDirection( in vec3 dir, in mat4 matrix ) {\n	return normalize( ( vec4( dir, 0.0 ) * matrix ).xyz );\n}\nvec3 projectOnPlane(in vec3 point, in vec3 pointOnPlane, in vec3 planeNormal ) {\n	float distance = dot( planeNormal, point - pointOnPlane );\n	return - distance * planeNormal + point;\n}\nfloat sideOfPlane( in vec3 point, in vec3 pointOnPlane, in vec3 planeNormal ) {\n	return sign( dot( point - pointOnPlane, planeNormal ) );\n}\nvec3 linePlaneIntersect( in vec3 pointOnLine, in vec3 lineDirection, in vec3 pointOnPlane, in vec3 planeNormal ) {\n	return lineDirection * ( dot( planeNormal, pointOnPlane - pointOnLine ) / dot( planeNormal, lineDirection ) ) + pointOnLine;\n}\n";
-
-// File:src/renderers/shaders/ShaderChunk/cube_uv_reflection_fragment.glsl
-
-THREE.ShaderChunk[ 'cube_uv_reflection_fragment' ] = "#ifdef ENVMAP_TYPE_CUBE_UV\nconst float cubeUV_textureSize = 1024.0;\nint getFaceFromDirection(vec3 direction) {\n    vec3 absDirection = abs(direction);\n    int face = -1;\n    if( absDirection.x > absDirection.z ) {\n        if(absDirection.x > absDirection.y )\n            face = direction.x > 0.0 ? 0 : 3;\n        else\n            face = direction.y > 0.0 ? 1 : 4;\n    }\n    else {\n        if(absDirection.z > absDirection.y )\n            face = direction.z > 0.0 ? 2 : 5;\n        else\n            face = direction.y > 0.0 ? 1 : 4;\n    }\n    return face;\n}\nconst float cubeUV_maxLods1 = log2(cubeUV_textureSize*0.25) - 1.0;\nconst float cubeUV_rangeClamp = exp2((6.0 - 1.0) * 2.0);\nvec2 MipLevelInfo( vec3 vec, float roughnessLevel, float roughness ) {\n    float scale = exp2(cubeUV_maxLods1 - roughnessLevel);\n    float dxRoughness = dFdx(roughness);\n    float dyRoughness = dFdy(roughness);\n    vec3 dx = dFdx( vec * scale * dxRoughness );\n    vec3 dy = dFdy( vec * scale * dyRoughness );\n    float d = max( dot( dx, dx ), dot( dy, dy ) );\n    d = clamp(d, 1.0, cubeUV_rangeClamp);\n    float mipLevel = 0.5 * log2(d);\n    return vec2(floor(mipLevel), fract(mipLevel));\n}\nconst float cubeUV_maxLods2 = log2(cubeUV_textureSize*0.25) - 2.0;\nconst float cubeUV_rcpTextureSize = 1.0 / cubeUV_textureSize;\nvec2 getCubeUV(vec3 direction, float roughnessLevel, float mipLevel) {\n    mipLevel = roughnessLevel > cubeUV_maxLods2 - 3.0 ? 0.0 : mipLevel;\n    float a = 16.0 * cubeUV_rcpTextureSize;\n    vec2 exp2_packed = exp2( vec2( roughnessLevel, mipLevel ) );\n    vec2 rcp_exp2_packed = vec2( 1.0 ) / exp2_packed;\n    float powScale = exp2_packed.x * exp2_packed.y;\n    float scale = rcp_exp2_packed.x * rcp_exp2_packed.y * 0.25;\n    float mipOffset = 0.75*(1.0 - rcp_exp2_packed.y) * rcp_exp2_packed.x;\n    bool bRes = mipLevel == 0.0;\n    scale =  bRes && (scale < a) ? a : scale;\n    vec3 r;\n    vec2 offset;\n    int face = getFaceFromDirection(direction);\n    float rcpPowScale = 1.0 / powScale;\n    if( face == 0) {\n        r = vec3(direction.x, -direction.z, direction.y);\n        offset = vec2(0.0+mipOffset,0.75 * rcpPowScale);\n        offset.y = bRes && (offset.y < 2.0*a) ?  a : offset.y;\n    }\n    else if( face == 1) {\n        r = vec3(direction.y, direction.x, direction.z);\n        offset = vec2(scale+mipOffset, 0.75 * rcpPowScale);\n        offset.y = bRes && (offset.y < 2.0*a) ?  a : offset.y;\n    }\n    else if( face == 2) {\n        r = vec3(direction.z, direction.x, direction.y);\n        offset = vec2(2.0*scale+mipOffset, 0.75 * rcpPowScale);\n        offset.y = bRes && (offset.y < 2.0*a) ?  a : offset.y;\n    }\n    else if( face == 3) {\n        r = vec3(direction.x, direction.z, direction.y);\n        offset = vec2(0.0+mipOffset,0.5 * rcpPowScale);\n        offset.y = bRes && (offset.y < 2.0*a) ?  0.0 : offset.y;\n    }\n    else if( face == 4) {\n        r = vec3(direction.y, direction.x, -direction.z);\n        offset = vec2(scale+mipOffset, 0.5 * rcpPowScale);\n        offset.y = bRes && (offset.y < 2.0*a) ?  0.0 : offset.y;\n    }\n    else {\n        r = vec3(direction.z, -direction.x, direction.y);\n        offset = vec2(2.0*scale+mipOffset, 0.5 * rcpPowScale);\n        offset.y = bRes && (offset.y < 2.0*a) ?  0.0 : offset.y;\n    }\n    r = normalize(r);\n    float texelOffset = 0.5 * cubeUV_rcpTextureSize;\n    vec2 s = ( r.yz / abs( r.x ) + vec2( 1.0 ) ) * 0.5;\n    vec2 base = offset + vec2( texelOffset );\n    return base + s * ( scale - 2.0 * texelOffset );\n}\nconst float cubeUV_maxLods3 = log2(cubeUV_textureSize*0.25) - 3.0;\nvec4 textureCubeUV(vec3 reflectedDirection, float roughness ) {\n    float roughnessVal = roughness* cubeUV_maxLods3;\n    float r1 = floor(roughnessVal);\n    float r2 = r1 + 1.0;\n    float t = fract(roughnessVal);\n    vec2 mipInfo = MipLevelInfo(reflectedDirection, r1, roughness);\n    float s = mipInfo.y;\n    float level0 = mipInfo.x;\n    float level1 = level0 + 1.0;\n    level1 = level1 > 5.0 ? 5.0 : level1;\n    level0 += min( floor( s + 0.5 ), 5.0 );\n    vec2 uv_10 = getCubeUV(reflectedDirection, r1, level0);\n    vec4 color10 = envMapTexelToLinear(texture2D(envMap, uv_10));\n    vec2 uv_20 = getCubeUV(reflectedDirection, r2, level0);\n    vec4 color20 = envMapTexelToLinear(texture2D(envMap, uv_20));\n    vec4 result = mix(color10, color20, t);\n    return vec4(result.rgb, 1.0);\n}\n#endif\n";
-=======
 THREE.ShaderChunk[ 'common' ] = "#define PI 3.14159265359\n#define PI2 6.28318530718\n#define RECIPROCAL_PI 0.31830988618\n#define RECIPROCAL_PI2 0.15915494\n#define LOG2 1.442695\n#define EPSILON 1e-6\n#define saturate(a) clamp( a, 0.0, 1.0 )\n#define whiteCompliment(a) ( 1.0 - saturate( a ) )\nfloat pow2( const in float x ) { return x*x; }\nfloat pow3( const in float x ) { return x*x*x; }\nfloat pow4( const in float x ) { float x2 = x*x; return x2*x2; }\nfloat average( const in vec3 color ) { return dot( color, vec3( 0.3333 ) ); }\nhighp float rand( const in vec2 uv ) {\n	const highp float a = 12.9898, b = 78.233, c = 43758.5453;\n	highp float dt = dot( uv.xy, vec2( a,b ) ), sn = mod( dt, PI );\n	return fract(sin(sn) * c);\n}\nstruct IncidentLight {\n	vec3 color;\n	vec3 direction;\n	bool visible;\n};\nstruct ReflectedLight {\n	vec3 directDiffuse;\n	vec3 directSpecular;\n	vec3 indirectDiffuse;\n	vec3 indirectSpecular;\n};\nstruct GeometricContext {\n	vec3 position;\n	vec3 normal;\n	vec3 viewDir;\n};\nvec3 transformDirection( in vec3 dir, in mat4 matrix ) {\n	return normalize( ( matrix * vec4( dir, 0.0 ) ).xyz );\n}\nvec3 inverseTransformDirection( in vec3 dir, in mat4 matrix ) {\n	return normalize( ( vec4( dir, 0.0 ) * matrix ).xyz );\n}\nvec3 projectOnPlane(in vec3 point, in vec3 pointOnPlane, in vec3 planeNormal ) {\n	float distance = dot( planeNormal, point - pointOnPlane );\n	return - distance * planeNormal + point;\n}\nfloat sideOfPlane( in vec3 point, in vec3 pointOnPlane, in vec3 planeNormal ) {\n	return sign( dot( point - pointOnPlane, planeNormal ) );\n}\nvec3 linePlaneIntersect( in vec3 pointOnLine, in vec3 lineDirection, in vec3 pointOnPlane, in vec3 planeNormal ) {\n	return lineDirection * ( dot( planeNormal, pointOnPlane - pointOnLine ) / dot( planeNormal, lineDirection ) ) + pointOnLine;\n}\n";
 
 // File:src/renderers/shaders/ShaderChunk/cube_uv_reflection_fragment.glsl
 
 THREE.ShaderChunk[ 'cube_uv_reflection_fragment' ] = "#ifdef ENVMAP_TYPE_CUBE_UV\nconst float cubeUV_textureSize = 1024.0;\nint getFaceFromDirection(vec3 direction) {\n	vec3 absDirection = abs(direction);\n	int face = -1;\n	if( absDirection.x > absDirection.z ) {\n		if(absDirection.x > absDirection.y )\n			face = direction.x > 0.0 ? 0 : 3;\n		else\n			face = direction.y > 0.0 ? 1 : 4;\n	}\n	else {\n		if(absDirection.z > absDirection.y )\n			face = direction.z > 0.0 ? 2 : 5;\n		else\n			face = direction.y > 0.0 ? 1 : 4;\n	}\n	return face;\n}\nfloat cubeUV_maxLods1 = log2(cubeUV_textureSize*0.25) - 1.0;\nfloat cubeUV_rangeClamp = exp2((6.0 - 1.0) * 2.0);\nvec2 MipLevelInfo( vec3 vec, float roughnessLevel, float roughness ) {\n	float scale = exp2(cubeUV_maxLods1 - roughnessLevel);\n	float dxRoughness = dFdx(roughness);\n	float dyRoughness = dFdy(roughness);\n	vec3 dx = dFdx( vec * scale * dxRoughness );\n	vec3 dy = dFdy( vec * scale * dyRoughness );\n	float d = max( dot( dx, dx ), dot( dy, dy ) );\n	d = clamp(d, 1.0, cubeUV_rangeClamp);\n	float mipLevel = 0.5 * log2(d);\n	return vec2(floor(mipLevel), fract(mipLevel));\n}\nfloat cubeUV_maxLods2 = log2(cubeUV_textureSize*0.25) - 2.0;\nconst float cubeUV_rcpTextureSize = 1.0 / cubeUV_textureSize;\nvec2 getCubeUV(vec3 direction, float roughnessLevel, float mipLevel) {\n	mipLevel = roughnessLevel > cubeUV_maxLods2 - 3.0 ? 0.0 : mipLevel;\n	float a = 16.0 * cubeUV_rcpTextureSize;\n	vec2 exp2_packed = exp2( vec2( roughnessLevel, mipLevel ) );\n	vec2 rcp_exp2_packed = vec2( 1.0 ) / exp2_packed;\n	float powScale = exp2_packed.x * exp2_packed.y;\n	float scale = rcp_exp2_packed.x * rcp_exp2_packed.y * 0.25;\n	float mipOffset = 0.75*(1.0 - rcp_exp2_packed.y) * rcp_exp2_packed.x;\n	bool bRes = mipLevel == 0.0;\n	scale =  bRes && (scale < a) ? a : scale;\n	vec3 r;\n	vec2 offset;\n	int face = getFaceFromDirection(direction);\n	float rcpPowScale = 1.0 / powScale;\n	if( face == 0) {\n		r = vec3(direction.x, -direction.z, direction.y);\n		offset = vec2(0.0+mipOffset,0.75 * rcpPowScale);\n		offset.y = bRes && (offset.y < 2.0*a) ?  a : offset.y;\n	}\n	else if( face == 1) {\n		r = vec3(direction.y, direction.x, direction.z);\n		offset = vec2(scale+mipOffset, 0.75 * rcpPowScale);\n		offset.y = bRes && (offset.y < 2.0*a) ?  a : offset.y;\n	}\n	else if( face == 2) {\n		r = vec3(direction.z, direction.x, direction.y);\n		offset = vec2(2.0*scale+mipOffset, 0.75 * rcpPowScale);\n		offset.y = bRes && (offset.y < 2.0*a) ?  a : offset.y;\n	}\n	else if( face == 3) {\n		r = vec3(direction.x, direction.z, direction.y);\n		offset = vec2(0.0+mipOffset,0.5 * rcpPowScale);\n		offset.y = bRes && (offset.y < 2.0*a) ?  0.0 : offset.y;\n	}\n	else if( face == 4) {\n		r = vec3(direction.y, direction.x, -direction.z);\n		offset = vec2(scale+mipOffset, 0.5 * rcpPowScale);\n		offset.y = bRes && (offset.y < 2.0*a) ?  0.0 : offset.y;\n	}\n	else {\n		r = vec3(direction.z, -direction.x, direction.y);\n		offset = vec2(2.0*scale+mipOffset, 0.5 * rcpPowScale);\n		offset.y = bRes && (offset.y < 2.0*a) ?  0.0 : offset.y;\n	}\n	r = normalize(r);\n	float texelOffset = 0.5 * cubeUV_rcpTextureSize;\n	vec2 s = ( r.yz / abs( r.x ) + vec2( 1.0 ) ) * 0.5;\n	vec2 base = offset + vec2( texelOffset );\n	return base + s * ( scale - 2.0 * texelOffset );\n}\nfloat cubeUV_maxLods3 = log2(cubeUV_textureSize*0.25) - 3.0;\nvec4 textureCubeUV(vec3 reflectedDirection, float roughness ) {\n	float roughnessVal = roughness* cubeUV_maxLods3;\n	float r1 = floor(roughnessVal);\n	float r2 = r1 + 1.0;\n	float t = fract(roughnessVal);\n	vec2 mipInfo = MipLevelInfo(reflectedDirection, r1, roughness);\n	float s = mipInfo.y;\n	float level0 = mipInfo.x;\n	float level1 = level0 + 1.0;\n	level1 = level1 > 5.0 ? 5.0 : level1;\n	level0 += min( floor( s + 0.5 ), 5.0 );\n	vec2 uv_10 = getCubeUV(reflectedDirection, r1, level0);\n	vec4 color10 = envMapTexelToLinear(texture2D(envMap, uv_10));\n	vec2 uv_20 = getCubeUV(reflectedDirection, r2, level0);\n	vec4 color20 = envMapTexelToLinear(texture2D(envMap, uv_20));\n	vec4 result = mix(color10, color20, t);\n	return vec4(result.rgb, 1.0);\n}\n#endif\n";
->>>>>>> upstream/master
 
 // File:src/renderers/shaders/ShaderChunk/defaultnormal_vertex.glsl
 
@@ -32466,19 +31635,11 @@ THREE.ShaderChunk[ 'lightmap_pars_fragment' ] = "#ifdef USE_LIGHTMAP\n	uniform s
 
 // File:src/renderers/shaders/ShaderChunk/lights_lambert_vertex.glsl
 
-<<<<<<< HEAD
-THREE.ShaderChunk[ 'lights_lambert_vertex' ] = "vec3 diffuse = vec3( 1.0 );\nGeometricContext geometry;\ngeometry.position = mvPosition.xyz;\ngeometry.normal = normalize( transformedNormal );\ngeometry.viewDir = normalize( -mvPosition.xyz );\nGeometricContext backGeometry;\nbackGeometry.position = geometry.position;\nbackGeometry.normal = -geometry.normal;\nbackGeometry.viewDir = geometry.viewDir;\nvLightFront = vec3( 0.0 );\n#ifdef DOUBLE_SIDED\n	vLightBack = vec3( 0.0 );\n#endif\nIncidentLight directLight;\nfloat dotNL;\nvec3 directLightColor_Diffuse;\n#if NUM_POINT_LIGHTS > 0\n	for ( int i = 0; i < NUM_POINT_LIGHTS; i ++ ) {\n		directLight = getPointDirectLightIrradiance( pointLights[ i ], geometry );\n		dotNL = dot( geometry.normal, directLight.direction );\n		directLightColor_Diffuse = PI * directLight.color;\n		vLightFront += saturate( dotNL ) * directLightColor_Diffuse;\n		#ifdef DOUBLE_SIDED\n			vLightBack += saturate( -dotNL ) * directLightColor_Diffuse;\n		#endif\n	}\n#endif\n#if NUM_SPOT_LIGHTS > 0\n	for ( int i = 0; i < NUM_SPOT_LIGHTS; i ++ ) {\n		directLight = getSpotDirectLightIrradiance( spotLights[ i ], geometry );\n		dotNL = dot( geometry.normal, directLight.direction );\n		directLightColor_Diffuse = PI * directLight.color;\n		vLightFront += saturate( dotNL ) * directLightColor_Diffuse;\n		#ifdef DOUBLE_SIDED\n			vLightBack += saturate( -dotNL ) * directLightColor_Diffuse;\n		#endif\n	}\n#endif\n#if NUM_DIR_LIGHTS > 0\n	for ( int i = 0; i < NUM_DIR_LIGHTS; i ++ ) {\n		directLight = getDirectionalDirectLightIrradiance( directionalLights[ i ], geometry );\n		dotNL = dot( geometry.normal, directLight.direction );\n		directLightColor_Diffuse = PI * directLight.color;\n		vLightFront += saturate( dotNL ) * directLightColor_Diffuse;\n		#ifdef DOUBLE_SIDED\n			vLightBack += saturate( -dotNL ) * directLightColor_Diffuse;\n		#endif\n	}\n#endif\n#if NUM_HEMI_LIGHTS > 0\n	for ( int i = 0; i < NUM_HEMI_LIGHTS; i ++ ) {\n		vLightFront += getHemisphereLightIrradiance( hemisphereLights[ i ], geometry );\n		#ifdef DOUBLE_SIDED\n			vLightBack += getHemisphereLightIrradiance( hemisphereLights[ i ], backGeometry );\n		#endif\n	}\n#endif\n";
-
-// File:src/renderers/shaders/ShaderChunk/lights_pars.glsl
-
-THREE.ShaderChunk[ 'lights_pars' ] = "uniform vec3 ambientLightColor;\nvec3 getAmbientLightIrradiance( const in vec3 ambientLightColor ) {\n	vec3 irradiance = ambientLightColor;\n	#ifndef PHYSICALLY_CORRECT_LIGHTS\n		irradiance *= PI;\n	#endif\n	return irradiance;\n}\n#if NUM_DIR_LIGHTS > 0\n	struct DirectionalLight {\n		vec3 direction;\n		vec3 color;\n		int shadow;\n		float shadowBias;\n		float shadowRadius;\n		vec2 shadowMapSize;\n	};\n	uniform DirectionalLight directionalLights[ NUM_DIR_LIGHTS ];\n	IncidentLight getDirectionalDirectLightIrradiance( const in DirectionalLight directionalLight, const in GeometricContext geometry ) {\n		IncidentLight directLight;\n		directLight.color = directionalLight.color;\n		directLight.direction = directionalLight.direction;\n		directLight.visible = true;\n		return directLight;\n	}\n#endif\n#if NUM_POINT_LIGHTS > 0\n	struct PointLight {\n		vec3 position;\n		vec3 color;\n		float distance;\n		float decay;\n		int shadow;\n		float shadowBias;\n		float shadowRadius;\n		vec2 shadowMapSize;\n	};\n	uniform PointLight pointLights[ NUM_POINT_LIGHTS ];\n	IncidentLight getPointDirectLightIrradiance( const in PointLight pointLight, const in GeometricContext geometry ) {\n		IncidentLight directLight;\n		vec3 lVector = pointLight.position - geometry.position;\n		directLight.direction = normalize( lVector );\n		float lightDistance = length( lVector );\n		if ( testLightInRange( lightDistance, pointLight.distance ) ) {\n			directLight.color = pointLight.color;\n			directLight.color *= punctualLightIntensityToIrradianceFactor( lightDistance, pointLight.distance, pointLight.decay );\n			directLight.visible = true;\n		} else {\n			directLight.color = vec3( 0.0 );\n			directLight.visible = false;\n		}\n		return directLight;\n	}\n#endif\n#if NUM_SPOT_LIGHTS > 0\n	struct SpotLight {\n		vec3 position;\n		vec3 direction;\n		vec3 color;\n		float distance;\n		float decay;\n		float coneCos;\n		float penumbraCos;\n		int shadow;\n		float shadowBias;\n		float shadowRadius;\n		vec2 shadowMapSize;\n	};\n	uniform SpotLight spotLights[ NUM_SPOT_LIGHTS ];\n	IncidentLight getSpotDirectLightIrradiance( const in SpotLight spotLight, const in GeometricContext geometry ) {\n		IncidentLight directLight;\n		vec3 lVector = spotLight.position - geometry.position;\n		directLight.direction = normalize( lVector );\n		float lightDistance = length( lVector );\n		float angleCos = dot( directLight.direction, spotLight.direction );\n		if ( all( bvec2( angleCos > spotLight.coneCos, testLightInRange( lightDistance, spotLight.distance ) ) ) ) {\n			float spotEffect = smoothstep( spotLight.coneCos, spotLight.penumbraCos, angleCos );\n			directLight.color = spotLight.color;\n			directLight.color *= spotEffect * punctualLightIntensityToIrradianceFactor( lightDistance, spotLight.distance, spotLight.decay );\n			directLight.visible = true;\n		} else {\n			directLight.color = vec3( 0.0 );\n			directLight.visible = false;\n		}\n		return directLight;\n	}\n#endif\n#if NUM_HEMI_LIGHTS > 0\n	struct HemisphereLight {\n		vec3 direction;\n		vec3 skyColor;\n		vec3 groundColor;\n	};\n	uniform HemisphereLight hemisphereLights[ NUM_HEMI_LIGHTS ];\n	vec3 getHemisphereLightIrradiance( const in HemisphereLight hemiLight, const in GeometricContext geometry ) {\n		float dotNL = dot( geometry.normal, hemiLight.direction );\n		float hemiDiffuseWeight = 0.5 * dotNL + 0.5;\n		vec3 irradiance = mix( hemiLight.groundColor, hemiLight.skyColor, hemiDiffuseWeight );\n		#ifndef PHYSICALLY_CORRECT_LIGHTS\n			irradiance *= PI;\n		#endif\n		return irradiance;\n	}\n#endif\n#if defined( USE_ENVMAP ) && defined( STANDARD )\n	vec3 getLightProbeIndirectIrradiance( const in GeometricContext geometry, const in int maxMIPLevel ) {\n		#ifdef DOUBLE_SIDED\n			float flipNormal = ( float( gl_FrontFacing ) * 2.0 - 1.0 );\n		#else\n			float flipNormal = 1.0;\n		#endif\n		vec3 worldNormal = inverseTransformDirection( geometry.normal, viewMatrix );\n		#ifdef ENVMAP_TYPE_CUBE\n			vec3 queryVec = flipNormal * vec3( flipEnvMap * worldNormal.x, worldNormal.yz );\n			#ifdef TEXTURE_LOD_EXT\n				vec4 envMapColor = textureCubeLodEXT( envMap, queryVec, float( maxMIPLevel ) );\n			#else\n				vec4 envMapColor = textureCube( envMap, queryVec, float( maxMIPLevel ) );\n			#endif\n		#elif defined( ENVMAP_TYPE_CUBE_UV )\n			vec3 queryVec = flipNormal * vec3( flipEnvMap * worldNormal.x, worldNormal.yz );\n			vec4 envMapColor = textureCubeUV( queryVec, 1.0 );\n		#else\n			vec4 envMapColor = vec4( 0.0 );\n		#endif\n		envMapColor.rgb = envMapTexelToLinear( envMapColor ).rgb;\n		return PI * envMapColor.rgb * envMapIntensity;\n	}\n	float getSpecularMIPLevel( const in float blinnShininessExponent, const in int maxMIPLevel ) {\n		float maxMIPLevelScalar = float( maxMIPLevel );\n		float desiredMIPLevel = maxMIPLevelScalar - 0.79248 - 0.5 * log2( pow2( blinnShininessExponent ) + 1.0 );\n		return clamp( desiredMIPLevel, 0.0, maxMIPLevelScalar );\n	}\n	vec3 getLightProbeIndirectRadiance( const in GeometricContext geometry, const in float blinnShininessExponent, const in int maxMIPLevel ) {\n		#ifdef ENVMAP_MODE_REFLECTION\n			vec3 reflectVec = reflect( -geometry.viewDir, geometry.normal );\n		#else\n			vec3 reflectVec = refract( -geometry.viewDir, geometry.normal, refractionRatio );\n		#endif\n		#ifdef DOUBLE_SIDED\n			float flipNormal = ( float( gl_FrontFacing ) * 2.0 - 1.0 );\n		#else\n			float flipNormal = 1.0;\n		#endif\n		reflectVec = inverseTransformDirection( reflectVec, viewMatrix );\n		float specularMIPLevel = getSpecularMIPLevel( blinnShininessExponent, maxMIPLevel );\n		#ifdef ENVMAP_TYPE_CUBE\n			vec3 queryReflectVec = flipNormal * vec3( flipEnvMap * reflectVec.x, reflectVec.yz );\n			#ifdef TEXTURE_LOD_EXT\n				vec4 envMapColor = textureCubeLodEXT( envMap, queryReflectVec, specularMIPLevel );\n			#else\n				vec4 envMapColor = textureCube( envMap, queryReflectVec, specularMIPLevel );\n			#endif\n		#elif defined( ENVMAP_TYPE_CUBE_UV )\n			vec3 queryReflectVec = flipNormal * vec3( flipEnvMap * reflectVec.x, reflectVec.yz );\n			vec4 envMapColor = textureCubeUV(queryReflectVec, BlinnExponentToGGXRoughness(blinnShininessExponent));\n		#elif defined( ENVMAP_TYPE_EQUIREC )\n			vec2 sampleUV;\n			sampleUV.y = saturate( flipNormal * reflectVec.y * 0.5 + 0.5 );\n			sampleUV.x = atan( flipNormal * reflectVec.z, flipNormal * reflectVec.x ) * RECIPROCAL_PI2 + 0.5;\n			#ifdef TEXTURE_LOD_EXT\n				vec4 envMapColor = texture2DLodEXT( envMap, sampleUV, specularMIPLevel );\n			#else\n				vec4 envMapColor = texture2D( envMap, sampleUV, specularMIPLevel );\n			#endif\n		#elif defined( ENVMAP_TYPE_SPHERE )\n			vec3 reflectView = flipNormal * normalize((viewMatrix * vec4( reflectVec, 0.0 )).xyz + vec3(0.0,0.0,1.0));\n			#ifdef TEXTURE_LOD_EXT\n				vec4 envMapColor = texture2DLodEXT( envMap, reflectView.xy * 0.5 + 0.5, specularMIPLevel );\n			#else\n				vec4 envMapColor = texture2D( envMap, reflectView.xy * 0.5 + 0.5, specularMIPLevel );\n			#endif\n		#endif\n		envMapColor.rgb = envMapTexelToLinear( envMapColor ).rgb;\n		return envMapColor.rgb * envMapIntensity;\n	}\n#endif\n";
-=======
 THREE.ShaderChunk[ 'lights_lambert_vertex' ] = "vec3 diffuse = vec3( 1.0 );\nGeometricContext geometry;\ngeometry.position = mvPosition.xyz;\ngeometry.normal = normalize( transformedNormal );\ngeometry.viewDir = normalize( -mvPosition.xyz );\nGeometricContext backGeometry;\nbackGeometry.position = geometry.position;\nbackGeometry.normal = -geometry.normal;\nbackGeometry.viewDir = geometry.viewDir;\nvLightFront = vec3( 0.0 );\n#ifdef DOUBLE_SIDED\n	vLightBack = vec3( 0.0 );\n#endif\nIncidentLight directLight;\nfloat dotNL;\nvec3 directLightColor_Diffuse;\n#if NUM_POINT_LIGHTS > 0\n	for ( int i = 0; i < NUM_POINT_LIGHTS; i ++ ) {\n		getPointDirectLightIrradiance( pointLights[ i ], geometry, directLight );\n		dotNL = dot( geometry.normal, directLight.direction );\n		directLightColor_Diffuse = PI * directLight.color;\n		vLightFront += saturate( dotNL ) * directLightColor_Diffuse;\n		#ifdef DOUBLE_SIDED\n			vLightBack += saturate( -dotNL ) * directLightColor_Diffuse;\n		#endif\n	}\n#endif\n#if NUM_SPOT_LIGHTS > 0\n	for ( int i = 0; i < NUM_SPOT_LIGHTS; i ++ ) {\n		getSpotDirectLightIrradiance( spotLights[ i ], geometry, directLight );\n		dotNL = dot( geometry.normal, directLight.direction );\n		directLightColor_Diffuse = PI * directLight.color;\n		vLightFront += saturate( dotNL ) * directLightColor_Diffuse;\n		#ifdef DOUBLE_SIDED\n			vLightBack += saturate( -dotNL ) * directLightColor_Diffuse;\n		#endif\n	}\n#endif\n#if NUM_DIR_LIGHTS > 0\n	for ( int i = 0; i < NUM_DIR_LIGHTS; i ++ ) {\n		getDirectionalDirectLightIrradiance( directionalLights[ i ], geometry, directLight );\n		dotNL = dot( geometry.normal, directLight.direction );\n		directLightColor_Diffuse = PI * directLight.color;\n		vLightFront += saturate( dotNL ) * directLightColor_Diffuse;\n		#ifdef DOUBLE_SIDED\n			vLightBack += saturate( -dotNL ) * directLightColor_Diffuse;\n		#endif\n	}\n#endif\n#if NUM_HEMI_LIGHTS > 0\n	for ( int i = 0; i < NUM_HEMI_LIGHTS; i ++ ) {\n		vLightFront += getHemisphereLightIrradiance( hemisphereLights[ i ], geometry );\n		#ifdef DOUBLE_SIDED\n			vLightBack += getHemisphereLightIrradiance( hemisphereLights[ i ], backGeometry );\n		#endif\n	}\n#endif\n";
 
 // File:src/renderers/shaders/ShaderChunk/lights_pars.glsl
 
 THREE.ShaderChunk[ 'lights_pars' ] = "uniform vec3 ambientLightColor;\nvec3 getAmbientLightIrradiance( const in vec3 ambientLightColor ) {\n	vec3 irradiance = ambientLightColor;\n	#ifndef PHYSICALLY_CORRECT_LIGHTS\n		irradiance *= PI;\n	#endif\n	return irradiance;\n}\n#if NUM_DIR_LIGHTS > 0\n	struct DirectionalLight {\n		vec3 direction;\n		vec3 color;\n		int shadow;\n		float shadowBias;\n		float shadowRadius;\n		vec2 shadowMapSize;\n	};\n	uniform DirectionalLight directionalLights[ NUM_DIR_LIGHTS ];\n	void getDirectionalDirectLightIrradiance( const in DirectionalLight directionalLight, const in GeometricContext geometry, out IncidentLight directLight ) {\n		directLight.color = directionalLight.color;\n		directLight.direction = directionalLight.direction;\n		directLight.visible = true;\n	}\n#endif\n#if NUM_POINT_LIGHTS > 0\n	struct PointLight {\n		vec3 position;\n		vec3 color;\n		float distance;\n		float decay;\n		int shadow;\n		float shadowBias;\n		float shadowRadius;\n		vec2 shadowMapSize;\n	};\n	uniform PointLight pointLights[ NUM_POINT_LIGHTS ];\n	void getPointDirectLightIrradiance( const in PointLight pointLight, const in GeometricContext geometry, out IncidentLight directLight ) {\n		vec3 lVector = pointLight.position - geometry.position;\n		directLight.direction = normalize( lVector );\n		float lightDistance = length( lVector );\n		if ( testLightInRange( lightDistance, pointLight.distance ) ) {\n			directLight.color = pointLight.color;\n			directLight.color *= punctualLightIntensityToIrradianceFactor( lightDistance, pointLight.distance, pointLight.decay );\n			directLight.visible = true;\n		} else {\n			directLight.color = vec3( 0.0 );\n			directLight.visible = false;\n		}\n	}\n#endif\n#if NUM_SPOT_LIGHTS > 0\n	struct SpotLight {\n		vec3 position;\n		vec3 direction;\n		vec3 color;\n		float distance;\n		float decay;\n		float coneCos;\n		float penumbraCos;\n		int shadow;\n		float shadowBias;\n		float shadowRadius;\n		vec2 shadowMapSize;\n	};\n	uniform SpotLight spotLights[ NUM_SPOT_LIGHTS ];\n	void getSpotDirectLightIrradiance( const in SpotLight spotLight, const in GeometricContext geometry, out IncidentLight directLight  ) {\n		vec3 lVector = spotLight.position - geometry.position;\n		directLight.direction = normalize( lVector );\n		float lightDistance = length( lVector );\n		float angleCos = dot( directLight.direction, spotLight.direction );\n		if ( all( bvec2( angleCos > spotLight.coneCos, testLightInRange( lightDistance, spotLight.distance ) ) ) ) {\n			float spotEffect = smoothstep( spotLight.coneCos, spotLight.penumbraCos, angleCos );\n			directLight.color = spotLight.color;\n			directLight.color *= spotEffect * punctualLightIntensityToIrradianceFactor( lightDistance, spotLight.distance, spotLight.decay );\n			directLight.visible = true;\n		} else {\n			directLight.color = vec3( 0.0 );\n			directLight.visible = false;\n		}\n	}\n#endif\n#if NUM_HEMI_LIGHTS > 0\n	struct HemisphereLight {\n		vec3 direction;\n		vec3 skyColor;\n		vec3 groundColor;\n	};\n	uniform HemisphereLight hemisphereLights[ NUM_HEMI_LIGHTS ];\n	vec3 getHemisphereLightIrradiance( const in HemisphereLight hemiLight, const in GeometricContext geometry ) {\n		float dotNL = dot( geometry.normal, hemiLight.direction );\n		float hemiDiffuseWeight = 0.5 * dotNL + 0.5;\n		vec3 irradiance = mix( hemiLight.groundColor, hemiLight.skyColor, hemiDiffuseWeight );\n		#ifndef PHYSICALLY_CORRECT_LIGHTS\n			irradiance *= PI;\n		#endif\n		return irradiance;\n	}\n#endif\n#if defined( USE_ENVMAP ) && defined( PHYSICAL )\n	vec3 getLightProbeIndirectIrradiance( const in GeometricContext geometry, const in int maxMIPLevel ) {\n		#ifdef DOUBLE_SIDED\n			float flipNormal = ( float( gl_FrontFacing ) * 2.0 - 1.0 );\n		#else\n			float flipNormal = 1.0;\n		#endif\n		vec3 worldNormal = inverseTransformDirection( geometry.normal, viewMatrix );\n		#ifdef ENVMAP_TYPE_CUBE\n			vec3 queryVec = flipNormal * vec3( flipEnvMap * worldNormal.x, worldNormal.yz );\n			#ifdef TEXTURE_LOD_EXT\n				vec4 envMapColor = textureCubeLodEXT( envMap, queryVec, float( maxMIPLevel ) );\n			#else\n				vec4 envMapColor = textureCube( envMap, queryVec, float( maxMIPLevel ) );\n			#endif\n			envMapColor.rgb = envMapTexelToLinear( envMapColor ).rgb;\n		#elif defined( ENVMAP_TYPE_CUBE_UV )\n			vec3 queryVec = flipNormal * vec3( flipEnvMap * worldNormal.x, worldNormal.yz );\n			vec4 envMapColor = textureCubeUV( queryVec, 1.0 );\n		#else\n			vec4 envMapColor = vec4( 0.0 );\n		#endif\n		return PI * envMapColor.rgb * envMapIntensity;\n	}\n	float getSpecularMIPLevel( const in float blinnShininessExponent, const in int maxMIPLevel ) {\n		float maxMIPLevelScalar = float( maxMIPLevel );\n		float desiredMIPLevel = maxMIPLevelScalar - 0.79248 - 0.5 * log2( pow2( blinnShininessExponent ) + 1.0 );\n		return clamp( desiredMIPLevel, 0.0, maxMIPLevelScalar );\n	}\n	vec3 getLightProbeIndirectRadiance( const in GeometricContext geometry, const in float blinnShininessExponent, const in int maxMIPLevel ) {\n		#ifdef ENVMAP_MODE_REFLECTION\n			vec3 reflectVec = reflect( -geometry.viewDir, geometry.normal );\n		#else\n			vec3 reflectVec = refract( -geometry.viewDir, geometry.normal, refractionRatio );\n		#endif\n		#ifdef DOUBLE_SIDED\n			float flipNormal = ( float( gl_FrontFacing ) * 2.0 - 1.0 );\n		#else\n			float flipNormal = 1.0;\n		#endif\n		reflectVec = inverseTransformDirection( reflectVec, viewMatrix );\n		float specularMIPLevel = getSpecularMIPLevel( blinnShininessExponent, maxMIPLevel );\n		#ifdef ENVMAP_TYPE_CUBE\n			vec3 queryReflectVec = flipNormal * vec3( flipEnvMap * reflectVec.x, reflectVec.yz );\n			#ifdef TEXTURE_LOD_EXT\n				vec4 envMapColor = textureCubeLodEXT( envMap, queryReflectVec, specularMIPLevel );\n			#else\n				vec4 envMapColor = textureCube( envMap, queryReflectVec, specularMIPLevel );\n			#endif\n			envMapColor.rgb = envMapTexelToLinear( envMapColor ).rgb;\n		#elif defined( ENVMAP_TYPE_CUBE_UV )\n			vec3 queryReflectVec = flipNormal * vec3( flipEnvMap * reflectVec.x, reflectVec.yz );\n			vec4 envMapColor = textureCubeUV(queryReflectVec, BlinnExponentToGGXRoughness(blinnShininessExponent));\n		#elif defined( ENVMAP_TYPE_EQUIREC )\n			vec2 sampleUV;\n			sampleUV.y = saturate( flipNormal * reflectVec.y * 0.5 + 0.5 );\n			sampleUV.x = atan( flipNormal * reflectVec.z, flipNormal * reflectVec.x ) * RECIPROCAL_PI2 + 0.5;\n			#ifdef TEXTURE_LOD_EXT\n				vec4 envMapColor = texture2DLodEXT( envMap, sampleUV, specularMIPLevel );\n			#else\n				vec4 envMapColor = texture2D( envMap, sampleUV, specularMIPLevel );\n			#endif\n			envMapColor.rgb = envMapTexelToLinear( envMapColor ).rgb;\n		#elif defined( ENVMAP_TYPE_SPHERE )\n			vec3 reflectView = flipNormal * normalize((viewMatrix * vec4( reflectVec, 0.0 )).xyz + vec3(0.0,0.0,1.0));\n			#ifdef TEXTURE_LOD_EXT\n				vec4 envMapColor = texture2DLodEXT( envMap, reflectView.xy * 0.5 + 0.5, specularMIPLevel );\n			#else\n				vec4 envMapColor = texture2D( envMap, reflectView.xy * 0.5 + 0.5, specularMIPLevel );\n			#endif\n			envMapColor.rgb = envMapTexelToLinear( envMapColor ).rgb;\n		#endif\n		return envMapColor.rgb * envMapIntensity;\n	}\n#endif\n";
->>>>>>> upstream/master
 
 // File:src/renderers/shaders/ShaderChunk/lights_phong_fragment.glsl
 
@@ -32486,13 +31647,7 @@ THREE.ShaderChunk[ 'lights_phong_fragment' ] = "BlinnPhongMaterial material;\nma
 
 // File:src/renderers/shaders/ShaderChunk/lights_phong_pars_fragment.glsl
 
-<<<<<<< HEAD
-THREE.ShaderChunk[ 'lights_phong_pars_fragment' ] = "#ifdef USE_ENVMAP\n	varying vec3 vWorldPosition;\n#endif\nvarying vec3 vViewPosition;\n#ifndef FLAT_SHADED\n	varying vec3 vNormal;\n#endif\nstruct BlinnPhongMaterial {\n	vec3	diffuseColor;\n	vec3	specularColor;\n	float	specularShininess;\n	float	specularStrength;\n};\nvoid RE_Direct_BlinnPhong( const in IncidentLight directLight, const in GeometricContext geometry, const in BlinnPhongMaterial material, inout ReflectedLight reflectedLight ) {\n	float dotNL = saturate( dot( geometry.normal, directLight.direction ) );\n	vec3 irradiance = dotNL * directLight.color;\n	#ifndef PHYSICALLY_CORRECT_LIGHTS\n		irradiance *= PI;\n	#endif\n	reflectedLight.directDiffuse += irradiance * BRDF_Diffuse_Lambert( material.diffuseColor );\n	reflectedLight.directSpecular += irradiance * BRDF_Specular_BlinnPhong( directLight, geometry, material.specularColor, material.specularShininess ) * material.specularStrength;\n}\nvoid RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in GeometricContext geometry, const in BlinnPhongMaterial material, inout ReflectedLight reflectedLight ) {\n	reflectedLight.indirectDiffuse += irradiance * BRDF_Diffuse_Lambert( material.diffuseColor );\n}\n#define RE_Direct				RE_Direct_BlinnPhong\n#define RE_IndirectDiffuse		RE_IndirectDiffuse_BlinnPhong\n#define Material_LightProbeLOD( material )	(0)\n";
-
-// File:src/renderers/shaders/ShaderChunk/lights_phong_pars_vertex.glsl
-=======
 THREE.ShaderChunk[ 'lights_phong_pars_fragment' ] = "varying vec3 vViewPosition;\n#ifndef FLAT_SHADED\n	varying vec3 vNormal;\n#endif\nstruct BlinnPhongMaterial {\n	vec3	diffuseColor;\n	vec3	specularColor;\n	float	specularShininess;\n	float	specularStrength;\n};\nvoid RE_Direct_BlinnPhong( const in IncidentLight directLight, const in GeometricContext geometry, const in BlinnPhongMaterial material, inout ReflectedLight reflectedLight ) {\n	float dotNL = saturate( dot( geometry.normal, directLight.direction ) );\n	vec3 irradiance = dotNL * directLight.color;\n	#ifndef PHYSICALLY_CORRECT_LIGHTS\n		irradiance *= PI;\n	#endif\n	reflectedLight.directDiffuse += irradiance * BRDF_Diffuse_Lambert( material.diffuseColor );\n	reflectedLight.directSpecular += irradiance * BRDF_Specular_BlinnPhong( directLight, geometry, material.specularColor, material.specularShininess ) * material.specularStrength;\n}\nvoid RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in GeometricContext geometry, const in BlinnPhongMaterial material, inout ReflectedLight reflectedLight ) {\n	reflectedLight.indirectDiffuse += irradiance * BRDF_Diffuse_Lambert( material.diffuseColor );\n}\n#define RE_Direct				RE_Direct_BlinnPhong\n#define RE_IndirectDiffuse		RE_IndirectDiffuse_BlinnPhong\n#define Material_LightProbeLOD( material )	(0)\n";
->>>>>>> upstream/master
 
 // File:src/renderers/shaders/ShaderChunk/lights_physical_fragment.glsl
 
@@ -32500,25 +31655,11 @@ THREE.ShaderChunk[ 'lights_physical_fragment' ] = "PhysicalMaterial material;\nm
 
 // File:src/renderers/shaders/ShaderChunk/lights_physical_pars_fragment.glsl
 
-<<<<<<< HEAD
-// File:src/renderers/shaders/ShaderChunk/lights_standard_fragment.glsl
-
-THREE.ShaderChunk[ 'lights_standard_fragment' ] = "StandardMaterial material;\nmaterial.diffuseColor = diffuseColor.rgb * ( 1.0 - metalnessFactor );\nmaterial.specularRoughness = clamp( roughnessFactor, 0.04, 1.0 );\nmaterial.specularColor = mix( vec3( 0.04 ), diffuseColor.rgb, metalnessFactor );\n";
-
-// File:src/renderers/shaders/ShaderChunk/lights_standard_pars_fragment.glsl
-
-THREE.ShaderChunk[ 'lights_standard_pars_fragment' ] = "struct StandardMaterial {\n	vec3	diffuseColor;\n	float	specularRoughness;\n	vec3	specularColor;\n};\nvoid RE_Direct_Standard( const in IncidentLight directLight, const in GeometricContext geometry, const in StandardMaterial material, inout ReflectedLight reflectedLight ) {\n	float dotNL = saturate( dot( geometry.normal, directLight.direction ) );\n	vec3 irradiance = dotNL * directLight.color;\n	#ifndef PHYSICALLY_CORRECT_LIGHTS\n		irradiance *= PI;\n	#endif\n	reflectedLight.directDiffuse += irradiance * BRDF_Diffuse_Lambert( material.diffuseColor );\n	reflectedLight.directSpecular += irradiance * BRDF_Specular_GGX( directLight, geometry, material.specularColor, material.specularRoughness );\n}\nvoid RE_IndirectDiffuse_Standard( const in vec3 irradiance, const in GeometricContext geometry, const in StandardMaterial material, inout ReflectedLight reflectedLight ) {\n	reflectedLight.indirectDiffuse += irradiance * BRDF_Diffuse_Lambert( material.diffuseColor );\n}\nvoid RE_IndirectSpecular_Standard( const in vec3 radiance, const in GeometricContext geometry, const in StandardMaterial material, inout ReflectedLight reflectedLight ) {\n	reflectedLight.indirectSpecular += radiance * BRDF_Specular_GGX_Environment( geometry, material.specularColor, material.specularRoughness );\n}\n#define RE_Direct				RE_Direct_Standard\n#define RE_IndirectDiffuse		RE_IndirectDiffuse_Standard\n#define RE_IndirectSpecular		RE_IndirectSpecular_Standard\n#define Material_BlinnShininessExponent( material )   GGXRoughnessToBlinnExponent( material.specularRoughness )\nfloat computeSpecularOcclusion( const in float dotNV, const in float ambientOcclusion, const in float roughness ) {\n	return saturate( pow( dotNV + ambientOcclusion, exp2( - 16.0 * roughness - 1.0 ) ) - 1.0 + ambientOcclusion );\n}\n";
-
-// File:src/renderers/shaders/ShaderChunk/lights_template.glsl
-
-THREE.ShaderChunk[ 'lights_template' ] = "\nGeometricContext geometry;\ngeometry.position = - vViewPosition;\ngeometry.normal = normal;\ngeometry.viewDir = normalize( vViewPosition );\nIncidentLight directLight;\n#if ( NUM_POINT_LIGHTS > 0 ) && defined( RE_Direct )\n	PointLight pointLight;\n	for ( int i = 0; i < NUM_POINT_LIGHTS; i ++ ) {\n		pointLight = pointLights[ i ];\n		directLight = getPointDirectLightIrradiance( pointLight, geometry );\n		#ifdef USE_SHADOWMAP\n		directLight.color *= all( bvec2( pointLight.shadow, directLight.visible ) ) ? getPointShadow( pointShadowMap[ i ], pointLight.shadowMapSize, pointLight.shadowBias, pointLight.shadowRadius, vPointShadowCoord[ i ] ) : 1.0;\n		#endif\n		RE_Direct( directLight, geometry, material, reflectedLight );\n	}\n#endif\n#if ( NUM_SPOT_LIGHTS > 0 ) && defined( RE_Direct )\n	SpotLight spotLight;\n	for ( int i = 0; i < NUM_SPOT_LIGHTS; i ++ ) {\n		spotLight = spotLights[ i ];\n		directLight = getSpotDirectLightIrradiance( spotLight, geometry );\n		#ifdef USE_SHADOWMAP\n		directLight.color *= all( bvec2( spotLight.shadow, directLight.visible ) ) ? getShadow( spotShadowMap[ i ], spotLight.shadowMapSize, spotLight.shadowBias, spotLight.shadowRadius, vSpotShadowCoord[ i ] ) : 1.0;\n		#endif\n		RE_Direct( directLight, geometry, material, reflectedLight );\n	}\n#endif\n#if ( NUM_DIR_LIGHTS > 0 ) && defined( RE_Direct )\n	DirectionalLight directionalLight;\n	for ( int i = 0; i < NUM_DIR_LIGHTS; i ++ ) {\n		directionalLight = directionalLights[ i ];\n		directLight = getDirectionalDirectLightIrradiance( directionalLight, geometry );\n		#ifdef USE_SHADOWMAP\n		directLight.color *= all( bvec2( directionalLight.shadow, directLight.visible ) ) ? getShadow( directionalShadowMap[ i ], directionalLight.shadowMapSize, directionalLight.shadowBias, directionalLight.shadowRadius, vDirectionalShadowCoord[ i ] ) : 1.0;\n		#endif\n		RE_Direct( directLight, geometry, material, reflectedLight );\n	}\n#endif\n#if defined( RE_IndirectDiffuse )\n	vec3 irradiance = getAmbientLightIrradiance( ambientLightColor );\n	#ifdef USE_LIGHTMAP\n		vec3 lightMapIrradiance = texture2D( lightMap, vUv2 ).xyz * lightMapIntensity;\n		#ifndef PHYSICALLY_CORRECT_LIGHTS\n			lightMapIrradiance *= PI;\n		#endif\n		irradiance += lightMapIrradiance;\n	#endif\n	#if ( NUM_HEMI_LIGHTS > 0 )\n		for ( int i = 0; i < NUM_HEMI_LIGHTS; i ++ ) {\n			irradiance += getHemisphereLightIrradiance( hemisphereLights[ i ], geometry );\n		}\n	#endif\n	#if defined( USE_ENVMAP ) && defined( STANDARD ) && defined( ENVMAP_TYPE_CUBE_UV )\n	 	irradiance += getLightProbeIndirectIrradiance( geometry, 8 );\n	#endif\n	RE_IndirectDiffuse( irradiance, geometry, material, reflectedLight );\n#endif\n#if defined( USE_ENVMAP ) && defined( RE_IndirectSpecular )\n	vec3 radiance = getLightProbeIndirectRadiance( geometry, Material_BlinnShininessExponent( material ), 8 );\n	RE_IndirectSpecular( radiance, geometry, material, reflectedLight );\n#endif\n";
-=======
 THREE.ShaderChunk[ 'lights_physical_pars_fragment' ] = "struct PhysicalMaterial {\n	vec3	diffuseColor;\n	float	specularRoughness;\n	vec3	specularColor;\n	#ifndef STANDARD\n	#endif\n};\nvoid RE_Direct_Physical( const in IncidentLight directLight, const in GeometricContext geometry, const in PhysicalMaterial material, inout ReflectedLight reflectedLight ) {\n	float dotNL = saturate( dot( geometry.normal, directLight.direction ) );\n	vec3 irradiance = dotNL * directLight.color;\n	#ifndef PHYSICALLY_CORRECT_LIGHTS\n		irradiance *= PI;\n	#endif\n	reflectedLight.directDiffuse += irradiance * BRDF_Diffuse_Lambert( material.diffuseColor );\n	reflectedLight.directSpecular += irradiance * BRDF_Specular_GGX( directLight, geometry, material.specularColor, material.specularRoughness );\n}\nvoid RE_IndirectDiffuse_Physical( const in vec3 irradiance, const in GeometricContext geometry, const in PhysicalMaterial material, inout ReflectedLight reflectedLight ) {\n	reflectedLight.indirectDiffuse += irradiance * BRDF_Diffuse_Lambert( material.diffuseColor );\n}\nvoid RE_IndirectSpecular_Physical( const in vec3 radiance, const in GeometricContext geometry, const in PhysicalMaterial material, inout ReflectedLight reflectedLight ) {\n	reflectedLight.indirectSpecular += radiance * BRDF_Specular_GGX_Environment( geometry, material.specularColor, material.specularRoughness );\n}\n#define RE_Direct				RE_Direct_Physical\n#define RE_IndirectDiffuse		RE_IndirectDiffuse_Physical\n#define RE_IndirectSpecular		RE_IndirectSpecular_Physical\n#define Material_BlinnShininessExponent( material )   GGXRoughnessToBlinnExponent( material.specularRoughness )\nfloat computeSpecularOcclusion( const in float dotNV, const in float ambientOcclusion, const in float roughness ) {\n	return saturate( pow( dotNV + ambientOcclusion, exp2( - 16.0 * roughness - 1.0 ) ) - 1.0 + ambientOcclusion );\n}\n";
 
 // File:src/renderers/shaders/ShaderChunk/lights_template.glsl
 
 THREE.ShaderChunk[ 'lights_template' ] = "\nGeometricContext geometry;\ngeometry.position = - vViewPosition;\ngeometry.normal = normal;\ngeometry.viewDir = normalize( vViewPosition );\nIncidentLight directLight;\n#if ( NUM_POINT_LIGHTS > 0 ) && defined( RE_Direct )\n	PointLight pointLight;\n	for ( int i = 0; i < NUM_POINT_LIGHTS; i ++ ) {\n		pointLight = pointLights[ i ];\n		getPointDirectLightIrradiance( pointLight, geometry, directLight );\n		#ifdef USE_SHADOWMAP\n		directLight.color *= all( bvec2( pointLight.shadow, directLight.visible ) ) ? getPointShadow( pointShadowMap[ i ], pointLight.shadowMapSize, pointLight.shadowBias, pointLight.shadowRadius, vPointShadowCoord[ i ] ) : 1.0;\n		#endif\n		RE_Direct( directLight, geometry, material, reflectedLight );\n	}\n#endif\n#if ( NUM_SPOT_LIGHTS > 0 ) && defined( RE_Direct )\n	SpotLight spotLight;\n	for ( int i = 0; i < NUM_SPOT_LIGHTS; i ++ ) {\n		spotLight = spotLights[ i ];\n		getSpotDirectLightIrradiance( spotLight, geometry, directLight );\n		#ifdef USE_SHADOWMAP\n		directLight.color *= all( bvec2( spotLight.shadow, directLight.visible ) ) ? getShadow( spotShadowMap[ i ], spotLight.shadowMapSize, spotLight.shadowBias, spotLight.shadowRadius, vSpotShadowCoord[ i ] ) : 1.0;\n		#endif\n		RE_Direct( directLight, geometry, material, reflectedLight );\n	}\n#endif\n#if ( NUM_DIR_LIGHTS > 0 ) && defined( RE_Direct )\n	DirectionalLight directionalLight;\n	for ( int i = 0; i < NUM_DIR_LIGHTS; i ++ ) {\n		directionalLight = directionalLights[ i ];\n		getDirectionalDirectLightIrradiance( directionalLight, geometry, directLight );\n		#ifdef USE_SHADOWMAP\n		directLight.color *= all( bvec2( directionalLight.shadow, directLight.visible ) ) ? getShadow( directionalShadowMap[ i ], directionalLight.shadowMapSize, directionalLight.shadowBias, directionalLight.shadowRadius, vDirectionalShadowCoord[ i ] ) : 1.0;\n		#endif\n		RE_Direct( directLight, geometry, material, reflectedLight );\n	}\n#endif\n#if defined( RE_IndirectDiffuse )\n	vec3 irradiance = getAmbientLightIrradiance( ambientLightColor );\n	#ifdef USE_LIGHTMAP\n		vec3 lightMapIrradiance = texture2D( lightMap, vUv2 ).xyz * lightMapIntensity;\n		#ifndef PHYSICALLY_CORRECT_LIGHTS\n			lightMapIrradiance *= PI;\n		#endif\n		irradiance += lightMapIrradiance;\n	#endif\n	#if ( NUM_HEMI_LIGHTS > 0 )\n		for ( int i = 0; i < NUM_HEMI_LIGHTS; i ++ ) {\n			irradiance += getHemisphereLightIrradiance( hemisphereLights[ i ], geometry );\n		}\n	#endif\n	#if defined( USE_ENVMAP ) && defined( PHYSICAL ) && defined( ENVMAP_TYPE_CUBE_UV )\n	 	irradiance += getLightProbeIndirectIrradiance( geometry, 8 );\n	#endif\n	RE_IndirectDiffuse( irradiance, geometry, material, reflectedLight );\n#endif\n#if defined( USE_ENVMAP ) && defined( RE_IndirectSpecular )\n	vec3 radiance = getLightProbeIndirectRadiance( geometry, Material_BlinnShininessExponent( material ), 8 );\n	RE_IndirectSpecular( radiance, geometry, material, reflectedLight );\n#endif\n";
->>>>>>> upstream/master
 
 // File:src/renderers/shaders/ShaderChunk/logdepthbuf_fragment.glsl
 
@@ -32580,13 +31721,10 @@ THREE.ShaderChunk[ 'normal_fragment' ] = "#ifdef FLAT_SHADED\n	vec3 fdx = vec3( 
 
 THREE.ShaderChunk[ 'normalmap_pars_fragment' ] = "#ifdef USE_NORMALMAP\n	uniform sampler2D normalMap;\n	uniform vec2 normalScale;\n	vec3 perturbNormal2Arb( vec3 eye_pos, vec3 surf_norm ) {\n		vec3 q0 = dFdx( eye_pos.xyz );\n		vec3 q1 = dFdy( eye_pos.xyz );\n		vec2 st0 = dFdx( vUv.st );\n		vec2 st1 = dFdy( vUv.st );\n		vec3 S = normalize( q0 * st1.t - q1 * st0.t );\n		vec3 T = normalize( -q0 * st1.s + q1 * st0.s );\n		vec3 N = normalize( surf_norm );\n		vec3 mapN = texture2D( normalMap, vUv ).xyz * 2.0 - 1.0;\n		mapN.xy = normalScale * mapN.xy;\n		mat3 tsn = mat3( S, T, N );\n		return normalize( tsn * mapN );\n	}\n#endif\n";
 
-<<<<<<< HEAD
-=======
 // File:src/renderers/shaders/ShaderChunk/packing.glsl
 
 THREE.ShaderChunk[ 'packing' ] = "vec3 packNormalToRGB( const in vec3 normal ) {\n  return normalize( normal ) * 0.5 + 0.5;\n}\nvec3 unpackRGBToNormal( const in vec3 rgb ) {\n  return 1.0 - 2.0 * rgb.xyz;\n}\nvec4 packDepthToRGBA( const in float value ) {\n	const vec4 bit_shift = vec4( 256.0 * 256.0 * 256.0, 256.0 * 256.0, 256.0, 1.0 );\n	const vec4 bit_mask = vec4( 0.0, 1.0 / 256.0, 1.0 / 256.0, 1.0 / 256.0 );\n	vec4 res = mod( value * bit_shift * vec4( 255 ), vec4( 256 ) ) / vec4( 255 );\n	res -= res.xxyz * bit_mask;\n	return res;\n}\nfloat unpackRGBAToDepth( const in vec4 rgba ) {\n	const vec4 bitSh = vec4( 1.0 / ( 256.0 * 256.0 * 256.0 ), 1.0 / ( 256.0 * 256.0 ), 1.0 / 256.0, 1.0 );\n	return dot( rgba, bitSh );\n}\nfloat viewZToOrthoDepth( const in float viewZ, const in float near, const in float far ) {\n  return ( viewZ + near ) / ( near - far );\n}\nfloat OrthoDepthToViewZ( const in float linearClipZ, const in float near, const in float far ) {\n  return linearClipZ * ( near - far ) - near;\n}\nfloat viewZToPerspectiveDepth( const in float viewZ, const in float near, const in float far ) {\n  return (( near + viewZ ) * far ) / (( far - near ) * viewZ );\n}\nfloat perspectiveDepthToViewZ( const in float invClipZ, const in float near, const in float far ) {\n  return ( near * far ) / ( ( far - near ) * invClipZ - far );\n}\n";
 
->>>>>>> upstream/master
 // File:src/renderers/shaders/ShaderChunk/premultiplied_alpha_fragment.glsl
 
 THREE.ShaderChunk[ 'premultiplied_alpha_fragment' ] = "#ifdef PREMULTIPLIED_ALPHA\n	gl_FragColor.rgb *= gl_FragColor.a;\n#endif\n";
@@ -32605,11 +31743,7 @@ THREE.ShaderChunk[ 'roughnessmap_pars_fragment' ] = "#ifdef USE_ROUGHNESSMAP\n	u
 
 // File:src/renderers/shaders/ShaderChunk/shadowmap_pars_fragment.glsl
 
-<<<<<<< HEAD
-THREE.ShaderChunk[ 'shadowmap_pars_fragment' ] = "#ifdef USE_SHADOWMAP\n	#if NUM_DIR_LIGHTS > 0\n		uniform sampler2D directionalShadowMap[ NUM_DIR_LIGHTS ];\n		varying vec4 vDirectionalShadowCoord[ NUM_DIR_LIGHTS ];\n	#endif\n	#if NUM_SPOT_LIGHTS > 0\n		uniform sampler2D spotShadowMap[ NUM_SPOT_LIGHTS ];\n		varying vec4 vSpotShadowCoord[ NUM_SPOT_LIGHTS ];\n	#endif\n	#if NUM_POINT_LIGHTS > 0\n		uniform sampler2D pointShadowMap[ NUM_POINT_LIGHTS ];\n		varying vec4 vPointShadowCoord[ NUM_POINT_LIGHTS ];\n	#endif\n	float unpackDepth( const in vec4 rgba_depth ) {\n		const vec4 bit_shift = vec4( 1.0 / ( 256.0 * 256.0 * 256.0 ), 1.0 / ( 256.0 * 256.0 ), 1.0 / 256.0, 1.0 );\n		return dot( rgba_depth, bit_shift );\n	}\n	float texture2DCompare( sampler2D depths, vec2 uv, float compare ) {\n		return step( compare, unpackDepth( texture2D( depths, uv ) ) );\n	}\n	float texture2DShadowLerp( sampler2D depths, vec2 size, vec2 uv, float compare ) {\n		const vec2 offset = vec2( 0.0, 1.0 );\n		vec2 texelSize = vec2( 1.0 ) / size;\n		vec2 centroidUV = floor( uv * size + 0.5 ) / size;\n		float lb = texture2DCompare( depths, centroidUV + texelSize * offset.xx, compare );\n		float lt = texture2DCompare( depths, centroidUV + texelSize * offset.xy, compare );\n		float rb = texture2DCompare( depths, centroidUV + texelSize * offset.yx, compare );\n		float rt = texture2DCompare( depths, centroidUV + texelSize * offset.yy, compare );\n		vec2 f = fract( uv * size + 0.5 );\n		float a = mix( lb, lt, f.y );\n		float b = mix( rb, rt, f.y );\n		float c = mix( a, b, f.x );\n		return c;\n	}\n	float getShadow( sampler2D shadowMap, vec2 shadowMapSize, float shadowBias, float shadowRadius, vec4 shadowCoord ) {\n		shadowCoord.xyz /= shadowCoord.w;\n		shadowCoord.z += shadowBias;\n		bvec4 inFrustumVec = bvec4 ( shadowCoord.x >= 0.0, shadowCoord.x <= 1.0, shadowCoord.y >= 0.0, shadowCoord.y <= 1.0 );\n		bool inFrustum = all( inFrustumVec );\n		bvec2 frustumTestVec = bvec2( inFrustum, shadowCoord.z <= 1.0 );\n		bool frustumTest = all( frustumTestVec );\n		if ( frustumTest ) {\n		#if defined( SHADOWMAP_TYPE_PCF )\n			vec2 texelSize = vec2( 1.0 ) / shadowMapSize;\n			float dx0 = - texelSize.x * shadowRadius;\n			float dy0 = - texelSize.y * shadowRadius;\n			float dx1 = + texelSize.x * shadowRadius;\n			float dy1 = + texelSize.y * shadowRadius;\n			return (\n				texture2DCompare( shadowMap, shadowCoord.xy + vec2( dx0, dy0 ), shadowCoord.z ) +\n				texture2DCompare( shadowMap, shadowCoord.xy + vec2( 0.0, dy0 ), shadowCoord.z ) +\n				texture2DCompare( shadowMap, shadowCoord.xy + vec2( dx1, dy0 ), shadowCoord.z ) +\n				texture2DCompare( shadowMap, shadowCoord.xy + vec2( dx0, 0.0 ), shadowCoord.z ) +\n				texture2DCompare( shadowMap, shadowCoord.xy, shadowCoord.z ) +\n				texture2DCompare( shadowMap, shadowCoord.xy + vec2( dx1, 0.0 ), shadowCoord.z ) +\n				texture2DCompare( shadowMap, shadowCoord.xy + vec2( dx0, dy1 ), shadowCoord.z ) +\n				texture2DCompare( shadowMap, shadowCoord.xy + vec2( 0.0, dy1 ), shadowCoord.z ) +\n				texture2DCompare( shadowMap, shadowCoord.xy + vec2( dx1, dy1 ), shadowCoord.z )\n			) * ( 1.0 / 9.0 );\n		#elif defined( SHADOWMAP_TYPE_PCF_SOFT )\n			vec2 texelSize = vec2( 1.0 ) / shadowMapSize;\n			float dx0 = - texelSize.x * shadowRadius;\n			float dy0 = - texelSize.y * shadowRadius;\n			float dx1 = + texelSize.x * shadowRadius;\n			float dy1 = + texelSize.y * shadowRadius;\n			return (\n				texture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy + vec2( dx0, dy0 ), shadowCoord.z ) +\n				texture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy + vec2( 0.0, dy0 ), shadowCoord.z ) +\n				texture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy + vec2( dx1, dy0 ), shadowCoord.z ) +\n				texture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy + vec2( dx0, 0.0 ), shadowCoord.z ) +\n				texture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy, shadowCoord.z ) +\n				texture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy + vec2( dx1, 0.0 ), shadowCoord.z ) +\n				texture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy + vec2( dx0, dy1 ), shadowCoord.z ) +\n				texture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy + vec2( 0.0, dy1 ), shadowCoord.z ) +\n				texture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy + vec2( dx1, dy1 ), shadowCoord.z )\n			) * ( 1.0 / 9.0 );\n		#else\n			return texture2DCompare( shadowMap, shadowCoord.xy, shadowCoord.z );\n		#endif\n		}\n		return 1.0;\n	}\n	vec2 cubeToUV( vec3 v, float texelSizeY ) {\n		vec3 absV = abs( v );\n		float scaleToCube = 1.0 / max( absV.x, max( absV.y, absV.z ) );\n		absV *= scaleToCube;\n		v *= scaleToCube * ( 1.0 - 2.0 * texelSizeY );\n		vec2 planar = v.xy;\n		float almostATexel = 1.5 * texelSizeY;\n		float almostOne = 1.0 - almostATexel;\n		if ( absV.z >= almostOne ) {\n			if ( v.z > 0.0 )\n				planar.x = 4.0 - v.x;\n		} else if ( absV.x >= almostOne ) {\n			float signX = sign( v.x );\n			planar.x = v.z * signX + 2.0 * signX;\n		} else if ( absV.y >= almostOne ) {\n			float signY = sign( v.y );\n			planar.x = v.x + 2.0 * signY + 2.0;\n			planar.y = v.z * signY - 2.0;\n		}\n		return vec2( 0.125, 0.25 ) * planar + vec2( 0.375, 0.75 );\n	}\n	float getPointShadow( sampler2D shadowMap, vec2 shadowMapSize, float shadowBias, float shadowRadius, vec4 shadowCoord ) {\n		vec2 texelSize = vec2( 1.0 ) / ( shadowMapSize * vec2( 4.0, 2.0 ) );\n		vec3 lightToPosition = shadowCoord.xyz;\n		vec3 bd3D = normalize( lightToPosition );\n		float dp = ( length( lightToPosition ) - shadowBias ) / 1000.0;\n		#if defined( SHADOWMAP_TYPE_PCF ) || defined( SHADOWMAP_TYPE_PCF_SOFT )\n			vec2 offset = vec2( - 1, 1 ) * shadowRadius * texelSize.y;\n			return (\n				texture2DCompare( shadowMap, cubeToUV( bd3D + offset.xyy, texelSize.y ), dp ) +\n				texture2DCompare( shadowMap, cubeToUV( bd3D + offset.yyy, texelSize.y ), dp ) +\n				texture2DCompare( shadowMap, cubeToUV( bd3D + offset.xyx, texelSize.y ), dp ) +\n				texture2DCompare( shadowMap, cubeToUV( bd3D + offset.yyx, texelSize.y ), dp ) +\n				texture2DCompare( shadowMap, cubeToUV( bd3D, texelSize.y ), dp ) +\n				texture2DCompare( shadowMap, cubeToUV( bd3D + offset.xxy, texelSize.y ), dp ) +\n				texture2DCompare( shadowMap, cubeToUV( bd3D + offset.yxy, texelSize.y ), dp ) +\n				texture2DCompare( shadowMap, cubeToUV( bd3D + offset.xxx, texelSize.y ), dp ) +\n				texture2DCompare( shadowMap, cubeToUV( bd3D + offset.yxx, texelSize.y ), dp )\n			) * ( 1.0 / 9.0 );\n		#else\n			return texture2DCompare( shadowMap, cubeToUV( bd3D, texelSize.y ), dp );\n		#endif\n	}\n#endif\n";
-=======
 THREE.ShaderChunk[ 'shadowmap_pars_fragment' ] = "#ifdef USE_SHADOWMAP\n	#if NUM_DIR_LIGHTS > 0\n		uniform sampler2D directionalShadowMap[ NUM_DIR_LIGHTS ];\n		varying vec4 vDirectionalShadowCoord[ NUM_DIR_LIGHTS ];\n	#endif\n	#if NUM_SPOT_LIGHTS > 0\n		uniform sampler2D spotShadowMap[ NUM_SPOT_LIGHTS ];\n		varying vec4 vSpotShadowCoord[ NUM_SPOT_LIGHTS ];\n	#endif\n	#if NUM_POINT_LIGHTS > 0\n		uniform sampler2D pointShadowMap[ NUM_POINT_LIGHTS ];\n		varying vec4 vPointShadowCoord[ NUM_POINT_LIGHTS ];\n	#endif\n	float texture2DCompare( sampler2D depths, vec2 uv, float compare ) {\n		return step( compare, unpackRGBAToDepth( texture2D( depths, uv ) ) );\n	}\n	float texture2DShadowLerp( sampler2D depths, vec2 size, vec2 uv, float compare ) {\n		const vec2 offset = vec2( 0.0, 1.0 );\n		vec2 texelSize = vec2( 1.0 ) / size;\n		vec2 centroidUV = floor( uv * size + 0.5 ) / size;\n		float lb = texture2DCompare( depths, centroidUV + texelSize * offset.xx, compare );\n		float lt = texture2DCompare( depths, centroidUV + texelSize * offset.xy, compare );\n		float rb = texture2DCompare( depths, centroidUV + texelSize * offset.yx, compare );\n		float rt = texture2DCompare( depths, centroidUV + texelSize * offset.yy, compare );\n		vec2 f = fract( uv * size + 0.5 );\n		float a = mix( lb, lt, f.y );\n		float b = mix( rb, rt, f.y );\n		float c = mix( a, b, f.x );\n		return c;\n	}\n	float getShadow( sampler2D shadowMap, vec2 shadowMapSize, float shadowBias, float shadowRadius, vec4 shadowCoord ) {\n		shadowCoord.xyz /= shadowCoord.w;\n		shadowCoord.z += shadowBias;\n		bvec4 inFrustumVec = bvec4 ( shadowCoord.x >= 0.0, shadowCoord.x <= 1.0, shadowCoord.y >= 0.0, shadowCoord.y <= 1.0 );\n		bool inFrustum = all( inFrustumVec );\n		bvec2 frustumTestVec = bvec2( inFrustum, shadowCoord.z <= 1.0 );\n		bool frustumTest = all( frustumTestVec );\n		if ( frustumTest ) {\n		#if defined( SHADOWMAP_TYPE_PCF )\n			vec2 texelSize = vec2( 1.0 ) / shadowMapSize;\n			float dx0 = - texelSize.x * shadowRadius;\n			float dy0 = - texelSize.y * shadowRadius;\n			float dx1 = + texelSize.x * shadowRadius;\n			float dy1 = + texelSize.y * shadowRadius;\n			return (\n				texture2DCompare( shadowMap, shadowCoord.xy + vec2( dx0, dy0 ), shadowCoord.z ) +\n				texture2DCompare( shadowMap, shadowCoord.xy + vec2( 0.0, dy0 ), shadowCoord.z ) +\n				texture2DCompare( shadowMap, shadowCoord.xy + vec2( dx1, dy0 ), shadowCoord.z ) +\n				texture2DCompare( shadowMap, shadowCoord.xy + vec2( dx0, 0.0 ), shadowCoord.z ) +\n				texture2DCompare( shadowMap, shadowCoord.xy, shadowCoord.z ) +\n				texture2DCompare( shadowMap, shadowCoord.xy + vec2( dx1, 0.0 ), shadowCoord.z ) +\n				texture2DCompare( shadowMap, shadowCoord.xy + vec2( dx0, dy1 ), shadowCoord.z ) +\n				texture2DCompare( shadowMap, shadowCoord.xy + vec2( 0.0, dy1 ), shadowCoord.z ) +\n				texture2DCompare( shadowMap, shadowCoord.xy + vec2( dx1, dy1 ), shadowCoord.z )\n			) * ( 1.0 / 9.0 );\n		#elif defined( SHADOWMAP_TYPE_PCF_SOFT )\n			vec2 texelSize = vec2( 1.0 ) / shadowMapSize;\n			float dx0 = - texelSize.x * shadowRadius;\n			float dy0 = - texelSize.y * shadowRadius;\n			float dx1 = + texelSize.x * shadowRadius;\n			float dy1 = + texelSize.y * shadowRadius;\n			return (\n				texture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy + vec2( dx0, dy0 ), shadowCoord.z ) +\n				texture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy + vec2( 0.0, dy0 ), shadowCoord.z ) +\n				texture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy + vec2( dx1, dy0 ), shadowCoord.z ) +\n				texture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy + vec2( dx0, 0.0 ), shadowCoord.z ) +\n				texture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy, shadowCoord.z ) +\n				texture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy + vec2( dx1, 0.0 ), shadowCoord.z ) +\n				texture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy + vec2( dx0, dy1 ), shadowCoord.z ) +\n				texture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy + vec2( 0.0, dy1 ), shadowCoord.z ) +\n				texture2DShadowLerp( shadowMap, shadowMapSize, shadowCoord.xy + vec2( dx1, dy1 ), shadowCoord.z )\n			) * ( 1.0 / 9.0 );\n		#else\n			return texture2DCompare( shadowMap, shadowCoord.xy, shadowCoord.z );\n		#endif\n		}\n		return 1.0;\n	}\n	vec2 cubeToUV( vec3 v, float texelSizeY ) {\n		vec3 absV = abs( v );\n		float scaleToCube = 1.0 / max( absV.x, max( absV.y, absV.z ) );\n		absV *= scaleToCube;\n		v *= scaleToCube * ( 1.0 - 2.0 * texelSizeY );\n		vec2 planar = v.xy;\n		float almostATexel = 1.5 * texelSizeY;\n		float almostOne = 1.0 - almostATexel;\n		if ( absV.z >= almostOne ) {\n			if ( v.z > 0.0 )\n				planar.x = 4.0 - v.x;\n		} else if ( absV.x >= almostOne ) {\n			float signX = sign( v.x );\n			planar.x = v.z * signX + 2.0 * signX;\n		} else if ( absV.y >= almostOne ) {\n			float signY = sign( v.y );\n			planar.x = v.x + 2.0 * signY + 2.0;\n			planar.y = v.z * signY - 2.0;\n		}\n		return vec2( 0.125, 0.25 ) * planar + vec2( 0.375, 0.75 );\n	}\n	float getPointShadow( sampler2D shadowMap, vec2 shadowMapSize, float shadowBias, float shadowRadius, vec4 shadowCoord ) {\n		vec2 texelSize = vec2( 1.0 ) / ( shadowMapSize * vec2( 4.0, 2.0 ) );\n		vec3 lightToPosition = shadowCoord.xyz;\n		vec3 bd3D = normalize( lightToPosition );\n		float dp = ( length( lightToPosition ) - shadowBias ) / 1000.0;\n		#if defined( SHADOWMAP_TYPE_PCF ) || defined( SHADOWMAP_TYPE_PCF_SOFT )\n			vec2 offset = vec2( - 1, 1 ) * shadowRadius * texelSize.y;\n			return (\n				texture2DCompare( shadowMap, cubeToUV( bd3D + offset.xyy, texelSize.y ), dp ) +\n				texture2DCompare( shadowMap, cubeToUV( bd3D + offset.yyy, texelSize.y ), dp ) +\n				texture2DCompare( shadowMap, cubeToUV( bd3D + offset.xyx, texelSize.y ), dp ) +\n				texture2DCompare( shadowMap, cubeToUV( bd3D + offset.yyx, texelSize.y ), dp ) +\n				texture2DCompare( shadowMap, cubeToUV( bd3D, texelSize.y ), dp ) +\n				texture2DCompare( shadowMap, cubeToUV( bd3D + offset.xxy, texelSize.y ), dp ) +\n				texture2DCompare( shadowMap, cubeToUV( bd3D + offset.yxy, texelSize.y ), dp ) +\n				texture2DCompare( shadowMap, cubeToUV( bd3D + offset.xxx, texelSize.y ), dp ) +\n				texture2DCompare( shadowMap, cubeToUV( bd3D + offset.yxx, texelSize.y ), dp )\n			) * ( 1.0 / 9.0 );\n		#else\n			return texture2DCompare( shadowMap, cubeToUV( bd3D, texelSize.y ), dp );\n		#endif\n	}\n#endif\n";
->>>>>>> upstream/master
 
 // File:src/renderers/shaders/ShaderChunk/shadowmap_pars_vertex.glsl
 
@@ -32844,11 +31978,7 @@ THREE.UniformsLib = {
 
 	lights: {
 
-<<<<<<< HEAD
-		"ambientLightColor": { type: "fv", value: [] },
-=======
 		"ambientLightColor": { type: "3fv", value: [] },
->>>>>>> upstream/master
 
 		"directionalLights": { type: "sa", value: [], properties: {
 			"direction": { type: "v3" },
@@ -32867,16 +31997,6 @@ THREE.UniformsLib = {
 			"color": { type: "c" },
 			"position": { type: "v3" },
 			"direction": { type: "v3" },
-<<<<<<< HEAD
-			"distance": { type: "f" },
-			"coneCos": { type: "f" },
-			"penumbraCos": { type: "f" },
-			"decay": { type: "f" },
-
-			"shadow": { type: "i" },
-			"shadowBias": { type: "f" },
-			"shadowRadius": { type: "f" },
-=======
 			"distance": { type: "1f" },
 			"coneCos": { type: "1f" },
 			"penumbraCos": { type: "1f" },
@@ -32885,7 +32005,6 @@ THREE.UniformsLib = {
 			"shadow": { type: "1i" },
 			"shadowBias": { type: "1f" },
 			"shadowRadius": { type: "1f" },
->>>>>>> upstream/master
 			"shadowMapSize": { type: "v2" }
 		} },
 
@@ -32929,150 +32048,6 @@ THREE.UniformsLib = {
 };
 
 // File:src/renderers/shaders/ShaderLib/cube_frag.glsl
-<<<<<<< HEAD
-
-THREE.ShaderChunk[ 'cube_frag' ] = "uniform samplerCube tCube;\nuniform float tFlip;\nvarying vec3 vWorldPosition;\n#include <common>\n#include <logdepthbuf_pars_fragment>\nvoid main() {\n	gl_FragColor = textureCube( tCube, vec3( tFlip * vWorldPosition.x, vWorldPosition.yz ) );\n	#include <logdepthbuf_fragment>\n}\n";
-
-// File:src/renderers/shaders/ShaderLib/cube_vert.glsl
-
-THREE.ShaderChunk[ 'cube_vert' ] = "varying vec3 vWorldPosition;\n#include <common>\n#include <logdepthbuf_pars_vertex>\nvoid main() {\n	vWorldPosition = transformDirection( position, modelMatrix );\n	gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n	#include <logdepthbuf_vertex>\n}\n";
-
-// File:src/renderers/shaders/ShaderLib/depth_frag.glsl
-
-THREE.ShaderChunk[ 'depth_frag' ] = "uniform float mNear;\nuniform float mFar;\nuniform float opacity;\n#include <common>\n#include <logdepthbuf_pars_fragment>\nvoid main() {\n	#include <logdepthbuf_fragment>\n	#ifdef USE_LOGDEPTHBUF_EXT\n		float depth = gl_FragDepthEXT / gl_FragCoord.w;\n	#else\n		float depth = gl_FragCoord.z / gl_FragCoord.w;\n	#endif\n	float color = 1.0 - smoothstep( mNear, mFar, depth );\n	gl_FragColor = vec4( vec3( color ), opacity );\n}\n";
-
-// File:src/renderers/shaders/ShaderLib/depth_vert.glsl
-
-THREE.ShaderChunk[ 'depth_vert' ] = "#include <common>\n#include <morphtarget_pars_vertex>\n#include <logdepthbuf_pars_vertex>\nvoid main() {\n	#include <begin_vertex>\n	#include <morphtarget_vertex>\n	#include <project_vertex>\n	#include <logdepthbuf_vertex>\n}\n";
-
-// File:src/renderers/shaders/ShaderLib/depthRGBA_frag.glsl
-
-THREE.ShaderChunk[ 'depthRGBA_frag' ] = "#include <common>\n#include <logdepthbuf_pars_fragment>\nvec4 pack_depth( const in float depth ) {\n	const vec4 bit_shift = vec4( 256.0 * 256.0 * 256.0, 256.0 * 256.0, 256.0, 1.0 );\n	const vec4 bit_mask = vec4( 0.0, 1.0 / 256.0, 1.0 / 256.0, 1.0 / 256.0 );\n	vec4 res = mod( depth * bit_shift * vec4( 255 ), vec4( 256 ) ) / vec4( 255 );\n	res -= res.xxyz * bit_mask;\n	return res;\n}\nvoid main() {\n	#include <logdepthbuf_fragment>\n	#ifdef USE_LOGDEPTHBUF_EXT\n		gl_FragData[ 0 ] = pack_depth( gl_FragDepthEXT );\n	#else\n		gl_FragData[ 0 ] = pack_depth( gl_FragCoord.z );\n	#endif\n}\n";
-
-// File:src/renderers/shaders/ShaderLib/depthRGBA_vert.glsl
-
-THREE.ShaderChunk[ 'depthRGBA_vert' ] = "#include <common>\n#include <morphtarget_pars_vertex>\n#include <skinning_pars_vertex>\n#include <logdepthbuf_pars_vertex>\nvoid main() {\n	#include <skinbase_vertex>\n	#include <begin_vertex>\n	#include <morphtarget_vertex>\n	#include <skinning_vertex>\n	#include <project_vertex>\n	#include <logdepthbuf_vertex>\n}\n";
-
-// File:src/renderers/shaders/ShaderLib/distanceRGBA_frag.glsl
-
-THREE.ShaderChunk[ 'distanceRGBA_frag' ] = "uniform vec3 lightPos;\nvarying vec4 vWorldPosition;\n#include <common>\nvec4 pack1K ( float depth ) {\n	depth /= 1000.0;\n	const vec4 bitSh = vec4( 256.0 * 256.0 * 256.0, 256.0 * 256.0, 256.0, 1.0 );\n	const vec4 bitMsk = vec4( 0.0, 1.0 / 256.0, 1.0 / 256.0, 1.0 / 256.0 );\n	vec4 res = mod( depth * bitSh * vec4( 255 ), vec4( 256 ) ) / vec4( 255 );\n	res -= res.xxyz * bitMsk;\n	return res;\n}\nfloat unpack1K ( vec4 color ) {\n	const vec4 bitSh = vec4( 1.0 / ( 256.0 * 256.0 * 256.0 ), 1.0 / ( 256.0 * 256.0 ), 1.0 / 256.0, 1.0 );\n	return dot( color, bitSh ) * 1000.0;\n}\nvoid main () {\n	gl_FragColor = pack1K( length( vWorldPosition.xyz - lightPos.xyz ) );\n}\n";
-
-// File:src/renderers/shaders/ShaderLib/distanceRGBA_vert.glsl
-
-THREE.ShaderChunk[ 'distanceRGBA_vert' ] = "varying vec4 vWorldPosition;\n#include <common>\n#include <morphtarget_pars_vertex>\n#include <skinning_pars_vertex>\nvoid main() {\n	#include <skinbase_vertex>\n	#include <begin_vertex>\n	#include <morphtarget_vertex>\n	#include <skinning_vertex>\n	#include <project_vertex>\n	#include <worldpos_vertex>\n	vWorldPosition = worldPosition;\n}\n";
-
-// File:src/renderers/shaders/ShaderLib/equirect_frag.glsl
-
-THREE.ShaderChunk[ 'equirect_frag' ] = "uniform sampler2D tEquirect;\nuniform float tFlip;\nvarying vec3 vWorldPosition;\n#include <common>\n#include <logdepthbuf_pars_fragment>\nvoid main() {\n	vec3 direction = normalize( vWorldPosition );\n	vec2 sampleUV;\n	sampleUV.y = saturate( tFlip * direction.y * -0.5 + 0.5 );\n	sampleUV.x = atan( direction.z, direction.x ) * RECIPROCAL_PI2 + 0.5;\n	gl_FragColor = texture2D( tEquirect, sampleUV );\n	#include <logdepthbuf_fragment>\n}\n";
-
-// File:src/renderers/shaders/ShaderLib/equirect_vert.glsl
-
-THREE.ShaderChunk[ 'equirect_vert' ] = "varying vec3 vWorldPosition;\n#include <common>\n#include <logdepthbuf_pars_vertex>\nvoid main() {\n	vWorldPosition = transformDirection( position, modelMatrix );\n	gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n	#include <logdepthbuf_vertex>\n}\n";
-
-// File:src/renderers/shaders/ShaderLib/linedashed_frag.glsl
-
-THREE.ShaderChunk[ 'linedashed_frag' ] = "uniform vec3 diffuse;\nuniform float opacity;\nuniform float dashSize;\nuniform float totalSize;\nvarying float vLineDistance;\n#include <common>\n#include <color_pars_fragment>\n#include <fog_pars_fragment>\n#include <logdepthbuf_pars_fragment>\nvoid main() {\n	if ( mod( vLineDistance, totalSize ) > dashSize ) {\n		discard;\n	}\n	vec3 outgoingLight = vec3( 0.0 );\n	vec4 diffuseColor = vec4( diffuse, opacity );\n	#include <logdepthbuf_fragment>\n	#include <color_fragment>\n	outgoingLight = diffuseColor.rgb;\n	gl_FragColor = vec4( outgoingLight, diffuseColor.a );\n	#include <premultiplied_alpha_fragment>\n	#include <tonemapping_fragment>\n	#include <encodings_fragment>\n	#include <fog_fragment>\n}\n";
-
-// File:src/renderers/shaders/ShaderLib/linedashed_vert.glsl
-
-THREE.ShaderChunk[ 'linedashed_vert' ] = "uniform float scale;\nattribute float lineDistance;\nvarying float vLineDistance;\n#include <common>\n#include <color_pars_vertex>\n#include <logdepthbuf_pars_vertex>\nvoid main() {\n	#include <color_vertex>\n	vLineDistance = scale * lineDistance;\n	vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );\n	gl_Position = projectionMatrix * mvPosition;\n	#include <logdepthbuf_vertex>\n}\n";
-
-// File:src/renderers/shaders/ShaderLib/meshbasic_frag.glsl
-
-THREE.ShaderChunk[ 'meshbasic_frag' ] = "uniform vec3 diffuse;\nuniform float opacity;\n#ifndef FLAT_SHADED\n	varying vec3 vNormal;\n#endif\n#include <common>\n#include <color_pars_fragment>\n#include <uv_pars_fragment>\n#include <uv2_pars_fragment>\n#include <map_pars_fragment>\n#include <alphamap_pars_fragment>\n#include <aomap_pars_fragment>\n#include <envmap_pars_fragment>\n#include <fog_pars_fragment>\n#include <specularmap_pars_fragment>\n#include <logdepthbuf_pars_fragment>\nvoid main() {\n	vec4 diffuseColor = vec4( diffuse, opacity );\n	#include <logdepthbuf_fragment>\n	#include <map_fragment>\n	#include <color_fragment>\n	#include <alphamap_fragment>\n	#include <alphatest_fragment>\n	#include <specularmap_fragment>\n	ReflectedLight reflectedLight;\n	reflectedLight.directDiffuse = vec3( 0.0 );\n	reflectedLight.directSpecular = vec3( 0.0 );\n	reflectedLight.indirectDiffuse = diffuseColor.rgb;\n	reflectedLight.indirectSpecular = vec3( 0.0 );\n	#include <aomap_fragment>\n	vec3 outgoingLight = reflectedLight.indirectDiffuse;\n	#include <envmap_fragment>\n	gl_FragColor = vec4( outgoingLight, diffuseColor.a );\n	#include <premultiplied_alpha_fragment>\n	#include <tonemapping_fragment>\n	#include <encodings_fragment>\n	#include <fog_fragment>\n}\n";
-
-// File:src/renderers/shaders/ShaderLib/meshbasic_vert.glsl
-
-THREE.ShaderChunk[ 'meshbasic_vert' ] = "#include <common>\n#include <uv_pars_vertex>\n#include <uv2_pars_vertex>\n#include <envmap_pars_vertex>\n#include <color_pars_vertex>\n#include <morphtarget_pars_vertex>\n#include <skinning_pars_vertex>\n#include <logdepthbuf_pars_vertex>\nvoid main() {\n	#include <uv_vertex>\n	#include <uv2_vertex>\n	#include <color_vertex>\n	#include <skinbase_vertex>\n	#ifdef USE_ENVMAP\n	#include <beginnormal_vertex>\n	#include <morphnormal_vertex>\n	#include <skinnormal_vertex>\n	#include <defaultnormal_vertex>\n	#endif\n	#include <begin_vertex>\n	#include <morphtarget_vertex>\n	#include <skinning_vertex>\n	#include <project_vertex>\n	#include <logdepthbuf_vertex>\n	#include <worldpos_vertex>\n	#include <envmap_vertex>\n}\n";
-
-// File:src/renderers/shaders/ShaderLib/meshlambert_frag.glsl
-
-THREE.ShaderChunk[ 'meshlambert_frag' ] = "uniform vec3 diffuse;\nuniform vec3 emissive;\nuniform float opacity;\nvarying vec3 vLightFront;\n#ifdef DOUBLE_SIDED\n	varying vec3 vLightBack;\n#endif\n#include <common>\n#include <color_pars_fragment>\n#include <uv_pars_fragment>\n#include <uv2_pars_fragment>\n#include <map_pars_fragment>\n#include <alphamap_pars_fragment>\n#include <aomap_pars_fragment>\n#include <lightmap_pars_fragment>\n#include <emissivemap_pars_fragment>\n#include <envmap_pars_fragment>\n#include <bsdfs>\n#include <lights_pars>\n#include <fog_pars_fragment>\n#include <shadowmap_pars_fragment>\n#include <shadowmask_pars_fragment>\n#include <specularmap_pars_fragment>\n#include <logdepthbuf_pars_fragment>\nvoid main() {\n	vec4 diffuseColor = vec4( diffuse, opacity );\n	ReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );\n	vec3 totalEmissiveRadiance = emissive;\n	#include <logdepthbuf_fragment>\n	#include <map_fragment>\n	#include <color_fragment>\n	#include <alphamap_fragment>\n	#include <alphatest_fragment>\n	#include <specularmap_fragment>\n	#include <emissivemap_fragment>\n	reflectedLight.indirectDiffuse = getAmbientLightIrradiance( ambientLightColor );\n	#include <lightmap_fragment>\n	reflectedLight.indirectDiffuse *= BRDF_Diffuse_Lambert( diffuseColor.rgb );\n	#ifdef DOUBLE_SIDED\n		reflectedLight.directDiffuse = ( gl_FrontFacing ) ? vLightFront : vLightBack;\n	#else\n		reflectedLight.directDiffuse = vLightFront;\n	#endif\n	reflectedLight.directDiffuse *= BRDF_Diffuse_Lambert( diffuseColor.rgb ) * getShadowMask();\n	#include <aomap_fragment>\n	vec3 outgoingLight = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse + totalEmissiveRadiance;\n	#include <envmap_fragment>\n	gl_FragColor = vec4( outgoingLight, diffuseColor.a );\n	#include <premultiplied_alpha_fragment>\n	#include <tonemapping_fragment>\n	#include <encodings_fragment>\n	#include <fog_fragment>\n}\n";
-
-// File:src/renderers/shaders/ShaderLib/meshlambert_vert.glsl
-
-THREE.ShaderChunk[ 'meshlambert_vert' ] = "#define LAMBERT\nvarying vec3 vLightFront;\n#ifdef DOUBLE_SIDED\n	varying vec3 vLightBack;\n#endif\n#include <common>\n#include <uv_pars_vertex>\n#include <uv2_pars_vertex>\n#include <envmap_pars_vertex>\n#include <bsdfs>\n#include <lights_pars>\n#include <color_pars_vertex>\n#include <morphtarget_pars_vertex>\n#include <skinning_pars_vertex>\n#include <shadowmap_pars_vertex>\n#include <logdepthbuf_pars_vertex>\nvoid main() {\n	#include <uv_vertex>\n	#include <uv2_vertex>\n	#include <color_vertex>\n	#include <beginnormal_vertex>\n	#include <morphnormal_vertex>\n	#include <skinbase_vertex>\n	#include <skinnormal_vertex>\n	#include <defaultnormal_vertex>\n	#include <begin_vertex>\n	#include <morphtarget_vertex>\n	#include <skinning_vertex>\n	#include <project_vertex>\n	#include <logdepthbuf_vertex>\n	#include <worldpos_vertex>\n	#include <envmap_vertex>\n	#include <lights_lambert_vertex>\n	#include <shadowmap_vertex>\n}\n";
-
-// File:src/renderers/shaders/ShaderLib/meshphong_frag.glsl
-
-THREE.ShaderChunk[ 'meshphong_frag' ] = "#define PHONG\nuniform vec3 diffuse;\nuniform vec3 emissive;\nuniform vec3 specular;\nuniform float shininess;\nuniform float opacity;\n#include <common>\n#include <color_pars_fragment>\n#include <uv_pars_fragment>\n#include <uv2_pars_fragment>\n#include <map_pars_fragment>\n#include <alphamap_pars_fragment>\n#include <aomap_pars_fragment>\n#include <lightmap_pars_fragment>\n#include <emissivemap_pars_fragment>\n#include <envmap_pars_fragment>\n#include <fog_pars_fragment>\n#include <bsdfs>\n#include <lights_pars>\n#include <lights_phong_pars_fragment>\n#include <shadowmap_pars_fragment>\n#include <bumpmap_pars_fragment>\n#include <normalmap_pars_fragment>\n#include <specularmap_pars_fragment>\n#include <logdepthbuf_pars_fragment>\nvoid main() {\n	vec4 diffuseColor = vec4( diffuse, opacity );\n	ReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );\n	vec3 totalEmissiveRadiance = emissive;\n	#include <logdepthbuf_fragment>\n	#include <map_fragment>\n	#include <color_fragment>\n	#include <alphamap_fragment>\n	#include <alphatest_fragment>\n	#include <specularmap_fragment>\n	#include <normal_fragment>\n	#include <emissivemap_fragment>\n	#include <lights_phong_fragment>\n	#include <lights_template>\n	#include <aomap_fragment>\n	vec3 outgoingLight = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse + reflectedLight.directSpecular + reflectedLight.indirectSpecular + totalEmissiveRadiance;\n	#include <envmap_fragment>\n	gl_FragColor = vec4( outgoingLight, diffuseColor.a );\n	#include <premultiplied_alpha_fragment>\n	#include <tonemapping_fragment>\n	#include <encodings_fragment>\n	#include <fog_fragment>\n}\n";
-
-// File:src/renderers/shaders/ShaderLib/meshphong_vert.glsl
-
-THREE.ShaderChunk[ 'meshphong_vert' ] = "#define PHONG\nvarying vec3 vViewPosition;\n#ifndef FLAT_SHADED\n	varying vec3 vNormal;\n#endif\n#include <common>\n#include <uv_pars_vertex>\n#include <uv2_pars_vertex>\n#include <displacementmap_pars_vertex>\n#include <envmap_pars_vertex>\n#include <lights_phong_pars_vertex>\n#include <color_pars_vertex>\n#include <morphtarget_pars_vertex>\n#include <skinning_pars_vertex>\n#include <shadowmap_pars_vertex>\n#include <logdepthbuf_pars_vertex>\nvoid main() {\n	#include <uv_vertex>\n	#include <uv2_vertex>\n	#include <color_vertex>\n	#include <beginnormal_vertex>\n	#include <morphnormal_vertex>\n	#include <skinbase_vertex>\n	#include <skinnormal_vertex>\n	#include <defaultnormal_vertex>\n#ifndef FLAT_SHADED\n	vNormal = normalize( transformedNormal );\n#endif\n	#include <begin_vertex>\n	#include <displacementmap_vertex>\n	#include <morphtarget_vertex>\n	#include <skinning_vertex>\n	#include <project_vertex>\n	#include <logdepthbuf_vertex>\n	vViewPosition = - mvPosition.xyz;\n	#include <worldpos_vertex>\n	#include <envmap_vertex>\n	#include <lights_phong_vertex>\n	#include <shadowmap_vertex>\n}\n";
-
-// File:src/renderers/shaders/ShaderLib/meshstandard_frag.glsl
-
-THREE.ShaderChunk[ 'meshstandard_frag' ] = "#define STANDARD\nuniform vec3 diffuse;\nuniform vec3 emissive;\nuniform float roughness;\nuniform float metalness;\nuniform float opacity;\nuniform float envMapIntensity;\nvarying vec3 vViewPosition;\n#ifndef FLAT_SHADED\n	varying vec3 vNormal;\n#endif\n#include <common>\n#include <color_pars_fragment>\n#include <uv_pars_fragment>\n#include <uv2_pars_fragment>\n#include <map_pars_fragment>\n#include <alphamap_pars_fragment>\n#include <aomap_pars_fragment>\n#include <lightmap_pars_fragment>\n#include <emissivemap_pars_fragment>\n#include <envmap_pars_fragment>\n#include <fog_pars_fragment>\n#include <bsdfs>\n#include <cube_uv_reflection_fragment>\n#include <lights_pars>\n#include <lights_standard_pars_fragment>\n#include <shadowmap_pars_fragment>\n#include <bumpmap_pars_fragment>\n#include <normalmap_pars_fragment>\n#include <roughnessmap_pars_fragment>\n#include <metalnessmap_pars_fragment>\n#include <logdepthbuf_pars_fragment>\nvoid main() {\n	vec4 diffuseColor = vec4( diffuse, opacity );\n	ReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );\n	vec3 totalEmissiveRadiance = emissive;\n	#include <logdepthbuf_fragment>\n	#include <map_fragment>\n	#include <color_fragment>\n	#include <alphamap_fragment>\n	#include <alphatest_fragment>\n	#include <specularmap_fragment>\n	#include <roughnessmap_fragment>\n	#include <metalnessmap_fragment>\n	#include <normal_fragment>\n	#include <emissivemap_fragment>\n	#include <lights_standard_fragment>\n	#include <lights_template>\n	#include <aomap_fragment>\n	vec3 outgoingLight = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse + reflectedLight.directSpecular + reflectedLight.indirectSpecular + totalEmissiveRadiance;\n	gl_FragColor = vec4( outgoingLight, diffuseColor.a );\n	#include <premultiplied_alpha_fragment>\n	#include <tonemapping_fragment>\n	#include <encodings_fragment>\n	#include <fog_fragment>\n}\n";
-
-// File:src/renderers/shaders/ShaderLib/meshstandard_vert.glsl
-
-THREE.ShaderChunk[ 'meshstandard_vert' ] = "#define STANDARD\nvarying vec3 vViewPosition;\n#ifndef FLAT_SHADED\n	varying vec3 vNormal;\n#endif\n#include <common>\n#include <uv_pars_vertex>\n#include <uv2_pars_vertex>\n#include <displacementmap_pars_vertex>\n#include <envmap_pars_vertex>\n#include <color_pars_vertex>\n#include <morphtarget_pars_vertex>\n#include <skinning_pars_vertex>\n#include <shadowmap_pars_vertex>\n#include <specularmap_pars_fragment>\n#include <logdepthbuf_pars_vertex>\nvoid main() {\n	#include <uv_vertex>\n	#include <uv2_vertex>\n	#include <color_vertex>\n	#include <beginnormal_vertex>\n	#include <morphnormal_vertex>\n	#include <skinbase_vertex>\n	#include <skinnormal_vertex>\n	#include <defaultnormal_vertex>\n#ifndef FLAT_SHADED\n	vNormal = normalize( transformedNormal );\n#endif\n	#include <begin_vertex>\n	#include <displacementmap_vertex>\n	#include <morphtarget_vertex>\n	#include <skinning_vertex>\n	#include <project_vertex>\n	#include <logdepthbuf_vertex>\n	vViewPosition = - mvPosition.xyz;\n	#include <worldpos_vertex>\n	#include <envmap_vertex>\n	#include <shadowmap_vertex>\n}\n";
-
-// File:src/renderers/shaders/ShaderLib/normal_frag.glsl
-
-THREE.ShaderChunk[ 'normal_frag' ] = "uniform float opacity;\nvarying vec3 vNormal;\n#include <common>\n#include <logdepthbuf_pars_fragment>\nvoid main() {\n	gl_FragColor = vec4( 0.5 * normalize( vNormal ) + 0.5, opacity );\n	#include <logdepthbuf_fragment>\n}\n";
-
-// File:src/renderers/shaders/ShaderLib/normal_vert.glsl
-
-THREE.ShaderChunk[ 'normal_vert' ] = "varying vec3 vNormal;\n#include <common>\n#include <morphtarget_pars_vertex>\n#include <logdepthbuf_pars_vertex>\nvoid main() {\n	vNormal = normalize( normalMatrix * normal );\n	#include <begin_vertex>\n	#include <morphtarget_vertex>\n	#include <project_vertex>\n	#include <logdepthbuf_vertex>\n}\n";
-
-// File:src/renderers/shaders/ShaderLib/points_frag.glsl
-
-THREE.ShaderChunk[ 'points_frag' ] = "uniform vec3 diffuse;\nuniform float opacity;\n#include <common>\n#include <color_pars_fragment>\n#include <map_particle_pars_fragment>\n#include <fog_pars_fragment>\n#include <shadowmap_pars_fragment>\n#include <logdepthbuf_pars_fragment>\nvoid main() {\n	vec3 outgoingLight = vec3( 0.0 );\n	vec4 diffuseColor = vec4( diffuse, opacity );\n	#include <logdepthbuf_fragment>\n	#include <map_particle_fragment>\n	#include <color_fragment>\n	#include <alphatest_fragment>\n	outgoingLight = diffuseColor.rgb;\n	gl_FragColor = vec4( outgoingLight, diffuseColor.a );\n	#include <premultiplied_alpha_fragment>\n	#include <tonemapping_fragment>\n	#include <encodings_fragment>\n	#include <fog_fragment>\n}\n";
-
-// File:src/renderers/shaders/ShaderLib/points_vert.glsl
-
-THREE.ShaderChunk[ 'points_vert' ] = "uniform float size;\nuniform float scale;\n#include <common>\n#include <color_pars_vertex>\n#include <shadowmap_pars_vertex>\n#include <logdepthbuf_pars_vertex>\nvoid main() {\n	#include <color_vertex>\n	#include <begin_vertex>\n	#include <project_vertex>\n	#ifdef USE_SIZEATTENUATION\n		gl_PointSize = size * ( scale / - mvPosition.z );\n	#else\n		gl_PointSize = size;\n	#endif\n	#include <logdepthbuf_vertex>\n	#include <worldpos_vertex>\n	#include <shadowmap_vertex>\n}\n";
-
-// File:src/renderers/shaders/ShaderLib.js
-
-/**
- * Webgl Shader Library for three.js
- *
- * @author alteredq / http://alteredqualia.com/
- * @author mrdoob / http://mrdoob.com/
- * @author mikael emtinger / http://gomo.se/
- */
-
-
-THREE.ShaderLib = {
-
-	'basic': {
-
-		uniforms: THREE.UniformsUtils.merge( [
-
-			THREE.UniformsLib[ "common" ],
-			THREE.UniformsLib[ "aomap" ],
-			THREE.UniformsLib[ "fog" ]
-
-		] ),
-
-		vertexShader: THREE.ShaderChunk['meshbasic_vert'],
-		fragmentShader: THREE.ShaderChunk['meshbasic_frag']
-
-	},
-
-	'lambert': {
-
-		uniforms: THREE.UniformsUtils.merge( [
-
-			THREE.UniformsLib[ "common" ],
-			THREE.UniformsLib[ "aomap" ],
-			THREE.UniformsLib[ "lightmap" ],
-			THREE.UniformsLib[ "emissivemap" ],
-			THREE.UniformsLib[ "fog" ],
-			THREE.UniformsLib[ "lights" ],
-
-			{
-				"emissive" : { type: "c", value: new THREE.Color( 0x000000 ) }
-			}
-
-		] ),
-
-		vertexShader: THREE.ShaderChunk['meshlambert_vert'],
-		fragmentShader: THREE.ShaderChunk['meshlambert_frag']
-=======
 
 THREE.ShaderChunk[ 'cube_frag' ] = "uniform samplerCube tCube;\nuniform float tFlip;\nvarying vec3 vWorldPosition;\n#include <common>\n#include <logdepthbuf_pars_fragment>\n#include <clipping_planes_pars_fragment>\nvoid main() {\n	#include <clipping_planes_fragment>\n	gl_FragColor = textureCube( tCube, vec3( tFlip * vWorldPosition.x, vWorldPosition.yz ) );\n	#include <logdepthbuf_fragment>\n}\n";
 
@@ -33264,65 +32239,6 @@ THREE.ShaderLib = {
 
 		vertexShader: THREE.ShaderChunk[ 'meshphysical_vert' ],
 		fragmentShader: THREE.ShaderChunk[ 'meshphysical_frag' ]
->>>>>>> upstream/master
-
-	},
-
-	'phong': {
-
-		uniforms: THREE.UniformsUtils.merge( [
-
-<<<<<<< HEAD
-			THREE.UniformsLib[ "common" ],
-			THREE.UniformsLib[ "aomap" ],
-			THREE.UniformsLib[ "lightmap" ],
-			THREE.UniformsLib[ "emissivemap" ],
-			THREE.UniformsLib[ "bumpmap" ],
-			THREE.UniformsLib[ "normalmap" ],
-			THREE.UniformsLib[ "displacementmap" ],
-			THREE.UniformsLib[ "fog" ],
-			THREE.UniformsLib[ "lights" ],
-
-			{
-				"emissive" : { type: "c", value: new THREE.Color( 0x000000 ) },
-				"specular" : { type: "c", value: new THREE.Color( 0x111111 ) },
-				"shininess": { type: "f", value: 30 }
-			}
-
-		] ),
-
-		vertexShader: THREE.ShaderChunk['meshphong_vert'],
-		fragmentShader: THREE.ShaderChunk['meshphong_frag']
-
-	},
-
-	'standard': {
-
-		uniforms: THREE.UniformsUtils.merge( [
-
-			THREE.UniformsLib[ "common" ],
-			THREE.UniformsLib[ "aomap" ],
-			THREE.UniformsLib[ "lightmap" ],
-			THREE.UniformsLib[ "emissivemap" ],
-			THREE.UniformsLib[ "bumpmap" ],
-			THREE.UniformsLib[ "normalmap" ],
-			THREE.UniformsLib[ "displacementmap" ],
-			THREE.UniformsLib[ "roughnessmap" ],
-			THREE.UniformsLib[ "metalnessmap" ],
-			THREE.UniformsLib[ "fog" ],
-			THREE.UniformsLib[ "lights" ],
-
-			{
-				"emissive" : { type: "c", value: new THREE.Color( 0x000000 ) },
-				"roughness": { type: "f", value: 0.5 },
-				"metalness": { type: "f", value: 0 },
-				"envMapIntensity" : { type: "f", value: 1 } // temporary
-			}
-
-		] ),
-
-		vertexShader: THREE.ShaderChunk['meshstandard_vert'],
-		fragmentShader: THREE.ShaderChunk['meshstandard_frag']
 
 	},
 
@@ -33330,14 +32246,6 @@ THREE.ShaderLib = {
 
 		uniforms: THREE.UniformsUtils.merge( [
 
-			THREE.UniformsLib[ "points" ],
-			THREE.UniformsLib[ "fog" ]
-
-		] ),
-
-		vertexShader: THREE.ShaderChunk['points_vert'],
-		fragmentShader: THREE.ShaderChunk['points_frag']
-=======
 			THREE.UniformsLib[ 'points' ],
 			THREE.UniformsLib[ 'fog' ]
 
@@ -33345,7 +32253,6 @@ THREE.ShaderLib = {
 
 		vertexShader: THREE.ShaderChunk[ 'points_vert' ],
 		fragmentShader: THREE.ShaderChunk[ 'points_frag' ]
->>>>>>> upstream/master
 
 	},
 
@@ -33364,30 +32271,13 @@ THREE.ShaderLib = {
 
 		] ),
 
-<<<<<<< HEAD
-		vertexShader: THREE.ShaderChunk['linedashed_vert'],
-		fragmentShader: THREE.ShaderChunk['linedashed_frag']
-=======
 		vertexShader: THREE.ShaderChunk[ 'linedashed_vert' ],
 		fragmentShader: THREE.ShaderChunk[ 'linedashed_frag' ]
->>>>>>> upstream/master
 
 	},
 
 	'depth': {
 
-<<<<<<< HEAD
-		uniforms: {
-
-			"mNear": { type: "f", value: 1.0 },
-			"mFar" : { type: "f", value: 2000.0 },
-			"opacity" : { type: "f", value: 1.0 }
-
-		},
-
-		vertexShader: THREE.ShaderChunk['depth_vert'],
-		fragmentShader: THREE.ShaderChunk['depth_frag']
-=======
 		uniforms: THREE.UniformsUtils.merge( [
 
 			THREE.UniformsLib[ 'common' ],
@@ -33397,7 +32287,6 @@ THREE.ShaderLib = {
 
 		vertexShader: THREE.ShaderChunk[ 'depth_vert' ],
 		fragmentShader: THREE.ShaderChunk[ 'depth_frag' ]
->>>>>>> upstream/master
 
 	},
 
@@ -33409,13 +32298,8 @@ THREE.ShaderLib = {
 
 		},
 
-<<<<<<< HEAD
-		vertexShader: THREE.ShaderChunk['normal_vert'],
-		fragmentShader: THREE.ShaderChunk['normal_frag']
-=======
 		vertexShader: THREE.ShaderChunk[ 'normal_vert' ],
 		fragmentShader: THREE.ShaderChunk[ 'normal_frag' ]
->>>>>>> upstream/master
 
 	},
 
@@ -33430,13 +32314,8 @@ THREE.ShaderLib = {
 			"tFlip": { type: "1f", value: - 1 }
 		},
 
-<<<<<<< HEAD
-		vertexShader: THREE.ShaderChunk['cube_vert'],
-		fragmentShader: THREE.ShaderChunk['cube_frag']
-=======
 		vertexShader: THREE.ShaderChunk[ 'cube_vert' ],
 		fragmentShader: THREE.ShaderChunk[ 'cube_frag' ]
->>>>>>> upstream/master
 
 	},
 
@@ -33451,34 +32330,8 @@ THREE.ShaderLib = {
 			"tFlip": { type: "1f", value: - 1 }
 		},
 
-<<<<<<< HEAD
-		vertexShader: THREE.ShaderChunk['equirect_vert'],
-		fragmentShader: THREE.ShaderChunk['equirect_frag']
-
-	},
-
-	/* Depth encoding into RGBA texture
-	 *
-	 * based on SpiderGL shadow map example
-	 * http://spidergl.org/example.php?id=6
-	 *
-	 * originally from
-	 * http://www.gamedev.net/topic/442138-packing-a-float-into-a-a8r8g8b8-texture-shader/page__whichpage__1%25EF%25BF%25BD
-	 *
-	 * see also
-	 * http://aras-p.info/blog/2009/07/30/encoding-floats-to-rgba-the-final/
-	 */
-
-	'depthRGBA': {
-
-		uniforms: {},
-
-		vertexShader: THREE.ShaderChunk['depthRGBA_vert'],
-		fragmentShader: THREE.ShaderChunk['depthRGBA_frag']
-=======
 		vertexShader: THREE.ShaderChunk[ 'equirect_vert' ],
 		fragmentShader: THREE.ShaderChunk[ 'equirect_frag' ]
->>>>>>> upstream/master
 
 	},
 
@@ -33490,12 +32343,6 @@ THREE.ShaderLib = {
 
 		},
 
-<<<<<<< HEAD
-		vertexShader: THREE.ShaderChunk['distanceRGBA_vert'],
-		fragmentShader: THREE.ShaderChunk['distanceRGBA_frag']
-
-	}
-=======
 		vertexShader: THREE.ShaderChunk[ 'distanceRGBA_vert' ],
 		fragmentShader: THREE.ShaderChunk[ 'distanceRGBA_frag' ]
 
@@ -33517,7 +32364,6 @@ THREE.ShaderLib[ 'physical' ] = {
 
 	vertexShader: THREE.ShaderChunk[ 'meshphysical_vert' ],
 	fragmentShader: THREE.ShaderChunk[ 'meshphysical_frag' ]
->>>>>>> upstream/master
 
 };
 
@@ -35378,23 +34224,8 @@ THREE.WebGLRenderer = function ( parameters ) {
 
 			}
 
-<<<<<<< HEAD
-
-			if ( p_uniforms.toneMappingExposure !== undefined ) {
-
-				_gl.uniform1f( p_uniforms.toneMappingExposure, _this.toneMappingExposure );
-
-			}
-
-			if ( p_uniforms.toneMappingWhitePoint !== undefined ) {
-
-				_gl.uniform1f( p_uniforms.toneMappingWhitePoint, _this.toneMappingWhitePoint );
-
-			}
-=======
 			p_uniforms.set( _gl, _this, 'toneMappingExposure' );
 			p_uniforms.set( _gl, _this, 'toneMappingWhitePoint' );
->>>>>>> upstream/master
 
 		}
 
@@ -35829,401 +34660,10 @@ THREE.WebGLRenderer = function ( parameters ) {
 
 	}
 
-<<<<<<< HEAD
-	// Uniforms (load to GPU)
-
-	function loadUniformsMatrices ( uniforms, object ) {
-
-		_gl.uniformMatrix4fv( uniforms.modelViewMatrix, false, object.modelViewMatrix.elements );
-
-		if ( uniforms.normalMatrix ) {
-
-			_gl.uniformMatrix3fv( uniforms.normalMatrix, false, object.normalMatrix.elements );
-
-		}
-
-	}
-
-	function getTextureUnit() {
-
-		var textureUnit = _usedTextureUnits;
-
-		if ( textureUnit >= capabilities.maxTextures ) {
-
-			console.warn( 'WebGLRenderer: trying to use ' + textureUnit + ' texture units while this GPU supports only ' + capabilities.maxTextures );
-
-		}
-
-		_usedTextureUnits += 1;
-
-		return textureUnit;
-
-	}
-
-	function loadUniform( uniform, type, location, value ) {
-=======
 	// Lighting
->>>>>>> upstream/master
 
 	function setupShadows ( lights ) {
 
-<<<<<<< HEAD
-		if ( type === '1i' ) {
-
-			_gl.uniform1i( location, value );
-
-		} else if ( type === '1f' ) {
-
-			_gl.uniform1f( location, value );
-
-		} else if ( type === '2f' ) {
-
-			_gl.uniform2f( location, value[ 0 ], value[ 1 ] );
-
-		} else if ( type === '3f' ) {
-
-			_gl.uniform3f( location, value[ 0 ], value[ 1 ], value[ 2 ] );
-
-		} else if ( type === '4f' ) {
-
-			_gl.uniform4f( location, value[ 0 ], value[ 1 ], value[ 2 ], value[ 3 ] );
-
-		} else if ( type === '1iv' ) {
-
-			_gl.uniform1iv( location, value );
-
-		} else if ( type === '3iv' ) {
-
-			_gl.uniform3iv( location, value );
-
-		} else if ( type === '1fv' ) {
-
-			_gl.uniform1fv( location, value );
-
-		} else if ( type === '2fv' ) {
-
-			_gl.uniform2fv( location, value );
-
-		} else if ( type === '3fv' ) {
-
-			_gl.uniform3fv( location, value );
-
-		} else if ( type === '4fv' ) {
-
-			_gl.uniform4fv( location, value );
-
-		} else if ( type === 'Matrix2fv' ) {
-
-			_gl.uniformMatrix2fv( location, false, value );
-
-		} else if ( type === 'Matrix3fv' ) {
-
-			_gl.uniformMatrix3fv( location, false, value );
-
-		} else if ( type === 'Matrix4fv' ) {
-
-			_gl.uniformMatrix4fv( location, false, value );
-
-		//
-
-		} else if ( type === 'i' ) {
-
-			// single integer
-			_gl.uniform1i( location, value );
-
-		} else if ( type === 'f' ) {
-
-			// single float
-			_gl.uniform1f( location, value );
-
-		} else if ( type === 'v2' ) {
-
-			// single THREE.Vector2
-			_gl.uniform2f( location, value.x, value.y );
-
-		} else if ( type === 'v3' ) {
-
-			// single THREE.Vector3
-			_gl.uniform3f( location, value.x, value.y, value.z );
-
-		} else if ( type === 'v4' ) {
-
-			// single THREE.Vector4
-			_gl.uniform4f( location, value.x, value.y, value.z, value.w );
-
-		} else if ( type === 'c' ) {
-
-			// single THREE.Color
-			_gl.uniform3f( location, value.r, value.g, value.b );
-
-		} else if ( type === 's' ) {
-
-			// TODO: Optimize this
-
-			var properties = uniform.properties;
-
-			for ( var name in properties ) {
-
-				var property = properties[ name ];
-				var locationProperty = location[ name ];
-				var valueProperty = value[ name ];
-
-				loadUniform( property, property.type, locationProperty, valueProperty );
-
-			}
-
-		} else if ( type === 'sa' ) {
-
-			// TODO: Optimize this
-
-			var properties = uniform.properties;
-
-			for ( var i = 0, l = value.length; i < l; i ++ ) {
-
-				for ( var name in properties ) {
-
-					var property = properties[ name ];
-					var locationProperty =  location[ i ][ name ];
-					var valueProperty = value[ i ][ name ];
-
-					loadUniform( property, property.type, locationProperty, valueProperty );
-
-				}
-
-			}
-
-		} else if ( type === 'iv1' ) {
-
-			// flat array of integers (JS or typed array)
-			_gl.uniform1iv( location, value );
-
-		} else if ( type === 'iv' ) {
-
-			// flat array of integers with 3 x N size (JS or typed array)
-			_gl.uniform3iv( location, value );
-
-		} else if ( type === 'fv1' ) {
-
-			// flat array of floats (JS or typed array)
-			_gl.uniform1fv( location, value );
-
-		} else if ( type === 'fv' ) {
-
-			// flat array of floats with 3 x N size (JS or typed array)
-			_gl.uniform3fv( location, value );
-
-		} else if ( type === 'v2v' ) {
-
-			// array of THREE.Vector2
-
-			if ( uniform._array === undefined ) {
-
-				uniform._array = new Float32Array( 2 * value.length );
-
-			}
-
-			for ( var i = 0, i2 = 0, il = value.length; i < il; i ++, i2 += 2 ) {
-
-				uniform._array[ i2 + 0 ] = value[ i ].x;
-				uniform._array[ i2 + 1 ] = value[ i ].y;
-
-			}
-
-			_gl.uniform2fv( location, uniform._array );
-
-		} else if ( type === 'v3v' ) {
-
-			// array of THREE.Vector3
-
-			if ( uniform._array === undefined ) {
-
-				uniform._array = new Float32Array( 3 * value.length );
-
-			}
-
-			for ( var i = 0, i3 = 0, il = value.length; i < il; i ++, i3 += 3 ) {
-
-				uniform._array[ i3 + 0 ] = value[ i ].x;
-				uniform._array[ i3 + 1 ] = value[ i ].y;
-				uniform._array[ i3 + 2 ] = value[ i ].z;
-
-			}
-
-			_gl.uniform3fv( location, uniform._array );
-
-		} else if ( type === 'v4v' ) {
-
-			// array of THREE.Vector4
-
-			if ( uniform._array === undefined ) {
-
-				uniform._array = new Float32Array( 4 * value.length );
-
-			}
-
-			for ( var i = 0, i4 = 0, il = value.length; i < il; i ++, i4 += 4 ) {
-
-				uniform._array[ i4 + 0 ] = value[ i ].x;
-				uniform._array[ i4 + 1 ] = value[ i ].y;
-				uniform._array[ i4 + 2 ] = value[ i ].z;
-				uniform._array[ i4 + 3 ] = value[ i ].w;
-
-			}
-
-			_gl.uniform4fv( location, uniform._array );
-
-		} else if ( type === 'm2' ) {
-
-			// single THREE.Matrix2
-			_gl.uniformMatrix2fv( location, false, value.elements );
-
-		} else if ( type === 'm3' ) {
-
-			// single THREE.Matrix3
-			_gl.uniformMatrix3fv( location, false, value.elements );
-
-		} else if ( type === 'm3v' ) {
-
-			// array of THREE.Matrix3
-
-			if ( uniform._array === undefined ) {
-
-				uniform._array = new Float32Array( 9 * value.length );
-
-			}
-
-			for ( var i = 0, il = value.length; i < il; i ++ ) {
-
-				value[ i ].flattenToArrayOffset( uniform._array, i * 9 );
-
-			}
-
-			_gl.uniformMatrix3fv( location, false, uniform._array );
-
-		} else if ( type === 'm4' ) {
-
-			// single THREE.Matrix4
-			_gl.uniformMatrix4fv( location, false, value.elements );
-
-		} else if ( type === 'm4v' ) {
-
-			// array of THREE.Matrix4
-
-			if ( uniform._array === undefined ) {
-
-				uniform._array = new Float32Array( 16 * value.length );
-
-			}
-
-			for ( var i = 0, il = value.length; i < il; i ++ ) {
-
-				value[ i ].flattenToArrayOffset( uniform._array, i * 16 );
-
-			}
-
-			_gl.uniformMatrix4fv( location, false, uniform._array );
-
-		} else if ( type === 't' ) {
-
-			// single THREE.Texture (2d or cube)
-
-			texture = value;
-			textureUnit = getTextureUnit();
-
-			_gl.uniform1i( location, textureUnit );
-
-			if ( ! texture ) return;
-
-			if ( texture instanceof THREE.CubeTexture ||
-				 ( Array.isArray( texture.image ) && texture.image.length === 6 ) ) {
-
-				// CompressedTexture can have Array in image :/
-
-				setCubeTexture( texture, textureUnit );
-
-			} else if ( texture instanceof THREE.WebGLRenderTargetCube ) {
-
-				setCubeTextureDynamic( texture.texture, textureUnit );
-
-			} else if ( texture instanceof THREE.WebGLRenderTarget ) {
-
-				_this.setTexture( texture.texture, textureUnit );
-
-			} else {
-
-				_this.setTexture( texture, textureUnit );
-
-			}
-
-		} else if ( type === 'tv' ) {
-
-			// array of THREE.Texture (2d or cube)
-
-			if ( uniform._array === undefined ) {
-
-				uniform._array = [];
-
-			}
-
-			for ( var i = 0, il = uniform.value.length; i < il; i ++ ) {
-
-				uniform._array[ i ] = getTextureUnit();
-
-			}
-
-			_gl.uniform1iv( location, uniform._array );
-
-			for ( var i = 0, il = uniform.value.length; i < il; i ++ ) {
-
-				texture = uniform.value[ i ];
-				textureUnit = uniform._array[ i ];
-
-				if ( ! texture ) continue;
-
-				if ( texture instanceof THREE.CubeTexture ||
-					 ( texture.image instanceof Array && texture.image.length === 6 ) ) {
-
-					// CompressedTexture can have Array in image :/
-
-					setCubeTexture( texture, textureUnit );
-
-				} else if ( texture instanceof THREE.WebGLRenderTarget ) {
-
-					_this.setTexture( texture.texture, textureUnit );
-
-				} else if ( texture instanceof THREE.WebGLRenderTargetCube ) {
-
-					setCubeTextureDynamic( texture.texture, textureUnit );
-
-				} else {
-
-					_this.setTexture( texture, textureUnit );
-
-				}
-
-			}
-
-		} else {
-
-			console.warn( 'THREE.WebGLRenderer: Unknown uniform type: ' + type );
-
-		}
-
-	}
-
-	function loadUniformsGeneric( uniforms ) {
-
-		for ( var i = 0, l = uniforms.length; i < l; i ++ ) {
-
-			var uniform = uniforms[ i ][ 0 ];
-
-			// needsUpdate property is not added to all uniforms.
-			if ( uniform.needsUpdate === false ) continue;
-
-			var type = uniform.type;
-			var location = uniforms[ i ][ 1 ];
-			var value = uniform.value;
-=======
 		var lightShadowsLength = 0;
 
 		for ( var i = 0, l = lights.length; i < l; i ++ ) {
@@ -36233,9 +34673,8 @@ THREE.WebGLRenderer = function ( parameters ) {
 			if ( light.castShadow ) {
 
 				_lights.shadows[ lightShadowsLength ++ ] = light;
->>>>>>> upstream/master
 
-			loadUniform( uniform, type, location, value );
+			}
 
 		}
 
@@ -37204,11 +35643,7 @@ THREE.WebGLRenderer = function ( parameters ) {
 
 		return _currentRenderTarget;
 
-<<<<<<< HEAD
-	}
-=======
 	};
->>>>>>> upstream/master
 
 	this.setRenderTarget = function ( renderTarget ) {
 
@@ -37554,10 +35989,7 @@ THREE.WebGLRenderTarget.prototype = {
 
 		this.depthBuffer = source.depthBuffer;
 		this.stencilBuffer = source.stencilBuffer;
-<<<<<<< HEAD
-=======
 		this.depthTexture = source.depthTexture;
->>>>>>> upstream/master
 
 		return this;
 
@@ -38320,14 +36752,6 @@ THREE.WebGLProgram = ( function () {
 
 	var programIdCount = 0;
 
-<<<<<<< HEAD
-	// TODO: Combine the regex
-	var structRe = /^([\w\d_]+)\.([\w\d_]+)$/;
-	var arrayStructRe = /^([\w\d_]+)\[(\d+)\]\.([\w\d_]+)$/;
-	var arrayRe = /^([\w\d_]+)\[0\]$/;
-
-=======
->>>>>>> upstream/master
 	function getEncodingComponents( encoding ) {
 
 		switch ( encoding ) {
@@ -38348,85 +36772,6 @@ THREE.WebGLProgram = ( function () {
 				return [ 'Gamma','( value, float( GAMMA_FACTOR ) )' ];
 			default:
 				throw new Error( 'unsupported encoding: ' + encoding );
-<<<<<<< HEAD
-
-		}
-
-	}
-
-	function getTexelDecodingFunction( functionName, encoding ) {
-
-		var components = getEncodingComponents( encoding );
-		return "vec4 " + functionName + "( vec4 value ) { return " + components[ 0 ] + "ToLinear" + components[ 1 ] + "; }";
-
-	}
-
-	function getTexelEncodingFunction( functionName, encoding ) {
-
-		var components = getEncodingComponents( encoding );
-		return "vec4 " + functionName + "( vec4 value ) { return LinearTo" + components[ 0 ] + components[ 1 ] + "; }";
-
-	}
-
-	function getToneMappingFunction( functionName, toneMapping ) {
-
-		var toneMappingName;
-
-		switch ( toneMapping ) {
-
-			case THREE.LinearToneMapping:
-				toneMappingName = "Linear";
-				break;
-
-			case THREE.ReinhardToneMapping:
-				toneMappingName = "Reinhard";
-				break;
-
-			case THREE.Uncharted2ToneMapping:
-				toneMappingName = "Uncharted2";
-				break;
-
-			case THREE.CineonToneMapping:
-				toneMappingName = "OptimizedCineon";
-				break;
-
-			default:
-				throw new Error( 'unsupported toneMapping: ' + toneMapping );
-
-		}
-
-		return "vec3 " + functionName + "( vec3 color ) { return " + toneMappingName + "ToneMapping( color ); }";
-
-	}
-
-	function generateExtensions( extensions, parameters, rendererExtensions ) {
-
-		extensions = extensions || {};
-
-		var chunks = [
-			( extensions.derivatives || parameters.envMapCubeUV || parameters.bumpMap || parameters.normalMap || parameters.flatShading ) ? '#extension GL_OES_standard_derivatives : enable' : '',
-			( extensions.fragDepth || parameters.logarithmicDepthBuffer ) && rendererExtensions.get( 'EXT_frag_depth' ) ? '#extension GL_EXT_frag_depth : enable' : '',
-			( extensions.drawBuffers ) && rendererExtensions.get( 'WEBGL_draw_buffers' ) ? '#extension GL_EXT_draw_buffers : require' : '',
-			( extensions.shaderTextureLOD || parameters.envMap ) && rendererExtensions.get( 'EXT_shader_texture_lod' ) ? '#extension GL_EXT_shader_texture_lod : enable' : '',
-		];
-
-		return chunks.filter( filterEmptyLine ).join( '\n' );
-
-	}
-
-	function generateDefines( defines ) {
-
-		var chunks = [];
-
-		for ( var name in defines ) {
-
-			var value = defines[ name ];
-
-			if ( value === false ) continue;
-
-			chunks.push( '#define ' + name + ' ' + value );
-=======
->>>>>>> upstream/master
 
 		}
 
@@ -38843,10 +37188,6 @@ THREE.WebGLProgram = ( function () {
 
 				parameters.physicallyCorrectLights ? "#define PHYSICALLY_CORRECT_LIGHTS" : '',
 
-				parameters.premultipliedAlpha ? "#define PREMULTIPLIED_ALPHA" : '',
-
-				parameters.physicallyCorrectLights ? "#define PHYSICALLY_CORRECT_LIGHTS" : '',
-
 				parameters.logarithmicDepthBuffer ? '#define USE_LOGDEPTHBUF' : '',
 				parameters.logarithmicDepthBuffer && renderer.extensions.get( 'EXT_frag_depth' ) ? '#define USE_LOGDEPTHBUF_EXT' : '',
 
@@ -38865,11 +37206,8 @@ THREE.WebGLProgram = ( function () {
 				parameters.emissiveMapEncoding ? getTexelDecodingFunction( 'emissiveMapTexelToLinear', parameters.emissiveMapEncoding ) : '',
 				parameters.outputEncoding ? getTexelEncodingFunction( "linearToOutputTexel", parameters.outputEncoding ) : '',
 
-<<<<<<< HEAD
-=======
 				parameters.depthPacking ? "#define DEPTH_PACKING " + material.depthPacking : '',
 
->>>>>>> upstream/master
 				'\n'
 
 			].filter( filterEmptyLine ).join( '\n' );
@@ -39084,14 +37422,8 @@ THREE.WebGLPrograms = function ( renderer, capabilities ) {
 		"maxBones", "useVertexTexture", "morphTargets", "morphNormals",
 		"maxMorphTargets", "maxMorphNormals", "premultipliedAlpha",
 		"numDirLights", "numPointLights", "numSpotLights", "numHemiLights",
-<<<<<<< HEAD
-		"shadowMapEnabled", "pointLightShadows", "toneMapping", 'physicallyCorrectLights',
-		"shadowMapType",
-		"alphaTest", "doubleSided", "flipSided"
-=======
 		"shadowMapEnabled", "shadowMapType", "toneMapping", 'physicallyCorrectLights',
 		"alphaTest", "doubleSided", "flipSided", "numClippingPlanes", "depthPacking"
->>>>>>> upstream/master
 	];
 
 
@@ -39162,11 +37494,7 @@ THREE.WebGLPrograms = function ( renderer, capabilities ) {
 
 	}
 
-<<<<<<< HEAD
-	this.getParameters = function ( material, lights, fog, object ) {
-=======
 	this.getParameters = function ( material, lights, fog, nClipPlanes, object ) {
->>>>>>> upstream/master
 
 		var shaderID = shaderIDs[ material.type ];
 
@@ -39450,11 +37778,8 @@ THREE.WebGLShadowMap = function ( _renderer, _lights, _objects ) {
 	_frustum = new THREE.Frustum(),
 	_projScreenMatrix = new THREE.Matrix4(),
 
-<<<<<<< HEAD
-=======
 	_lightShadows = _lights.shadows,
 
->>>>>>> upstream/master
 	_shadowMapSize = new THREE.Vector2(),
 
 	_lookTarget = new THREE.Vector3(),
@@ -39501,19 +37826,9 @@ THREE.WebGLShadowMap = function ( _renderer, _lights, _objects ) {
 		var useMorphing = ( i & _MorphingFlag ) !== 0;
 		var useSkinning = ( i & _SkinningFlag ) !== 0;
 
-<<<<<<< HEAD
-		var depthMaterial = new THREE.ShaderMaterial( {
-			uniforms: depthUniforms,
-			vertexShader: depthShader.vertexShader,
-			fragmentShader: depthShader.fragmentShader,
-			morphTargets: useMorphing,
-			skinning: useSkinning
-		} );
-=======
 		var depthMaterial = depthMaterialTemplate.clone();
 		depthMaterial.morphTargets = useMorphing;
 		depthMaterial.skinning = useSkinning;
->>>>>>> upstream/master
 
 		_depthMaterials[ i ] = depthMaterial;
 
@@ -39547,14 +37862,6 @@ THREE.WebGLShadowMap = function ( _renderer, _lights, _objects ) {
 
 	this.render = function ( scene, camera ) {
 
-<<<<<<< HEAD
-		var faceCount, isPointLight;
-		var shadows = _lights.shadows;
-
-		if ( shadows.length === 0 ) return;
-
-=======
->>>>>>> upstream/master
 		if ( scope.enabled === false ) return;
 		if ( scope.autoUpdate === false && scope.needsUpdate === false ) return;
 
@@ -39571,13 +37878,9 @@ THREE.WebGLShadowMap = function ( _renderer, _lights, _objects ) {
 
 		// render depth map
 
-<<<<<<< HEAD
-		for ( var i = 0, il = shadows.length; i < il; i ++ ) {
-=======
 		var faceCount, isPointLight;
 
 		for ( var i = 0, il = _lightShadows.length; i < il; i ++ ) {
->>>>>>> upstream/master
 
 			var light = _lightShadows[ i ];
 
@@ -39633,21 +37936,12 @@ THREE.WebGLShadowMap = function ( _renderer, _lights, _objects ) {
 			if ( shadow.map === null ) {
 
 				var pars = { minFilter: THREE.NearestFilter, magFilter: THREE.NearestFilter, format: THREE.RGBAFormat };
-<<<<<<< HEAD
-
-				shadow.map = new THREE.WebGLRenderTarget( _shadowMapSize.x, _shadowMapSize.y, pars );
-=======
->>>>>>> upstream/master
 
 				shadow.map = new THREE.WebGLRenderTarget( _shadowMapSize.x, _shadowMapSize.y, pars );
 
 				shadowCamera.updateProjectionMatrix();
 
-<<<<<<< HEAD
-					shadowCamera.aspect = _shadowMapSize.x / _shadowMapSize.y;
-=======
 			}
->>>>>>> upstream/master
 
 			if ( shadow instanceof THREE.SpotLightShadow ) {
 
@@ -39952,11 +38246,6 @@ THREE.WebGLState = function ( gl, extensions, paramThreeToGL ) {
 	var currentScissor = new THREE.Vector4();
 	var currentViewport = new THREE.Vector4();
 
-	var emptyTexture = gl.createTexture();
-	gl.bindTexture( gl.TEXTURE_2D, emptyTexture );
-	gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR );
-	gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGB, 1, 1, 0, gl.RGB, gl.UNSIGNED_BYTE, new Uint8Array( 3 ) );
-
 	this.init = function () {
 
 		this.clearColor( 0, 0, 0, 1 );
@@ -40122,21 +38411,12 @@ THREE.WebGLState = function ( gl, extensions, paramThreeToGL ) {
 			} else if ( blending === THREE.SubtractiveBlending ) {
 
 				if ( premultipliedAlpha ) {
-<<<<<<< HEAD
 
 					gl.blendEquationSeparate( gl.FUNC_ADD, gl.FUNC_ADD );
 					gl.blendFuncSeparate( gl.ZERO, gl.ZERO, gl.ONE_MINUS_SRC_COLOR, gl.ONE_MINUS_SRC_ALPHA );
 
 				} else {
 
-=======
-
-					gl.blendEquationSeparate( gl.FUNC_ADD, gl.FUNC_ADD );
-					gl.blendFuncSeparate( gl.ZERO, gl.ZERO, gl.ONE_MINUS_SRC_COLOR, gl.ONE_MINUS_SRC_ALPHA );
-
-				} else {
-
->>>>>>> upstream/master
 					gl.blendEquation( gl.FUNC_ADD );
 					gl.blendFunc( gl.ZERO, gl.ONE_MINUS_SRC_COLOR );
 
@@ -40145,17 +38425,10 @@ THREE.WebGLState = function ( gl, extensions, paramThreeToGL ) {
 			} else if ( blending === THREE.MultiplyBlending ) {
 
 				if ( premultipliedAlpha ) {
-<<<<<<< HEAD
 
 					gl.blendEquationSeparate( gl.FUNC_ADD, gl.FUNC_ADD );
 					gl.blendFuncSeparate( gl.ZERO, gl.ZERO, gl.SRC_COLOR, gl.SRC_ALPHA );
 
-=======
-
-					gl.blendEquationSeparate( gl.FUNC_ADD, gl.FUNC_ADD );
-					gl.blendFuncSeparate( gl.ZERO, gl.ZERO, gl.SRC_COLOR, gl.SRC_ALPHA );
-
->>>>>>> upstream/master
 				} else {
 
 					gl.blendEquation( gl.FUNC_ADD );
@@ -40499,7 +38772,7 @@ THREE.WebGLState = function ( gl, extensions, paramThreeToGL ) {
 
 		if ( boundTexture.type !== webglType || boundTexture.texture !== webglTexture ) {
 
-			gl.bindTexture( webglType, webglTexture || emptyTexture );
+			gl.bindTexture( webglType, webglTexture );
 
 			boundTexture.type = webglType;
 			boundTexture.texture = webglTexture;
@@ -45824,7 +44097,6 @@ THREE.BoxBufferGeometry = function ( width, height, depth, widthSegments, height
 
 		var vertexCounter = 0;
 		var groupCount = 0;
-<<<<<<< HEAD
 
 		var vector = new THREE.Vector3();
 
@@ -45843,26 +44115,6 @@ THREE.BoxBufferGeometry = function ( width, height, depth, widthSegments, height
 				vector[ v ] = y * vdir;
 				vector[ w ] = depthHalf;
 
-=======
-
-		var vector = new THREE.Vector3();
-
-		// generate vertices, normals and uvs
-
-		for ( var iy = 0; iy < gridY1; iy ++ ) {
-
-			var y = iy * segmentHeight - heightHalf;
-
-			for ( var ix = 0; ix < gridX1; ix ++ ) {
-
-				var x = ix * segmentWidth - widthHalf;
-
-				// set values to correct vector component
-				vector[ u ] = x * udir;
-				vector[ v ] = y * vdir;
-				vector[ w ] = depthHalf;
-
->>>>>>> upstream/master
 				// now apply vector to vertex buffer
 				vertices[ vertexBufferOffset ] = vector.x;
 				vertices[ vertexBufferOffset + 1 ] = vector.y;
@@ -45904,7 +44156,6 @@ THREE.BoxBufferGeometry = function ( width, height, depth, widthSegments, height
 				var b = numberOfVertices + ix + gridX1 * ( iy + 1 );
 				var c = numberOfVertices + ( ix + 1 ) + gridX1 * ( iy + 1 );
 				var d = numberOfVertices + ( ix + 1 ) + gridX1 * iy;
-<<<<<<< HEAD
 
 				// face one
 				indices[ indexBufferOffset ] = a;
@@ -45916,19 +44167,6 @@ THREE.BoxBufferGeometry = function ( width, height, depth, widthSegments, height
 				indices[ indexBufferOffset + 4 ] = c;
 				indices[ indexBufferOffset + 5 ] = d;
 
-=======
-
-				// face one
-				indices[ indexBufferOffset ] = a;
-				indices[ indexBufferOffset + 1 ] = b;
-				indices[ indexBufferOffset + 2 ] = d;
-
-				// face two
-				indices[ indexBufferOffset + 3 ] = b;
-				indices[ indexBufferOffset + 4 ] = c;
-				indices[ indexBufferOffset + 5 ] = d;
-
->>>>>>> upstream/master
 				// update offsets and counters
 				indexBufferOffset += 6;
 				groupCount += 6;
@@ -46050,8 +44288,6 @@ THREE.CircleBufferGeometry.prototype = Object.create( THREE.BufferGeometry.proto
 THREE.CircleBufferGeometry.prototype.constructor = THREE.CircleBufferGeometry;
 
 // File:src/extras/geometries/CylinderBufferGeometry.js
-<<<<<<< HEAD
-=======
 
 /**
  * @author Mugen87 / https://github.com/Mugen87
@@ -46367,305 +44603,6 @@ THREE.CylinderBufferGeometry.prototype = Object.create( THREE.BufferGeometry.pro
 THREE.CylinderBufferGeometry.prototype.constructor = THREE.CylinderBufferGeometry;
 
 // File:src/extras/geometries/CylinderGeometry.js
->>>>>>> upstream/master
-
-/**
- * @author Mugen87 / https://github.com/Mugen87
- */
-
-THREE.CylinderBufferGeometry = function ( radiusTop, radiusBottom, height, radialSegments, heightSegments, openEnded, thetaStart, thetaLength ) {
-
-	THREE.BufferGeometry.call( this );
-
-	this.type = 'CylinderBufferGeometry';
-
-	this.parameters = {
-		radiusTop: radiusTop,
-		radiusBottom: radiusBottom,
-		height: height,
-		radialSegments: radialSegments,
-		heightSegments: heightSegments,
-		openEnded: openEnded,
-		thetaStart: thetaStart,
-		thetaLength: thetaLength
-	};
-
-<<<<<<< HEAD
-	radiusTop = radiusTop !== undefined ? radiusTop : 20;
-	radiusBottom = radiusBottom !== undefined ? radiusBottom : 20;
-	height = height !== undefined ? height : 100;
-
-	radialSegments = Math.floor( radialSegments )  || 8;
-	heightSegments = Math.floor( heightSegments ) || 1;
-
-	openEnded = openEnded !== undefined ? openEnded : false;
-	thetaStart = thetaStart !== undefined ? thetaStart : 0;
-	thetaLength = thetaLength !== undefined ? thetaLength : 2 * Math.PI;
-
-	// used to calculate buffer length
-
-	var vertexCount = calculateVertexCount();
-	var indexCount = calculateIndexCount();
-
-	// buffers
-
-	var indices = new THREE.BufferAttribute( new ( indexCount > 65535 ? Uint32Array : Uint16Array )( indexCount ) , 1 );
-	var vertices = new THREE.BufferAttribute( new Float32Array( vertexCount * 3 ), 3 );
-	var normals = new THREE.BufferAttribute( new Float32Array( vertexCount * 3 ), 3 );
-	var uvs = new THREE.BufferAttribute( new Float32Array( vertexCount * 2 ), 2 );
-
-	// helper variables
-
-	var index = 0, indexOffset = 0, indexArray = [], halfHeight = height / 2;
-
-	// generate geometry
-
-	generateTorso();
-
-	if( openEnded === false ) {
-
-		if( radiusTop > 0 ) {
-
-			generateCap( true );
-
-		}
-
-		if( radiusBottom > 0 ) {
-
-			generateCap( false );
-
-		}
-
-	}
-
-	// build geometry
-
-	this.setIndex( indices );
-	this.addAttribute( 'position', vertices );
-	this.addAttribute( 'normal', normals );
-	this.addAttribute( 'uv', uvs );
-
-	// helper functions
-
-	function calculateVertexCount () {
-
-		var count = ( radialSegments + 1 ) * ( heightSegments + 1 );
-
-		if ( openEnded === false ) {
-
-			count += ( ( radialSegments + 1 ) * 2 ) + ( radialSegments * 2 );
-
-		}
-
-		return count;
-
-	}
-
-	function calculateIndexCount () {
-
-		var count = radialSegments * heightSegments * 2 * 3;
-
-		if ( openEnded === false ) {
-
-			count += radialSegments * 2 * 3;
-
-		}
-
-		return count;
-
-	}
-
-	function generateTorso () {
-
-		var x, y;
-		var normal = new THREE.Vector3();
-		var vertex = new THREE.Vector3();
-
-		// this will be used to calculate the normal
-		var tanTheta = ( radiusBottom - radiusTop ) / height;
-
-		// generate vertices, normals and uvs
-
-		for ( y = 0; y <= heightSegments; y ++ ) {
-
-			var indexRow = [];
-
-			var v = y / heightSegments;
-
-			// calculate the radius of the current row
-			var radius = v * ( radiusBottom - radiusTop ) + radiusTop;
-
-			for ( x = 0; x <= radialSegments; x ++ ) {
-
-				var u = x / radialSegments;
-
-				// vertex
-				vertex.x = radius * Math.sin( u * thetaLength + thetaStart );
-				vertex.y = - v * height + halfHeight;
-				vertex.z = radius * Math.cos( u * thetaLength + thetaStart );
-				vertices.setXYZ( index, vertex.x, vertex.y, vertex.z );
-
-				// normal
-				normal.copy( vertex );
-
-				// handle special case if radiusTop/radiusBottom is zero
-				if( ( radiusTop === 0  && y === 0 ) || ( radiusBottom === 0  && y === heightSegments ) ) {
-
-					normal.x = Math.sin( u * thetaLength + thetaStart );
-					normal.z = Math.cos( u * thetaLength + thetaStart );
-
-				}
-
-				normal.setY( Math.sqrt( normal.x * normal.x + normal.z * normal.z ) * tanTheta ).normalize();
-				normals.setXYZ( index, normal.x, normal.y, normal.z );
-
-				// uv
-				uvs.setXY( index, u, 1 - v );
-
-				// save index of vertex in respective row
-				indexRow.push( index );
-
-				// increase index
-				index ++;
-
-			}
-
-			// now save vertices of the row in our index array
-			indexArray.push( indexRow );
-
-		}
-
-		// generate indices
-
-		for ( x = 0; x < radialSegments; x ++ ) {
-
-			for ( y = 0; y < heightSegments; y ++ ) {
-
-				// we use the index array to access the correct indices
-				var i1 = indexArray[ y ][ x ];
-				var i2 = indexArray[ y + 1 ][ x ];
-				var i3 = indexArray[ y + 1 ][ x + 1 ];
-				var i4 = indexArray[ y ][ x + 1 ];
-
-				// face one
-				indices.setX( indexOffset, i1 ); indexOffset++;
-				indices.setX( indexOffset, i2 ); indexOffset++;
-				indices.setX( indexOffset, i4 ); indexOffset++;
-
-				// face two
-				indices.setX( indexOffset, i2 ); indexOffset++;
-				indices.setX( indexOffset, i3 ); indexOffset++;
-				indices.setX( indexOffset, i4 ); indexOffset++;
-
-			}
-
-		}
-
-	}
-
-	function generateCap ( top ) {
-
-		var x, centerIndexStart, centerIndexEnd;
-		var uv = new THREE.Vector2();
-		var vertex = new THREE.Vector3();
-
-		var radius = ( top === true ) ? radiusTop : radiusBottom;
-		var sign = ( top === true ) ? 1 : - 1;
-
-		// save the index of the first center vertex
-		centerIndexStart = index;
-
-		// first we generate the center vertex data of the cap.
-		// because the geometry needs one set of uvs per face,
-		// we must generate a center vertex per face/segment
-
-		for ( x = 1; x <= radialSegments; x ++ ) {
-
-			// vertex
-			vertices.setXYZ( index, 0, halfHeight * sign, 0 );
-
-			// normal
-			normals.setXYZ( index, 0, sign, 0 );
-
-			// uv
-			if( top === true ) {
-
-				uv.x = x / radialSegments;
-				uv.y = 0;
-
-			} else {
-
-				uv.x = ( x - 1 ) / radialSegments;
-				uv.y = 1;
-
-			}
-
-			uvs.setXY( index, uv.x, uv.y );
-
-			// increase index
-			index++;
-
-		}
-
-		// save the index of the last center vertex
-		centerIndexEnd = index;
-
-		// now we generate the surrounding vertices, normals and uvs
-
-		for ( x = 0; x <= radialSegments; x ++ ) {
-
-			var u = x / radialSegments;
-
-			// vertex
-			vertex.x = radius * Math.sin( u * thetaLength + thetaStart );
-			vertex.y = halfHeight * sign;
-			vertex.z = radius * Math.cos( u * thetaLength + thetaStart );
-			vertices.setXYZ( index, vertex.x, vertex.y, vertex.z );
-
-			// normal
-			normals.setXYZ( index, 0, sign, 0 );
-
-			// uv
-			uvs.setXY( index, u, ( top === true ) ? 1 : 0 );
-
-			// increase index
-			index ++;
-
-		}
-
-		// generate indices
-
-		for ( x = 0; x < radialSegments; x ++ ) {
-
-			var c = centerIndexStart + x;
-			var i = centerIndexEnd + x;
-
-			if( top === true ) {
-
-				// face top
-				indices.setX( indexOffset, i ); indexOffset++;
-				indices.setX( indexOffset, i + 1 ); indexOffset++;
-				indices.setX( indexOffset, c ); indexOffset++;
-
-			} else {
-
-				// face bottom
-				indices.setX( indexOffset, i + 1); indexOffset++;
-				indices.setX( indexOffset, i ); indexOffset++;
-				indices.setX( indexOffset, c ); indexOffset++;
-
-			}
-
-		}
-
-	}
-
-};
-
-THREE.CylinderBufferGeometry.prototype = Object.create( THREE.BufferGeometry.prototype );
-THREE.CylinderBufferGeometry.prototype.constructor = THREE.CylinderBufferGeometry;
-
-// File:src/extras/geometries/CylinderGeometry.js
 
 /**
  * @author mrdoob / http://mrdoob.com/
@@ -46688,8 +44625,6 @@ THREE.CylinderGeometry = function ( radiusTop, radiusBottom, height, radialSegme
 		thetaLength: thetaLength
 	};
 
-=======
->>>>>>> upstream/master
 	this.fromBufferGeometry( new THREE.CylinderBufferGeometry( radiusTop, radiusBottom, height, radialSegments, heightSegments, openEnded, thetaStart, thetaLength ) );
 	this.mergeVertices();
 
@@ -47669,19 +45604,11 @@ THREE.LatheBufferGeometry = function ( points, segments, phiStart, phiLength ) {
 
 	// clamp phiLength so it's in range of [ 0, 2PI ]
 	phiLength = THREE.Math.clamp( phiLength, 0, Math.PI * 2 );
-<<<<<<< HEAD
 
 	// these are used to calculate buffer length
 	var vertexCount = ( segments + 1 ) * points.length;
 	var indexCount = segments * points.length * 2 * 3;
 
-=======
-
-	// these are used to calculate buffer length
-	var vertexCount = ( segments + 1 ) * points.length;
-	var indexCount = segments * points.length * 2 * 3;
-
->>>>>>> upstream/master
 	// buffers
 	var indices = new THREE.BufferAttribute( new ( indexCount > 65535 ? Uint32Array : Uint16Array )( indexCount ) , 1 );
 	var vertices = new THREE.BufferAttribute( new Float32Array( vertexCount * 3 ), 3 );
@@ -47694,15 +45621,9 @@ THREE.LatheBufferGeometry = function ( points, segments, phiStart, phiLength ) {
 	var vertex = new THREE.Vector3();
 	var uv = new THREE.Vector2();
 	var i, j;
-<<<<<<< HEAD
 
 	// generate vertices and uvs
 
-=======
-
-	// generate vertices and uvs
-
->>>>>>> upstream/master
 	for ( i = 0; i <= segments; i ++ ) {
 
 		var phi = phiStart + i * inverseSegments * phiLength;
@@ -47711,7 +45632,6 @@ THREE.LatheBufferGeometry = function ( points, segments, phiStart, phiLength ) {
 		var cos = Math.cos( phi );
 
 		for ( j = 0; j <= ( points.length - 1 ); j ++ ) {
-<<<<<<< HEAD
 
 			// vertex
 			vertex.x = points[ j ].x * sin;
@@ -47724,20 +45644,6 @@ THREE.LatheBufferGeometry = function ( points, segments, phiStart, phiLength ) {
 			uv.y = j / ( points.length - 1 );
 			uvs.setXY( index, uv.x, uv.y );
 
-=======
-
-			// vertex
-			vertex.x = points[ j ].x * sin;
-			vertex.y = points[ j ].y;
-			vertex.z = points[ j ].x * cos;
-			vertices.setXYZ( index, vertex.x, vertex.y, vertex.z );
-
-			// uv
-			uv.x = i / segments;
-			uv.y = j / ( points.length - 1 );
-			uvs.setXY( index, uv.x, uv.y );
-
->>>>>>> upstream/master
 			// increase index
 			index ++;
 
@@ -47746,15 +45652,9 @@ THREE.LatheBufferGeometry = function ( points, segments, phiStart, phiLength ) {
 	}
 
 	// generate indices
-<<<<<<< HEAD
 
 	for ( i = 0; i < segments; i ++ ) {
 
-=======
-
-	for ( i = 0; i < segments; i ++ ) {
-
->>>>>>> upstream/master
 		for ( j = 0; j < ( points.length - 1 ); j ++ ) {
 
 			base = j + i * points.length;
@@ -47994,7 +45894,6 @@ THREE.PlaneBufferGeometry.prototype = Object.create( THREE.BufferGeometry.protot
 THREE.PlaneBufferGeometry.prototype.constructor = THREE.PlaneBufferGeometry;
 
 // File:src/extras/geometries/RingBufferGeometry.js
-<<<<<<< HEAD
 
 /**
  * @author Mugen87 / https://github.com/Mugen87
@@ -48015,133 +45914,6 @@ THREE.RingBufferGeometry = function ( innerRadius, outerRadius, thetaSegments, p
 		thetaLength: thetaLength
 	};
 
-	innerRadius = innerRadius || 20;
-	outerRadius = outerRadius || 50;
-
-	thetaStart = thetaStart !== undefined ? thetaStart : 0;
-	thetaLength = thetaLength !== undefined ? thetaLength : Math.PI * 2;
-
-	thetaSegments = thetaSegments !== undefined ? Math.max( 3, thetaSegments ) : 8;
-	phiSegments = phiSegments !== undefined ? Math.max( 1, phiSegments ) : 1;
-
-	// these are used to calculate buffer length
-	var vertexCount = ( thetaSegments + 1 ) * ( phiSegments + 1 );
-	var indexCount = thetaSegments * phiSegments * 2 * 3;
-
-	// buffers
-	var indices = new THREE.BufferAttribute( new ( indexCount > 65535 ? Uint32Array : Uint16Array )( indexCount ) , 1 );
-	var vertices = new THREE.BufferAttribute( new Float32Array( vertexCount * 3 ), 3 );
-	var normals = new THREE.BufferAttribute( new Float32Array( vertexCount * 3 ), 3 );
-	var uvs = new THREE.BufferAttribute( new Float32Array( vertexCount * 2 ), 2 );
-
-	// some helper variables
-	var index = 0, indexOffset = 0, segment;
-	var radius = innerRadius;
-	var radiusStep = ( ( outerRadius - innerRadius ) / phiSegments );
-	var vertex = new THREE.Vector3();
-	var uv = new THREE.Vector2();
-	var j, i;
-
-	// generate vertices, normals and uvs
-
-	// values are generate from the inside of the ring to the outside
-
-	for ( j = 0; j <= phiSegments; j ++ ) {
-
-		for ( i = 0; i <= thetaSegments; i ++ ) {
-
-			segment = thetaStart + i / thetaSegments * thetaLength;
-
-			// vertex
-			vertex.x = radius * Math.cos( segment );
-			vertex.y = radius * Math.sin( segment );
-			vertices.setXYZ( index, vertex.x, vertex.y, vertex.z );
-
-			// normal
-			normals.setXYZ( index, 0, 0, 1 );
-
-			// uv
-			uv.x = ( vertex.x / outerRadius + 1 ) / 2;
-			uv.y = ( vertex.y / outerRadius + 1 ) / 2;
-			uvs.setXY( index, uv.x, uv.y );
-
-			// increase index
-			index++;
-
-		}
-
-		// increase the radius for next row of vertices
-		radius += radiusStep;
-
-	}
-
-	// generate indices
-
-	for ( j = 0; j < phiSegments; j ++ ) {
-
-		var thetaSegmentLevel = j * ( thetaSegments + 1 );
-
-		for ( i = 0; i < thetaSegments; i ++ ) {
-
-			segment = i + thetaSegmentLevel;
-
-			// indices
-			var a = segment;
-			var b = segment + thetaSegments + 1;
-			var c = segment + thetaSegments + 2;
-			var d = segment + 1;
-
-			// face one
-			indices.setX( indexOffset, a ); indexOffset++;
-			indices.setX( indexOffset, b ); indexOffset++;
-			indices.setX( indexOffset, c ); indexOffset++;
-
-			// face two
-			indices.setX( indexOffset, a ); indexOffset++;
-			indices.setX( indexOffset, c ); indexOffset++;
-			indices.setX( indexOffset, d ); indexOffset++;
-
-		}
-
-	}
-
-	// build geometry
-
-	this.setIndex( indices );
-	this.addAttribute( 'position', vertices );
-	this.addAttribute( 'normal', normals );
-	this.addAttribute( 'uv', uvs );
-
-};
-
-THREE.RingBufferGeometry.prototype = Object.create( THREE.BufferGeometry.prototype );
-THREE.RingBufferGeometry.prototype.constructor = THREE.RingBufferGeometry;
-
-// File:src/extras/geometries/RingGeometry.js
-=======
->>>>>>> upstream/master
-
-/**
- * @author Mugen87 / https://github.com/Mugen87
- */
-
-THREE.RingBufferGeometry = function ( innerRadius, outerRadius, thetaSegments, phiSegments, thetaStart, thetaLength ) {
-
-	THREE.BufferGeometry.call( this );
-
-	this.type = 'RingBufferGeometry';
-
-	this.parameters = {
-		innerRadius: innerRadius,
-		outerRadius: outerRadius,
-		thetaSegments: thetaSegments,
-		phiSegments: phiSegments,
-		thetaStart: thetaStart,
-		thetaLength: thetaLength
-	};
-
-<<<<<<< HEAD
-=======
 	innerRadius = innerRadius || 20;
 	outerRadius = outerRadius || 50;
 
@@ -48265,7 +46037,6 @@ THREE.RingGeometry = function ( innerRadius, outerRadius, thetaSegments, phiSegm
 		thetaLength: thetaLength
 	};
 
->>>>>>> upstream/master
 	this.fromBufferGeometry( new THREE.RingBufferGeometry( innerRadius, outerRadius, thetaSegments, phiSegments, thetaStart, thetaLength ) );
 
 };
@@ -48462,8 +46233,6 @@ THREE.TextGeometry.prototype = Object.create( THREE.ExtrudeGeometry.prototype );
 THREE.TextGeometry.prototype.constructor = THREE.TextGeometry;
 
 // File:src/extras/geometries/TorusBufferGeometry.js
-<<<<<<< HEAD
-=======
 
 /**
  * @author Mugen87 / https://github.com/Mugen87
@@ -48593,198 +46362,6 @@ THREE.TorusBufferGeometry.prototype = Object.create( THREE.BufferGeometry.protot
 THREE.TorusBufferGeometry.prototype.constructor = THREE.TorusBufferGeometry;
 
 // File:src/extras/geometries/TorusGeometry.js
->>>>>>> upstream/master
-
-/**
- * @author Mugen87 / https://github.com/Mugen87
- */
-
-THREE.TorusBufferGeometry = function ( radius, tube, radialSegments, tubularSegments, arc ) {
-
-	THREE.BufferGeometry.call( this );
-
-	this.type = 'TorusBufferGeometry';
-
-	this.parameters = {
-		radius: radius,
-		tube: tube,
-		radialSegments: radialSegments,
-		tubularSegments: tubularSegments,
-		arc: arc
-	};
-
-<<<<<<< HEAD
-	radius = radius || 100;
-	tube = tube || 40;
-	radialSegments = Math.floor( radialSegments ) || 8;
-	tubularSegments = Math.floor( tubularSegments ) || 6;
-	arc = arc || Math.PI * 2;
-
-	// used to calculate buffer length
-	var vertexCount = ( ( radialSegments + 1 ) * ( tubularSegments + 1 ) );
-	var indexCount = radialSegments * tubularSegments * 2 * 3;
-
-	// buffers
-	var indices = new ( indexCount > 65535 ? Uint32Array : Uint16Array )( indexCount );
-	var vertices = new Float32Array( vertexCount * 3 );
-	var normals = new Float32Array( vertexCount * 3 );
-	var uvs = new Float32Array( vertexCount * 2 );
-
-	// offset variables
-	var vertexBufferOffset = 0;
-	var uvBufferOffset = 0;
-	var indexBufferOffset = 0;
-
-	// helper variables
-	var center = new THREE.Vector3();
-	var vertex = new THREE.Vector3();
-	var normal = new THREE.Vector3();
-
-	var j, i;
-
-	// generate vertices, normals and uvs
-
-	for ( j = 0; j <= radialSegments; j ++ ) {
-
-		for ( i = 0; i <= tubularSegments; i ++ ) {
-=======
-	this.fromBufferGeometry( new THREE.TorusBufferGeometry( radius, tube, radialSegments, tubularSegments, arc ) );
-
-};
->>>>>>> upstream/master
-
-THREE.TorusGeometry.prototype = Object.create( THREE.Geometry.prototype );
-THREE.TorusGeometry.prototype.constructor = THREE.TorusGeometry;
-
-<<<<<<< HEAD
-			// vertex
-			vertex.x = ( radius + tube * Math.cos( v ) ) * Math.cos( u );
-			vertex.y = ( radius + tube * Math.cos( v ) ) * Math.sin( u );
-			vertex.z = tube * Math.sin( v );
-
-			vertices[ vertexBufferOffset ] = vertex.x;
-			vertices[ vertexBufferOffset + 1 ] = vertex.y;
-			vertices[ vertexBufferOffset + 2 ] = vertex.z;
-
-			// this vector is used to calculate the normal
-			center.x = radius * Math.cos( u );
-			center.y = radius * Math.sin( u );
-
-			// normal
-			normal.subVectors( vertex, center ).normalize();
-
-			normals[ vertexBufferOffset ] = normal.x;
-			normals[ vertexBufferOffset + 1 ] = normal.y;
-			normals[ vertexBufferOffset + 2 ] = normal.z;
-
-			// uv
-			uvs[ uvBufferOffset ] = i / tubularSegments;
-			uvs[ uvBufferOffset + 1 ] = j / radialSegments;
-
-			// update offsets
-			vertexBufferOffset += 3;
-			uvBufferOffset += 2;
-=======
-// File:src/extras/geometries/TorusKnotBufferGeometry.js
-
-/**
- * @author Mugen87 / https://github.com/Mugen87
- *
- * see: http://www.blackpawn.com/texts/pqtorus/
- */
-THREE.TorusKnotBufferGeometry = function ( radius, tube, tubularSegments, radialSegments, p, q ) {
-
-	THREE.BufferGeometry.call( this );
-
-	this.type = 'TorusKnotBufferGeometry';
->>>>>>> upstream/master
-
-	this.parameters = {
-		radius: radius,
-		tube: tube,
-		tubularSegments: tubularSegments,
-		radialSegments: radialSegments,
-		p: p,
-		q: q
-	};
-
-	radius = radius || 100;
-	tube = tube || 40;
-	tubularSegments = Math.floor( tubularSegments ) || 64;
-	radialSegments = Math.floor( radialSegments ) || 8;
-	p = p || 2;
-	q = q || 3;
-
-<<<<<<< HEAD
-	// generate indices
-
-	for ( j = 1; j <= radialSegments; j ++ ) {
-
-		for ( i = 1; i <= tubularSegments; i ++ ) {
-
-			// indices
-			var a = ( tubularSegments + 1 ) * j + i - 1;
-			var b = ( tubularSegments + 1 ) * ( j - 1 ) + i - 1;
-			var c = ( tubularSegments + 1 ) * ( j - 1 ) + i;
-			var d = ( tubularSegments + 1 ) * j + i;
-
-			// face one
-			indices[ indexBufferOffset ] = a;
-			indices[ indexBufferOffset + 1 ] = b;
-			indices[ indexBufferOffset + 2 ] = d;
-
-			// face two
-			indices[ indexBufferOffset + 3 ] = b;
-			indices[ indexBufferOffset + 4 ] = c;
-			indices[ indexBufferOffset + 5 ] = d;
-
-			// update offset
-			indexBufferOffset += 6;
-=======
-	// used to calculate buffer length
-	var vertexCount = ( ( radialSegments + 1 ) * ( tubularSegments + 1 ) );
-	var indexCount = radialSegments * tubularSegments * 2 * 3;
-
-	// buffers
-	var indices = new THREE.BufferAttribute( new ( indexCount > 65535 ? Uint32Array : Uint16Array )( indexCount ) , 1 );
-	var vertices = new THREE.BufferAttribute( new Float32Array( vertexCount * 3 ), 3 );
-	var normals = new THREE.BufferAttribute( new Float32Array( vertexCount * 3 ), 3 );
-	var uvs = new THREE.BufferAttribute( new Float32Array( vertexCount * 2 ), 2 );
-
-	// helper variables
-	var i, j, index = 0, indexOffset = 0;
-
-	var vertex = new THREE.Vector3();
-	var normal = new THREE.Vector3();
-	var uv = new THREE.Vector2();
-
-	var P1 = new THREE.Vector3();
-	var P2 = new THREE.Vector3();
->>>>>>> upstream/master
-
-	var B = new THREE.Vector3();
-	var T = new THREE.Vector3();
-	var N = new THREE.Vector3();
-
-	// generate vertices, normals and uvs
-
-<<<<<<< HEAD
-	// build geometry
-	this.setIndex( new THREE.BufferAttribute( indices, 1 ) );
-	this.addAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-	this.addAttribute( 'normal', new THREE.BufferAttribute( normals, 3 ) );
-	this.addAttribute( 'uv', new THREE.BufferAttribute( uvs, 2 ) );
-=======
-	for ( i = 0; i <= tubularSegments; ++ i ) {
->>>>>>> upstream/master
-
-		// the radian "u" is used to calculate the position on the torus curve of the current tubular segement
-
-<<<<<<< HEAD
-THREE.TorusBufferGeometry.prototype = Object.create( THREE.BufferGeometry.prototype );
-THREE.TorusBufferGeometry.prototype.constructor = THREE.TorusBufferGeometry;
-
-// File:src/extras/geometries/TorusGeometry.js
 
 /**
  * @author oosmoxiecode
@@ -48793,24 +46370,9 @@ THREE.TorusBufferGeometry.prototype.constructor = THREE.TorusBufferGeometry;
  */
 
 THREE.TorusGeometry = function ( radius, tube, radialSegments, tubularSegments, arc ) {
-=======
-		var u = i / tubularSegments * p * Math.PI * 2;
 
-		// now we calculate two points. P1 is our current position on the curve, P2 is a little farther ahead.
-		// these points are used to create a special "coordinate space", which is necessary to calculate the correct vertex positions
+	THREE.Geometry.call( this );
 
-		calculatePositionOnCurve( u, p, q, radius, P1 );
-		calculatePositionOnCurve( u + 0.01, p, q, radius, P2 );
-
-		// calculate orthonormal basis
->>>>>>> upstream/master
-
-		T.subVectors( P2, P1 );
-		N.addVectors( P2, P1 );
-		B.crossVectors( T, N );
-		N.crossVectors( B, T );
-
-<<<<<<< HEAD
 	this.type = 'TorusGeometry';
 
 	this.parameters = {
@@ -48930,36 +46492,6 @@ THREE.TorusKnotBufferGeometry = function ( radius, tube, tubularSegments, radial
 			normal.subVectors( vertex, P1 ).normalize();
 			normals.setXYZ( index, normal.x, normal.y, normal.z );
 
-=======
-		// normalize B, N. T can be ignored, we don't use it
-
-		B.normalize();
-		N.normalize();
-
-		for ( j = 0; j <= radialSegments; ++ j ) {
-
-			// now calculate the vertices. they are nothing more than an extrusion of the torus curve.
-			// because we extrude a shape in the xy-plane, there is no need to calculate a z-value.
-
-			var v = j / radialSegments * Math.PI * 2;
-			var cx = - tube * Math.cos( v );
-			var cy = tube * Math.sin( v );
-
-			// now calculate the final vertex position.
-			// first we orient the extrusion with our basis vectos, then we add it to the current position on the curve
-
-			vertex.x = P1.x + ( cx * N.x + cy * B.x );
-			vertex.y = P1.y + ( cx * N.y + cy * B.y );
-			vertex.z = P1.z + ( cx * N.z + cy * B.z );
-
-			// vertex
-			vertices.setXYZ( index, vertex.x, vertex.y, vertex.z );
-
-			// normal (P1 is always the center/origin of the extrusion, thus we can use it to calculate the normal)
-			normal.subVectors( vertex, P1 ).normalize();
-			normals.setXYZ( index, normal.x, normal.y, normal.z );
-
->>>>>>> upstream/master
 			// uv
 			uv.x = i / tubularSegments;
 			uv.y = j / radialSegments;
@@ -48973,7 +46505,6 @@ THREE.TorusKnotBufferGeometry = function ( radius, tube, tubularSegments, radial
 	}
 
 	// generate indices
-<<<<<<< HEAD
 
 	for ( j = 1; j <= tubularSegments; j ++ ) {
 
@@ -48990,24 +46521,6 @@ THREE.TorusKnotBufferGeometry = function ( radius, tube, tubularSegments, radial
 			indices.setX( indexOffset, b ); indexOffset++;
 			indices.setX( indexOffset, d ); indexOffset++;
 
-=======
-
-	for ( j = 1; j <= tubularSegments; j ++ ) {
-
-		for ( i = 1; i <= radialSegments; i ++ ) {
-
-			// indices
-			var a = ( radialSegments + 1 ) * ( j - 1 ) + ( i - 1 );
-			var b = ( radialSegments + 1 ) * j + ( i - 1 );
-			var c = ( radialSegments + 1 ) * j + i;
-			var d = ( radialSegments + 1 ) * ( j - 1 ) + i;
-
-			// face one
-			indices.setX( indexOffset, a ); indexOffset++;
-			indices.setX( indexOffset, b ); indexOffset++;
-			indices.setX( indexOffset, d ); indexOffset++;
-
->>>>>>> upstream/master
 			// face two
 			indices.setX( indexOffset, b ); indexOffset++;
 			indices.setX( indexOffset, c ); indexOffset++;
@@ -49018,7 +46531,6 @@ THREE.TorusKnotBufferGeometry = function ( radius, tube, tubularSegments, radial
 	}
 
 	// build geometry
-<<<<<<< HEAD
 
 	this.setIndex( indices );
 	this.addAttribute( 'position', vertices );
@@ -49027,16 +46539,6 @@ THREE.TorusKnotBufferGeometry = function ( radius, tube, tubularSegments, radial
 
 	// this function calculates the current position on the torus curve
 
-=======
-
-	this.setIndex( indices );
-	this.addAttribute( 'position', vertices );
-	this.addAttribute( 'normal', normals );
-	this.addAttribute( 'uv', uvs );
-
-	// this function calculates the current position on the torus curve
-
->>>>>>> upstream/master
 	function calculatePositionOnCurve( u, p, q, radius, position ) {
 
 		var cu = Math.cos( u );
@@ -51636,11 +49138,7 @@ if (typeof exports !== 'undefined') {
   this['THREE'] = THREE;
 }
 
-<<<<<<< HEAD
-},{}],21:[function(_dereq_,module,exports){
-=======
-},{}],17:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{}],16:[function(_dereq_,module,exports){
 /**
  * Tween.js - Licensed under the MIT license
  * https://github.com/sole/tween.js
@@ -52433,12 +49931,8 @@ TWEEN.Interpolation = {
 
 } )( this );
 
-<<<<<<< HEAD
-},{}],22:[function(_dereq_,module,exports){
-=======
-},{}],18:[function(_dereq_,module,exports){
+},{}],17:[function(_dereq_,module,exports){
 (function (global){
->>>>>>> upstream/master
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof _dereq_=="function"&&_dereq_;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof _dereq_=="function"&&_dereq_;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 // shim for using process in browser
 
@@ -58975,20 +56469,12 @@ module.exports = WebVRPolyfill;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-<<<<<<< HEAD
-},{}],23:[function(_dereq_,module,exports){
-=======
-},{}],19:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{}],18:[function(_dereq_,module,exports){
 module.exports={
   "name": "aframe",
   "version": "0.2.0",
   "description": "Building blocks for the VR Web",
-<<<<<<< HEAD
-  "homepage" : "https://aframe.io/",
-=======
   "homepage": "https://aframe.io/",
->>>>>>> upstream/master
   "main": "dist/aframe.js",
   "scripts": {
     "browserify": "browserify src/index.js -s 'AFRAME' -p browserify-derequire",
@@ -59020,11 +56506,7 @@ module.exports={
     "object-assign": "^4.0.1",
     "present": "0.0.6",
     "style-attr": "^1.0.2",
-<<<<<<< HEAD
-    "three": "^0.75.0",
-=======
     "three": "^0.76.1",
->>>>>>> upstream/master
     "tween.js": "^15.0.0",
     "webvr-polyfill": "borismus/webvr-polyfill#f45f87a"
   },
@@ -59092,11 +56574,7 @@ module.exports={
   }
 }
 
-<<<<<<< HEAD
-},{}],24:[function(_dereq_,module,exports){
-=======
-},{}],20:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{}],19:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 var THREE = _dereq_('../lib/three');
 
@@ -59109,7 +56587,8 @@ module.exports.Component = registerComponent('camera', {
     active: { default: true },
     far: { default: 10000 },
     fov: { default: 80, min: 0 },
-    near: { default: 0.5, min: 0 }
+    near: { default: 0.5, min: 0 },
+    zoom: { default: 1, min: 0 }
   },
 
   /**
@@ -59142,6 +56621,7 @@ module.exports.Component = registerComponent('camera', {
     camera.far = data.far;
     camera.fov = data.fov;
     camera.near = data.near;
+    camera.zoom = data.zoom;
     camera.updateProjectionMatrix();
 
     // Active property did not change.
@@ -59158,16 +56638,9 @@ module.exports.Component = registerComponent('camera', {
   }
 });
 
-<<<<<<< HEAD
-},{"../core/component":55,"../lib/three":100}],25:[function(_dereq_,module,exports){
-=======
-},{"../core/component":51,"../lib/three":99}],21:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../core/component":50,"../lib/three":93}],20:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 var THREE = _dereq_('../lib/three');
-
-var loader = new THREE.ColladaLoader();
-loader.options.convertUpAxis = true;
 
 module.exports.Component = registerComponent('collada-model', {
   schema: {
@@ -59176,6 +56649,8 @@ module.exports.Component = registerComponent('collada-model', {
 
   init: function () {
     this.model = null;
+    this.loader = new THREE.ColladaLoader();
+    this.loader.options.convertUpAxis = true;
   },
 
   update: function () {
@@ -59187,7 +56662,7 @@ module.exports.Component = registerComponent('collada-model', {
 
     this.remove();
 
-    loader.load(src, function (colladaModel) {
+    this.loader.load(src, function (colladaModel) {
       self.model = colladaModel.scene;
       el.setObject3D('mesh', self.model);
       el.emit('model-loaded', {format: 'collada', model: self.model});
@@ -59200,11 +56675,7 @@ module.exports.Component = registerComponent('collada-model', {
   }
 });
 
-<<<<<<< HEAD
-},{"../core/component":55,"../lib/three":100}],26:[function(_dereq_,module,exports){
-=======
-},{"../core/component":51,"../lib/three":99}],22:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../core/component":50,"../lib/three":93}],21:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 var utils = _dereq_('../utils/');
 
@@ -59344,23 +56815,15 @@ module.exports.Component = registerComponent('cursor', {
   }
 });
 
-<<<<<<< HEAD
-},{"../core/component":55,"../utils/":110}],27:[function(_dereq_,module,exports){
-=======
-},{"../core/component":51,"../utils/":112}],23:[function(_dereq_,module,exports){
+},{"../core/component":50,"../utils/":104}],22:[function(_dereq_,module,exports){
 var debug = _dereq_('../utils/debug');
->>>>>>> upstream/master
 var geometries = _dereq_('../core/geometry').geometries;
+var geometryNames = _dereq_('../core/geometry').geometryNames;
 var registerComponent = _dereq_('../core/component').registerComponent;
 var THREE = _dereq_('../lib/three');
 
-<<<<<<< HEAD
-var helperMatrix = new THREE.Matrix4();
-var error = utils.debug('components:geometry:error');
-=======
 var dummyGeometry = new THREE.Geometry();
 var warn = debug('components:geometry:warn');
->>>>>>> upstream/master
 
 /**
  * Geometry component. Combined with material component to make a mesh in 3D object.
@@ -59368,20 +56831,14 @@ var warn = debug('components:geometry:warn');
  */
 module.exports.Component = registerComponent('geometry', {
   schema: {
-<<<<<<< HEAD
-    buffer: {default: true},
-    primitive: {default: ''},
-    translate: {type: 'vec3'}
-=======
     buffer: { default: true },
     mergeTo: { type: 'selector' },
-    primitive: { default: '' },
+    primitive: { default: 'box', oneOf: geometryNames },
     skipCache: { default: false }
   },
 
   init: function () {
     this.geometry = null;
->>>>>>> upstream/master
   },
 
   /**
@@ -59389,16 +56846,6 @@ module.exports.Component = registerComponent('geometry', {
    */
   update: function (previousData) {
     var data = this.data;
-<<<<<<< HEAD
-    var currentTranslate = previousData.translate || this.schema.translate.default;
-    var diff = utils.diff(previousData, data);
-    var geometryNeedsUpdate = !(Object.keys(diff).length === 1 && 'translate' in diff);
-    var translateNeedsUpdate = !utils.deepEqual(data.translate, currentTranslate);
-
-    if (geometryNeedsUpdate) { this.setGeometry(); }
-    if (translateNeedsUpdate && !data.buffer) {
-      applyTranslate(this.el.getObject3D('mesh').geometry, data.translate, currentTranslate);
-=======
     var mesh = this.el.getOrCreateObject3D('mesh', THREE.Mesh);
     var system = this.system;
 
@@ -59412,7 +56859,6 @@ module.exports.Component = registerComponent('geometry', {
     this.geometry = mesh.geometry = system.getOrCreateGeometry(data);
     if (data.mergeTo) {
       this.mergeTo(data.mergeTo);
->>>>>>> upstream/master
     }
   },
 
@@ -59422,62 +56868,6 @@ module.exports.Component = registerComponent('geometry', {
    *
    * @param {Element} toEl - Entity where the geometry will be merged to.
    */
-<<<<<<< HEAD
-  remove: function () {
-    this.el.getObject3D('mesh').geometry.dispose();
-    this.el.getObject3D('mesh').geometry = new THREE.Geometry();
-  },
-
-  /**
-   * Create geometry and set on mesh.
-   */
-  setGeometry: function () {
-    var bufferGeometry;
-    var data = this.data;
-    var mesh = this.el.getOrCreateObject3D('mesh', THREE.Mesh);
-    var geometryInstance;
-    var geometryType = data.primitive;
-    var GeometryClass = geometries[geometryType] && geometries[geometryType].Geometry;
-
-    if (!GeometryClass) { throw new Error('Unknown geometry `' + geometryType + '`'); }
-
-    // Create geometry instance. Set it up. Have it create the geometry.
-    geometryInstance = new GeometryClass();
-    geometryInstance.el = this.el;
-    geometryInstance.init(data);
-    this.geometry = geometryInstance.geometry;
-
-    // Transform to BufferGeometry if specified.
-    if (data.buffer) {
-      bufferGeometry = new THREE.BufferGeometry().fromGeometry(this.geometry);
-      this.geometry.dispose();
-      this.geometry = bufferGeometry;
-    }
-
-    // Dispose and set.
-    if (mesh.geometry) { mesh.geometry.dispose(); }
-    mesh.geometry = this.geometry;
-  },
-
-  /**
-   * Update geometry component schema based on geometry type.
-   *
-   * @param {object} data - New data passed by Component.
-   */
-  updateSchema: function (data) {
-    var newGeometryType = data.primitive;
-    var currentGeometryType = this.data && this.data.primitive;
-    var schema = geometries[newGeometryType] && geometries[newGeometryType].schema;
-
-    // Geometry has no schema.
-    if (!schema) { error('Unknown geometry schema `' + newGeometryType + '`'); }
-    // Nothing has changed.
-    if (currentGeometryType && currentGeometryType === newGeometryType) { return; }
-
-    this.extendSchema(schema);
-  }
-});
-=======
   mergeTo: function (toEl) {
     var el = this.el;
     var mesh = el.getObject3D('mesh');
@@ -59513,7 +56903,6 @@ module.exports.Component = registerComponent('geometry', {
       warn('Cached geometries are not allowed to merge. Set `skipCache` to true');
       return;
     }
->>>>>>> upstream/master
 
     mesh.parent.updateMatrixWorld();
     toMesh.geometry.merge(mesh.geometry, mesh.matrixWorld);
@@ -59546,15 +56935,11 @@ module.exports.Component = registerComponent('geometry', {
     // Nothing has changed.
     if (currentGeometryType && currentGeometryType === newGeometryType) { return; }
 
-<<<<<<< HEAD
-},{"../core/component":55,"../core/geometry":56,"../lib/three":100,"../utils":110}],28:[function(_dereq_,module,exports){
-=======
     this.extendSchema(schema);
   }
 });
 
-},{"../core/component":51,"../core/geometry":52,"../lib/three":99,"../utils/debug":111}],24:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../core/component":50,"../core/geometry":51,"../lib/three":93,"../utils/debug":103}],23:[function(_dereq_,module,exports){
 _dereq_('./camera');
 _dereq_('./collada-model');
 _dereq_('./cursor');
@@ -59579,14 +56964,7 @@ _dereq_('./scene/keyboard-shortcuts');
 _dereq_('./scene/stats');
 _dereq_('./scene/vr-mode-ui');
 
-<<<<<<< HEAD
-// Deprecated.
-_dereq_('./loader');
-
-},{"./camera":24,"./collada-model":25,"./cursor":26,"./geometry":27,"./light":29,"./loader":30,"./look-at":31,"./look-controls":32,"./material":33,"./obj-model":34,"./position":35,"./raycaster":36,"./rotation":37,"./scale":38,"./scene/canvas":39,"./scene/fog":40,"./scene/keyboard-shortcuts":41,"./scene/stats":42,"./scene/vr-mode-ui":43,"./sound":44,"./visible":45,"./wasd-controls":46}],29:[function(_dereq_,module,exports){
-=======
-},{"./camera":20,"./collada-model":21,"./cursor":22,"./geometry":23,"./light":25,"./look-at":26,"./look-controls":27,"./material":28,"./obj-model":29,"./position":30,"./raycaster":31,"./rotation":32,"./scale":33,"./scene/canvas":34,"./scene/debug":35,"./scene/fog":36,"./scene/keyboard-shortcuts":37,"./scene/stats":38,"./scene/vr-mode-ui":39,"./sound":40,"./visible":41,"./wasd-controls":42}],25:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"./camera":19,"./collada-model":20,"./cursor":21,"./geometry":22,"./light":24,"./look-at":25,"./look-controls":26,"./material":27,"./obj-model":28,"./position":29,"./raycaster":30,"./rotation":31,"./scale":32,"./scene/canvas":33,"./scene/debug":34,"./scene/fog":35,"./scene/keyboard-shortcuts":36,"./scene/stats":37,"./scene/vr-mode-ui":38,"./sound":39,"./visible":40,"./wasd-controls":41}],24:[function(_dereq_,module,exports){
 var diff = _dereq_('../utils').diff;
 var debug = _dereq_('../utils/debug');
 var registerComponent = _dereq_('../core/component').registerComponent;
@@ -59707,89 +57085,7 @@ function getLight (data) {
   }
 }
 
-<<<<<<< HEAD
-},{"../core/component":55,"../lib/three":100,"../utils":110,"../utils/debug":109}],30:[function(_dereq_,module,exports){
-var debug = _dereq_('../utils/debug');
-var registerComponent = _dereq_('../core/component').registerComponent;
-var parseUrl = _dereq_('../utils/src-loader').parseUrl;
-var THREE = _dereq_('../lib/three');
-
-var warn = debug('components:loader:warn');
-
-module.exports.Component = registerComponent('loader', {
-  dependencies: [ 'material' ],
-
-  schema: {
-    src: { default: '' },
-    format: {
-      default: 'obj',
-      oneOf: ['obj', 'collada']
-    }
-  },
-
-  init: function () {
-    warn('loader component is deprecated. Use collada-model or obj-model component instead.');
-  },
-
-  update: function () {
-    var el = this.el;
-    var data = this.data;
-    var model = this.model;
-    var url = parseUrl(data.src);
-    var format = data.format;
-    if (model) { el.removeObject3D('mesh'); }
-    if (!url) {
-      warn('Model URL not provided');
-      return;
-    }
-    switch (format) {
-      case 'obj':
-        this.loadObj(url);
-        break;
-      case 'collada':
-        this.loadCollada(url);
-        break;
-      default:
-        warn('Model format not supported');
-    }
-  },
-
-  loadObj: function (objUrl) {
-    var el = this.el;
-    var objLoader = new THREE.OBJLoader();
-    objLoader.load(objUrl, function (object) {
-      this.model = object;
-      this.applyMaterial();
-      el.setObject3D('mesh', object);
-    });
-  },
-
-  applyMaterial: function () {
-    var material = this.el.components.material.material;
-    if (!this.model) { return; }
-    this.model.traverse(function (child) {
-      if (child instanceof THREE.Mesh) {
-        child.material = material;
-      }
-    });
-  },
-
-  loadCollada: function (url) {
-    var self = this;
-    var el = this.el;
-    var loader = new THREE.ColladaLoader();
-    loader.options.convertUpAxis = true;
-    loader.load(url, function (collada) {
-      self.model = collada.scene;
-      el.setObject3D('mesh', collada.scene);
-    });
-  }
-});
-
-},{"../core/component":55,"../lib/three":100,"../utils/debug":109,"../utils/src-loader":112}],31:[function(_dereq_,module,exports){
-=======
-},{"../core/component":51,"../lib/three":99,"../utils":112,"../utils/debug":111}],26:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../core/component":50,"../lib/three":93,"../utils":104,"../utils/debug":103}],25:[function(_dereq_,module,exports){
 var debug = _dereq_('../utils/debug');
 var coordinates = _dereq_('../utils/coordinates');
 var registerComponent = _dereq_('../core/component').registerComponent;
@@ -59885,11 +57181,7 @@ module.exports.Component = registerComponent('look-at', {
   }
 });
 
-<<<<<<< HEAD
-},{"../core/component":55,"../lib/three":100,"../utils/coordinates":108,"../utils/debug":109}],32:[function(_dereq_,module,exports){
-=======
-},{"../core/component":51,"../lib/three":99,"../utils/coordinates":110,"../utils/debug":111}],27:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../core/component":50,"../lib/three":93,"../utils/coordinates":102,"../utils/debug":103}],26:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 var THREE = _dereq_('../lib/three');
 var isMobile = _dereq_('../utils/').isMobile();
@@ -60016,7 +57308,14 @@ module.exports.Component = registerComponent('look-controls', {
       var sceneEl = this.el.sceneEl;
       var rotation;
       hmdEuler.setFromQuaternion(hmdQuaternion, 'YXZ');
-      if (!sceneEl.is('vr-mode') || isNullVector(hmdEuler) || !this.data.hmdEnabled) {
+      if (isMobile) {
+        // In mobile we allow camera rotation with touch events and sensors
+        rotation = {
+          x: radToDeg(hmdEuler.x) + radToDeg(pitchObject.rotation.x),
+          y: radToDeg(hmdEuler.y) + radToDeg(yawObject.rotation.y),
+          z: radToDeg(hmdEuler.z)
+        };
+      } else if (!sceneEl.is('vr-mode') || isNullVector(hmdEuler) || !this.data.hmdEnabled) {
         // Mouse look only if HMD disabled or no info coming from the sensors
         rotation = {
           x: radToDeg(pitchObject.rotation.x),
@@ -60024,22 +57323,13 @@ module.exports.Component = registerComponent('look-controls', {
           z: 0
         };
       } else {
-        if (isMobile) {
-          // In mobile we allow camera rotation with touch events and sensors
-          rotation = {
-            x: radToDeg(hmdEuler.x) + radToDeg(pitchObject.rotation.x),
-            y: radToDeg(hmdEuler.y) + radToDeg(yawObject.rotation.y),
-            z: radToDeg(hmdEuler.z)
-          };
-        } else {
-          // Mouse rotation ignored with an active headset.
-          // The user head rotation takes priority
-          rotation = {
-            x: radToDeg(hmdEuler.x),
-            y: radToDeg(hmdEuler.y),
-            z: radToDeg(hmdEuler.z)
-          };
-        }
+        // Mouse rotation ignored with an active headset.
+        // The user head rotation takes priority
+        rotation = {
+          x: radToDeg(hmdEuler.x),
+          y: radToDeg(hmdEuler.y),
+          z: radToDeg(hmdEuler.z)
+        };
       }
       this.el.setAttribute('rotation', rotation);
     };
@@ -60141,15 +57431,11 @@ module.exports.Component = registerComponent('look-controls', {
   }
 });
 
-<<<<<<< HEAD
-},{"../core/component":55,"../lib/three":100}],33:[function(_dereq_,module,exports){
-=======
 function isNullVector (vector) {
   return vector.x === 0 && vector.y === 0 && vector.z === 0;
 }
 
-},{"../core/component":51,"../lib/three":99,"../utils/":112}],28:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../core/component":50,"../lib/three":93,"../utils/":104}],27:[function(_dereq_,module,exports){
 /* global Promise */
 var utils = _dereq_('../utils/');
 var component = _dereq_('../core/component');
@@ -60174,7 +57460,8 @@ module.exports.Component = registerComponent('material', {
     transparent: { default: false },
     opacity: { default: 1.0, min: 0.0, max: 1.0 },
     side: { default: 'front', oneOf: ['front', 'back', 'double'] },
-    depthTest: { default: true }
+    depthTest: { default: true },
+    flatShading: { default: false }
   },
 
   init: function () {
@@ -60233,12 +57520,15 @@ module.exports.Component = registerComponent('material', {
   updateShader: function (shaderName) {
     var data = this.data;
     var Shader = shaders[shaderName] && shaders[shaderName].Shader;
-    var material;
+    var shaderInstance;
+
     if (!Shader) { throw new Error('Unknown shader ' + shaderName); }
-    this.shader = new Shader();
-    this.shader.el = this.el;
-    material = this.shader.init(data);
-    this.setMaterial(material);
+
+    // Get material from A-Frame shader.
+    shaderInstance = this.shader = new Shader();
+    shaderInstance.el = this.el;
+    shaderInstance.init(data);
+    this.setMaterial(shaderInstance.material);
     this.updateSchema(data);
   },
 
@@ -60249,6 +57539,7 @@ module.exports.Component = registerComponent('material', {
     material.opacity = data.opacity;
     material.transparent = data.transparent !== false || data.opacity < 1.0;
     material.depthTest = data.depthTest !== false;
+    material.shading = data.flatShading ? THREE.FlatShading : THREE.SmoothShading;
   },
 
   /**
@@ -60310,12 +57601,7 @@ function disposeMaterial (material, system) {
   system.unregisterMaterial(material);
 }
 
-<<<<<<< HEAD
-},{"../core/component":55,"../core/shader":63,"../lib/three":100,"../utils":110,"../utils/debug":109}],34:[function(_dereq_,module,exports){
-/* global HTMLElement */
-=======
-},{"../core/component":51,"../core/shader":59,"../lib/three":99,"../utils/":112}],29:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../core/component":50,"../core/shader":58,"../lib/three":93,"../utils/":104}],28:[function(_dereq_,module,exports){
 var debug = _dereq_('../utils/debug');
 var registerComponent = _dereq_('../core/component').registerComponent;
 var THREE = _dereq_('../lib/three');
@@ -60391,11 +57677,7 @@ module.exports.Component = registerComponent('obj-model', {
   }
 });
 
-<<<<<<< HEAD
-},{"../core/component":55,"../lib/three":100,"../utils/debug":109}],35:[function(_dereq_,module,exports){
-=======
-},{"../core/component":51,"../lib/three":99,"../utils/debug":111}],30:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../core/component":50,"../lib/three":93,"../utils/debug":103}],29:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 
 module.exports.Component = registerComponent('position', {
@@ -60408,11 +57690,7 @@ module.exports.Component = registerComponent('position', {
   }
 });
 
-<<<<<<< HEAD
-},{"../core/component":55}],36:[function(_dereq_,module,exports){
-=======
-},{"../core/component":51}],31:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../core/component":50}],30:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 var THREE = _dereq_('../lib/three');
 
@@ -60556,11 +57834,7 @@ module.exports.Component = registerComponent('raycaster', {
   })()
 });
 
-<<<<<<< HEAD
-},{"../core/component":55,"../lib/three":100,"request-interval":11}],37:[function(_dereq_,module,exports){
-=======
-},{"../core/component":51,"../lib/three":99}],32:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../core/component":50,"../lib/three":93}],31:[function(_dereq_,module,exports){
 var degToRad = _dereq_('../lib/three').Math.degToRad;
 var registerComponent = _dereq_('../core/component').registerComponent;
 
@@ -60578,11 +57852,7 @@ module.exports.Component = registerComponent('rotation', {
   }
 });
 
-<<<<<<< HEAD
-},{"../core/component":55,"../lib/three":100}],38:[function(_dereq_,module,exports){
-=======
-},{"../core/component":51,"../lib/three":99}],33:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../core/component":50,"../lib/three":93}],32:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 
 // Avoids triggering a zero-determinant which makes object3D matrix non-invertible.
@@ -60604,11 +57874,7 @@ module.exports.Component = registerComponent('scale', {
   }
 });
 
-<<<<<<< HEAD
-},{"../core/component":55}],39:[function(_dereq_,module,exports){
-=======
-},{"../core/component":51}],34:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../core/component":50}],33:[function(_dereq_,module,exports){
 var register = _dereq_('../../core/component').registerComponent;
 
 module.exports.Component = register('canvas', {
@@ -60657,18 +57923,14 @@ module.exports.Component = register('canvas', {
   }
 });
 
-<<<<<<< HEAD
-},{"../../core/component":55}],40:[function(_dereq_,module,exports){
-=======
-},{"../../core/component":51}],35:[function(_dereq_,module,exports){
+},{"../../core/component":50}],34:[function(_dereq_,module,exports){
 var register = _dereq_('../../core/component').registerComponent;
 
 module.exports.Component = register('debug', {
   schema: { default: true }
 });
 
-},{"../../core/component":51}],36:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../../core/component":50}],35:[function(_dereq_,module,exports){
 var register = _dereq_('../../core/component').registerComponent;
 var THREE = _dereq_('../../lib/three');
 var debug = _dereq_('../../utils/debug');
@@ -60743,11 +58005,7 @@ function getFog (data) {
   return fog;
 }
 
-<<<<<<< HEAD
-},{"../../core/component":55,"../../lib/three":100,"../../utils/debug":109}],41:[function(_dereq_,module,exports){
-=======
-},{"../../core/component":51,"../../lib/three":99,"../../utils/debug":111}],37:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../../core/component":50,"../../lib/three":93,"../../utils/debug":103}],36:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../../core/component').registerComponent;
 var shouldCaptureKeyEvent = _dereq_('../../utils/').shouldCaptureKeyEvent;
 var THREE = _dereq_('../../lib/three');
@@ -60790,11 +58048,7 @@ module.exports.Component = registerComponent('keyboard-shortcuts', {
   }
 });
 
-<<<<<<< HEAD
-},{"../../core/component":55,"../../lib/three":100,"../../utils/":110}],42:[function(_dereq_,module,exports){
-=======
-},{"../../core/component":51,"../../lib/three":99,"../../utils/":112}],38:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../../core/component":50,"../../lib/three":93,"../../utils/":104}],37:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../../core/component').registerComponent;
 var RStats = _dereq_('../../../vendor/rStats');
 _dereq_('../../../vendor/rStats.extras');
@@ -60858,15 +58112,10 @@ function createStats (scene) {
   });
 }
 
-<<<<<<< HEAD
-},{"../../../vendor/rStats":115,"../../../vendor/rStats.extras":114,"../../core/component":55,"../../lib/rStatsAframe":99}],43:[function(_dereq_,module,exports){
-=======
-},{"../../../vendor/rStats":120,"../../../vendor/rStats.extras":119,"../../core/component":51,"../../lib/rStatsAframe":98}],39:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../../../vendor/rStats":111,"../../../vendor/rStats.extras":110,"../../core/component":50,"../../lib/rStatsAframe":92}],38:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../../core/component').registerComponent;
 var THREE = _dereq_('../../lib/three');
 var utils = _dereq_('../../utils/');
-var queryParams = utils.queryParams;
 
 var dummyDolly = new THREE.Object3D();
 var controls = new THREE.VRControls(dummyDolly);
@@ -60883,17 +58132,17 @@ var ORIENTATION_MODAL_CLASS = 'a-orientation-modal';
  * UI for entering VR mode.
  */
 module.exports.Component = registerComponent('vr-mode-ui', {
-  dependencies: [ 'canvas' ],
+  dependencies: ['canvas'],
 
   schema: {
-    enabled: { default: true }
+    enabled: {default: true}
   },
 
   init: function () {
     var self = this;
     var scene = this.el;
 
-    if (queryParams.ui === 'false') { return; }
+    if (utils.getUrlParameter('ui') === 'false') { return; }
 
     this.enterVR = scene.enterVR.bind(scene);
     this.exitVR = scene.exitVR.bind(scene);
@@ -60919,7 +58168,7 @@ module.exports.Component = registerComponent('vr-mode-ui', {
   update: function () {
     var scene = this.el;
 
-    if (!this.data.enabled || this.insideLoader || queryParams.ui === 'false') {
+    if (!this.data.enabled || this.insideLoader || utils.getUrlParameter('ui') === 'false') {
       return this.remove();
     }
     if (this.enterVREl || this.orientationModalEl) { return; }
@@ -61062,11 +58311,7 @@ function createOrientationModal (exitVRHandler) {
   return modal;
 }
 
-<<<<<<< HEAD
-},{"../../core/component":55,"../../lib/three":100,"../../utils/":110}],44:[function(_dereq_,module,exports){
-=======
-},{"../../core/component":51,"../../lib/three":99,"../../utils/":112}],40:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../../core/component":50,"../../lib/three":93,"../../utils/":104}],39:[function(_dereq_,module,exports){
 var debug = _dereq_('../utils/debug');
 var registerComponent = _dereq_('../core/component').registerComponent;
 var THREE = _dereq_('../lib/three');
@@ -61183,11 +58428,7 @@ module.exports.Component = registerComponent('sound', {
   }
 });
 
-<<<<<<< HEAD
-},{"../core/component":55,"../lib/three":100,"../utils":110,"../utils/debug":109}],45:[function(_dereq_,module,exports){
-=======
-},{"../core/component":51,"../lib/three":99,"../utils/debug":111}],41:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../core/component":50,"../lib/three":93,"../utils/debug":103}],40:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 
 /**
@@ -61204,11 +58445,7 @@ module.exports.Component = registerComponent('visible', {
   }
 });
 
-<<<<<<< HEAD
-},{"../core/component":55}],46:[function(_dereq_,module,exports){
-=======
-},{"../core/component":51}],42:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../core/component":50}],41:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 var shouldCaptureKeyEvent = _dereq_('../utils/').shouldCaptureKeyEvent;
 var THREE = _dereq_('../lib/three');
@@ -61367,7 +58604,7 @@ module.exports.Component = registerComponent('wasd-controls', {
     var rotation = new THREE.Euler(0, 0, 0, 'YXZ');
     return function (delta) {
       var velocity = this.velocity;
-      var elRotation = this.el.getAttribute('rotation');
+      var elRotation = this.el.getComputedAttribute('rotation');
       direction.copy(velocity);
       direction.multiplyScalar(delta);
       if (!elRotation) { return direction; }
@@ -61380,11 +58617,7 @@ module.exports.Component = registerComponent('wasd-controls', {
   })()
 });
 
-<<<<<<< HEAD
-},{"../core/component":55,"../lib/three":100,"../utils/":110}],47:[function(_dereq_,module,exports){
-=======
-},{"../core/component":51,"../lib/three":99,"../utils/":112}],43:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../core/component":50,"../lib/three":93,"../utils/":104}],42:[function(_dereq_,module,exports){
 /**
  * Animation configuration options for TWEEN.js animations.
  * Used by `<a-animation>`.
@@ -61470,7 +58703,9 @@ var REPEATS = {
 
 var DEFAULTS = {
   attribute: 'rotation',
-  begin: '0',
+  begin: '',
+  end: '',
+  delay: 0,
   dur: 1000,
   easing: 'ease',
   direction: DIRECTIONS.normal,
@@ -61486,11 +58721,7 @@ module.exports.easingFunctions = EASING_FUNCTIONS;
 module.exports.fills = FILLS;
 module.exports.repeats = REPEATS;
 
-<<<<<<< HEAD
-},{"tween.js":21}],48:[function(_dereq_,module,exports){
-=======
-},{"tween.js":17}],44:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"tween.js":16}],43:[function(_dereq_,module,exports){
 var ANode = _dereq_('./a-node');
 var constants = _dereq_('../constants/animation');
 var coordinates = _dereq_('../utils/').coordinates;
@@ -61536,20 +58767,20 @@ module.exports.AAnimation = registerElement('a-animation', {
     attachedCallback: {
       value: function () {
         var self = this;
-        var el = self.el = self.parentNode;
+        var el = this.el = this.parentNode;
 
-        if (el.isNode) {
-          if (el.hasLoaded) {
-            init();
-          } else {
-            el.addEventListener('loaded', init.bind(self));
-          }
-        } else {
-          // To handle elements that are not yet `<a-entity>`s (e.g., templates).
-          el.addEventListener('nodeready', init.bind(self));
-        }
+        init();
 
         function init () {
+          if (!el.isPlaying) {
+            el.addEventListener('play', init);
+            return;
+          }
+          if (!el.hasLoaded) {
+            el.addEventListener('loaded', init);
+            return;
+          }
+
           self.applyMixin();
           self.update();
           self.load();
@@ -61587,7 +58818,7 @@ module.exports.AAnimation = registerElement('a-animation', {
         var el = self.el;
         var animationValues;
         var attribute = data.attribute;
-        var begin = parseInt(data.begin, 10);
+        var delay = parseInt(data.delay, 10);
         var currentValue = getComputedAttributeFor(el, attribute);
         var direction = self.getDirection(data.direction);
         var easing = EASING_FUNCTIONS[data.easing];
@@ -61607,7 +58838,7 @@ module.exports.AAnimation = registerElement('a-animation', {
           self.count = repeat === Infinity ? 0 : parseInt(data.repeat, 10);
         }
 
-        if (isNaN(begin)) { begin = 0; }
+        if (isNaN(delay)) { delay = 0; }
 
         // Store initial state.
         self.initialValue = self.initialValue || cloneValue(currentValue);
@@ -61634,7 +58865,7 @@ module.exports.AAnimation = registerElement('a-animation', {
         // Create Tween.
         return new TWEEN.Tween(cloneValue(from))
           .to(to, data.dur)
-          .delay(begin)
+          .delay(delay)
           .easing(easing)
           .repeat(repeat)
           .yoyo(yoyo)
@@ -61651,14 +58882,22 @@ module.exports.AAnimation = registerElement('a-animation', {
     update: {
       value: function () {
         var data = this.data;
+        // Deprecation warning for begin when used as a delay.
+        if (data.begin !== '' && !isNaN(data.begin)) {
+          console.warn("Using 'begin' to specify a delay is deprecated. Use 'delay' instead.");
+          data.delay = data.begin;
+          data.begin = '';
+        }
         var begin = data.begin;
+        var end = data.end;
         // Cancel previous event listeners
-        this.removeEventListeners(this.evt);
-        this.addEventListeners(begin);
+        if (this.evt) this.removeEventListeners(this.evt);
         // Store new event name.
-        this.evt = begin;
-        // If `begin` is a number, start the animation right away.
-        if (!isNaN(begin)) {
+        this.evt = { begin: begin, end: end };
+        // Add new event listeners
+        this.addEventListeners(this.evt);
+        // If `begin` is not defined, start the animation right away.
+        if (begin === '') {
           this.stop();
           this.start();
         }
@@ -61757,11 +58996,14 @@ module.exports.AAnimation = registerElement('a-animation', {
       value: function (evts) {
         var el = this.el;
         var self = this;
-        utils.splitString(evts).forEach(function (evt) {
+        utils.splitString(evts.begin).forEach(function (evt) {
           el.addEventListener(evt, self.start);
         });
-        // If "begin" is an event name, wait. If it is a delay or not defined, start.
-        if (!isNaN(evts)) { el.addEventListener('play', this.start); }
+        utils.splitString(evts.end).forEach(function (evt) {
+          el.addEventListener(evt, self.stop);
+        });
+        // If "begin" is an event name, wait. If it is not defined, start.
+        if (evts.begin === '') { el.addEventListener('play', this.start); }
         el.addEventListener('pause', this.stop);
         el.addEventListener('stateadded', this.onStateAdded);
         el.addEventListener('stateremoved', this.onStateRemoved);
@@ -61772,8 +59014,12 @@ module.exports.AAnimation = registerElement('a-animation', {
       value: function (evts) {
         var el = this.el;
         var start = this.start;
-        utils.splitString(evts).forEach(function (evt) {
+        var stop = this.stop;
+        utils.splitString(evts.begin).forEach(function (evt) {
           el.removeEventListener(evt, start);
+        });
+        utils.splitString(evts.end).forEach(function (evt) {
+          el.removeEventListener(evt, stop);
         });
         el.removeEventListener('stateadded', this.onStateAdded);
         el.removeEventListener('stateremoved', this.onStateRemoved);
@@ -61992,9 +59238,6 @@ function boolToNum (bool) {
   return bool ? 1 : 0;
 }
 
-<<<<<<< HEAD
-},{"../constants/animation":47,"../utils/":110,"./a-node":53,"./a-register-element":54,"./schema":62,"tween.js":21}],49:[function(_dereq_,module,exports){
-=======
 /**
  * A getComputedAttribute that supports dot notation to look up a component property.
  *
@@ -62046,8 +59289,7 @@ function rgbVectorToHex (color) {
   }).join('');
 }
 
-},{"../constants/animation":43,"../lib/three":99,"../utils/":112,"./a-node":49,"./a-register-element":50,"./schema":58,"tween.js":17}],45:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../constants/animation":42,"../lib/three":93,"../utils/":104,"./a-node":48,"./a-register-element":49,"./schema":57,"tween.js":16}],44:[function(_dereq_,module,exports){
 var ANode = _dereq_('./a-node');
 var debug = _dereq_('../utils/debug');
 var registerElement = _dereq_('./a-register-element').registerElement;
@@ -62179,11 +59421,7 @@ function mediaElementLoaded (el) {
   });
 }
 
-<<<<<<< HEAD
-},{"../lib/three":100,"../utils/debug":109,"./a-node":53,"./a-register-element":54}],50:[function(_dereq_,module,exports){
-=======
-},{"../lib/three":99,"../utils/debug":111,"./a-node":49,"./a-register-element":50}],46:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../lib/three":93,"../utils/debug":103,"./a-node":48,"./a-register-element":49}],45:[function(_dereq_,module,exports){
 /* global HTMLElement */
 var debug = _dereq_('../utils/debug');
 var registerElement = _dereq_('./a-register-element').registerElement;
@@ -62234,11 +59472,7 @@ module.exports = registerElement('a-cubemap', {
   })
 });
 
-<<<<<<< HEAD
-},{"../utils/debug":109,"./a-register-element":54}],51:[function(_dereq_,module,exports){
-=======
-},{"../utils/debug":111,"./a-register-element":50}],47:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../utils/debug":103,"./a-register-element":49}],46:[function(_dereq_,module,exports){
 /* global HTMLElement */
 var ANode = _dereq_('./a-node');
 var components = _dereq_('./component').components;
@@ -62300,13 +59534,14 @@ var proto = Object.create(ANode.prototype, {
     }
   },
 
+  /**
+   * Add to parent, load, play.
+   */
   attachedCallback: {
     value: function () {
       this.addToParent();
-      if (!this.isScene) {
-        this.load();
-        if (this.parentEl.isPlaying) { this.play(); }
-      }
+      if (this.isScene) { return; }
+      this.load();
     }
   },
 
@@ -62385,11 +59620,17 @@ var proto = Object.create(ANode.prototype, {
 
   setObject3D: {
     value: function (type, obj) {
+      var self = this;
       var oldObj = this.object3DMap[type];
       if (oldObj) { this.object3D.remove(oldObj); }
       if (obj instanceof THREE.Object3D) {
-        obj.el = this;
+        obj.el = self;
         this.object3D.add(obj);
+        if (obj.children.length) {
+          obj.traverse(function bindEl (child) {
+            child.el = self;
+          });
+        }
       }
       this.object3DMap[type] = obj;
     }
@@ -62452,15 +59693,27 @@ var proto = Object.create(ANode.prototype, {
 
   load: {
     value: function () {
+      var self = this;
+
       if (this.hasLoaded) { return; }
+
       // Attach to parent object3D.
       this.addToParent();
+
+      // Scene load.
+      function sceneLoadCallback () { self.updateComponents(); }
       if (this.isScene) {
-        ANode.prototype.load.call(this, this.updateComponents.bind(this));
-      } else {
-        ANode.prototype.load.call(this, this.updateComponents.bind(this),
-                                  function (el) { return el.isEntity; });
+        ANode.prototype.load.call(this, sceneLoadCallback);
+        return;
       }
+
+      // Entity load.
+      function entityLoadCallback () {
+        self.updateComponents();
+        // self.parentNode should work but that is null during this cb for unknown (#1483).
+        if (self.parentEl.isPlaying) { self.play(); }
+      }
+      ANode.prototype.load.call(this, entityLoadCallback, isEntity);
     },
     writable: window.debug
   },
@@ -62677,8 +59930,8 @@ var proto = Object.create(ANode.prototype, {
       });
 
       // Tell all child entities to play.
-      this.getChildEntities().forEach(function play (obj) {
-        obj.play();
+      this.getChildEntities().forEach(function play (entity) {
+        entity.play();
       });
 
       this.emit('play');
@@ -62942,16 +60195,16 @@ function playComponent (component, sceneEl) {
   sceneEl.addBehavior(component);
 }
 
+function isEntity (el) {
+  return el.isEntity;
+}
+
 AEntity = registerElement('a-entity', {
   prototype: proto
 });
 module.exports = AEntity;
 
-<<<<<<< HEAD
-},{"../lib/three":100,"../utils/":110,"./a-node":53,"./a-register-element":54,"./component":55}],52:[function(_dereq_,module,exports){
-=======
-},{"../lib/three":99,"../utils/":112,"./a-node":49,"./a-register-element":50,"./component":51}],48:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../lib/three":93,"../utils/":104,"./a-node":48,"./a-register-element":49,"./component":50}],47:[function(_dereq_,module,exports){
 /* global HTMLElement */
 var ANode = _dereq_('./a-node');
 var registerElement = _dereq_('./a-register-element').registerElement;
@@ -63026,11 +60279,7 @@ module.exports = registerElement('a-mixin', {
   )
 });
 
-<<<<<<< HEAD
-},{"./a-node":53,"./a-register-element":54,"./component":55}],53:[function(_dereq_,module,exports){
-=======
-},{"./a-node":49,"./a-register-element":50,"./component":51}],49:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"./a-node":48,"./a-register-element":49,"./component":50}],48:[function(_dereq_,module,exports){
 /* global HTMLElement, MutationObserver */
 var registerElement = _dereq_('./a-register-element').registerElement;
 var utils = _dereq_('../utils/');
@@ -63280,11 +60529,7 @@ module.exports = registerElement('a-node', {
   })
 });
 
-<<<<<<< HEAD
-},{"../utils/":110,"./a-register-element":54}],54:[function(_dereq_,module,exports){
-=======
-},{"../utils/":112,"./a-register-element":50}],50:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../utils/":104,"./a-register-element":49}],49:[function(_dereq_,module,exports){
 // Polyfill `document.registerElement`.
 _dereq_('document-register-element');
 
@@ -63454,11 +60699,7 @@ function copyProperties (source, destination) {
 var ANode = _dereq_('./a-node');
 var AEntity = _dereq_('./a-entity');
 
-<<<<<<< HEAD
-},{"./a-entity":51,"./a-node":53,"document-register-element":7}],55:[function(_dereq_,module,exports){
-=======
-},{"./a-entity":47,"./a-node":49,"document-register-element":5}],51:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"./a-entity":46,"./a-node":48,"document-register-element":4}],50:[function(_dereq_,module,exports){
 /* global HTMLElement */
 var schema = _dereq_('./schema');
 var systems = _dereq_('./system');
@@ -63808,11 +61049,7 @@ function extendProperties (dest, source, isSinglePropSchema) {
   return utils.extend(dest, source);
 }
 
-<<<<<<< HEAD
-},{"../utils/":110,"./schema":62,"./system":64}],56:[function(_dereq_,module,exports){
-=======
-},{"../utils/":112,"./schema":58,"./system":60}],52:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../utils/":104,"./schema":57,"./system":59}],51:[function(_dereq_,module,exports){
 var schema = _dereq_('./schema');
 
 var processSchema = schema.process;
@@ -63886,11 +61123,7 @@ module.exports.registerGeometry = function (name, definition) {
   return NewGeometry;
 };
 
-<<<<<<< HEAD
-},{"../lib/three":100,"./schema":62}],57:[function(_dereq_,module,exports){
-=======
-},{"../lib/three":99,"./schema":58}],53:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../lib/three":93,"./schema":57}],52:[function(_dereq_,module,exports){
 var coordinates = _dereq_('../utils/coordinates');
 var debug = _dereq_('debug');
 
@@ -64021,11 +61254,7 @@ function vecParse (value) {
   return coordinates.parse(value, this.default);
 }
 
-<<<<<<< HEAD
-},{"../utils/coordinates":108,"debug":2}],58:[function(_dereq_,module,exports){
-=======
-},{"../utils/coordinates":110,"debug":2}],54:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../utils/coordinates":102,"debug":1}],53:[function(_dereq_,module,exports){
 /* global Promise */
 var initMetaTags = _dereq_('./metaTags').inject;
 var initWakelock = _dereq_('./wakelock');
@@ -64105,7 +61334,6 @@ module.exports = registerElement('a-scene', {
         initWakelock(this);
 
         window.addEventListener('load', resize);
-        window.addEventListener('beforeunload', this.exitVR.bind(this));
         window.addEventListener('resize', resize);
         this.play();
       },
@@ -64166,8 +61394,12 @@ module.exports = registerElement('a-scene', {
             window.screen.orientation.lock('landscape');
           }
         }
-        function enterVRFailure () {
-          throw new Error('enter VR mode error. requestPresent failed');
+        function enterVRFailure (err) {
+          if (err && err.message) {
+            throw new Error('Failed to enter VR mode (`requestPresent`): ' + err.message);
+          } else {
+            throw new Error('Failed to enter VR mode (`requestPresent`).');
+          }
         }
       }
     },
@@ -64185,8 +61417,12 @@ module.exports = registerElement('a-scene', {
           self.resize();
           self.emit('exit-vr', {target: self});
         }
-        function exitVRFailure () {
-          throw new Error('exit VR mode error. exitPresent failed');
+        function exitVRFailure (err) {
+          if (err && err.message) {
+            throw new Error('Failed to exit VR mode (`exitPresent`): ' + err.message);
+          } else {
+            throw new Error('Failed to exit VR mode (`exitPresent`).');
+          }
         }
       }
     },
@@ -64235,15 +61471,9 @@ module.exports = registerElement('a-scene', {
         // Set at startup. To enable/disable antialias
         // at runttime we would have to recreate the whole context
         var antialias = this.getAttribute('antialias') === 'true';
-<<<<<<< HEAD
-        var renderer = this.renderer = this.monoRenderer = new THREE.WebGLRenderer({
-          canvas: canvas,
-          antialias: antialias,
-=======
         var renderer = this.renderer = new THREE.WebGLRenderer({
           canvas: canvas,
           antialias: antialias || window.hasNativeWebVRImplementation,
->>>>>>> upstream/master
           alpha: true
         });
         renderer.setPixelRatio(window.devicePixelRatio);
@@ -64276,7 +61506,7 @@ module.exports = registerElement('a-scene', {
             if (window.performance) {
               window.performance.mark('render-started');
             }
-            this.render();
+            this.render(0);
             this.renderStarted = true;
             this.emit('renderstart');
           }
@@ -64370,93 +61600,7 @@ function getCanvasSize (canvas) {
   };
 }
 
-<<<<<<< HEAD
-/**
- * Manually handles fullscreen for non-VR mobile where the renderer' VR
- * display is not polyfilled.
- *
- * Desktop just works so use the renderer.setFullScreen in that case.
- */
-function setFullscreen (canvas) {
-  if (canvas.requestFullscreen) {
-    canvas.requestFullscreen();
-  } else if (canvas.mozRequestFullScreen) {
-    canvas.mozRequestFullScreen();
-  } else if (canvas.webkitRequestFullscreen) {
-    canvas.webkitRequestFullscreen();
-  }
-}
-
-},{"../../lib/three":100,"../../utils/":110,"../a-entity":51,"../a-node":53,"../a-register-element":54,"../system":64,"./fullscreen":59,"./metaTags":60,"./wakelock":61,"tween.js":21}],59:[function(_dereq_,module,exports){
-var isIframed = _dereq_('../../utils/').isIframed;
-
-/**
- * Register fullscreen listener to scene.
- */
-module.exports = function initFullscreenListener (scene) {
-  var handler = fullscreenChangeHandler.bind(scene);
-  document.addEventListener('mozfullscreenchange', handler);
-  document.addEventListener('webkitfullscreenchange', handler);
-
-  // Handles fullscreen behavior when inside an iframe.
-  if (!isIframed()) { return; }
-  window.addEventListener('message', iframedFullscreenChangeHandler.bind(scene));
-};
-
-function fullscreenChangeHandler (event) {
-  var fullscreenElement = document.fullscreenElement ||
-                          document.mozFullScreenElement ||
-                          document.webkitFullscreenElement;
-  var scene = this;
-
-  // Lock to landscape orientation on mobile.
-  if (scene.isMobile && window.screen.orientation) {
-    if (fullscreenElement) {
-      window.screen.orientation.lock('landscape');
-    } else {
-      window.screen.orientation.unlock();
-    }
-  }
-
-  if (fullscreenElement) {
-    enterFullscreenHandler(scene);
-  } else {
-    exitFullscreenHandler(scene);
-  }
-}
-
-function iframedFullscreenChangeHandler (event) {
-  var scene = this;
-  if (!event.data) { return; }
-
-  switch (event.data.type) {
-    case 'fullscreen': {
-      switch (event.data.data) {
-        case 'enter':
-          enterFullscreenHandler(scene);
-          break;
-        case 'exit':
-          exitFullscreenHandler(scene);
-          break;
-      }
-    }
-  }
-}
-
-function enterFullscreenHandler (scene) {
-  scene.addState('fullscreen');
-  scene.emit('fullscreen-enter');
-}
-
-function exitFullscreenHandler (scene) {
-  scene.removeState('fullscreen');
-  scene.emit('fullscreen-exit');
-}
-
-},{"../../utils/":110}],60:[function(_dereq_,module,exports){
-=======
-},{"../../lib/three":99,"../../utils/":112,"../a-entity":47,"../a-node":49,"../a-register-element":50,"../system":60,"./metaTags":55,"./postMessage":56,"./wakelock":57,"tween.js":17}],55:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../../lib/three":93,"../../utils/":104,"../a-entity":46,"../a-node":48,"../a-register-element":49,"../system":59,"./metaTags":54,"./postMessage":55,"./wakelock":56,"tween.js":16}],54:[function(_dereq_,module,exports){
 var extend = _dereq_('../../utils').extend;
 
 var MOBILE_HEAD_TAGS = module.exports.MOBILE_HEAD_TAGS = [
@@ -64464,8 +61608,7 @@ var MOBILE_HEAD_TAGS = module.exports.MOBILE_HEAD_TAGS = [
 
   // W3C-standardised meta tags.
   Meta({name: 'mobile-web-app-capable', content: 'yes'}),
-  Meta({name: 'theme-color', content: 'black'}),
-  Link({rel: 'icon', sizes: '192x192', href: 'https://aframe.io/images/aframe-logo-192.png'})
+  Meta({name: 'theme-color', content: 'black'})
 ];
 
 var MOBILE_IOS_HEAD_TAGS = [
@@ -64536,10 +61679,7 @@ function createTag (tagObj) {
   return extend(meta, tagObj.attributes);
 }
 
-<<<<<<< HEAD
-},{"../../utils":110}],61:[function(_dereq_,module,exports){
-=======
-},{"../../utils":112}],56:[function(_dereq_,module,exports){
+},{"../../utils":104}],55:[function(_dereq_,module,exports){
 var isIframed = _dereq_('../../utils/').isIframed;
 
 /**
@@ -64571,8 +61711,7 @@ function postMessageAPIHandler (event) {
   }
 }
 
-},{"../../utils/":112}],57:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../../utils/":104}],56:[function(_dereq_,module,exports){
 var Wakelock = _dereq_('../../../vendor/wakelock/wakelock');
 
 module.exports = function initWakelock (scene) {
@@ -64583,11 +61722,7 @@ module.exports = function initWakelock (scene) {
   scene.addEventListener('exit-vr', function () { wakelock.release(); });
 };
 
-<<<<<<< HEAD
-},{"../../../vendor/wakelock/wakelock":117}],62:[function(_dereq_,module,exports){
-=======
-},{"../../../vendor/wakelock/wakelock":122}],58:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../../../vendor/wakelock/wakelock":113}],57:[function(_dereq_,module,exports){
 var debug = _dereq_('../utils/debug');
 var propertyTypes = _dereq_('./propertyTypes').propertyTypes;
 var warn = debug('core:schema:warn');
@@ -64744,11 +61879,7 @@ function stringifyProperty (value, propDefinition) {
 }
 module.exports.stringifyProperty = stringifyProperty;
 
-<<<<<<< HEAD
-},{"../utils/debug":109,"./propertyTypes":57}],63:[function(_dereq_,module,exports){
-=======
-},{"../utils/debug":111,"./propertyTypes":53}],59:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../utils/debug":103,"./propertyTypes":52}],58:[function(_dereq_,module,exports){
 var schema = _dereq_('./schema');
 
 var processSchema = schema.process;
@@ -64907,11 +62038,7 @@ module.exports.registerShader = function (name, definition) {
   return NewShader;
 };
 
-<<<<<<< HEAD
-},{"../lib/three":100,"./schema":62}],64:[function(_dereq_,module,exports){
-=======
-},{"../lib/three":99,"./schema":58}],60:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../lib/three":93,"./schema":57}],59:[function(_dereq_,module,exports){
 var components = _dereq_('./component');
 var systems = module.exports.systems = {};  // Keep track of registered components.
 
@@ -64995,13 +62122,10 @@ module.exports.registerSystem = function (name, definition) {
   for (i = 0; i < scenes.length; i++) { scenes[i].initSystem(name); }
 };
 
-<<<<<<< HEAD
-},{"./component":55}],65:[function(_dereq_,module,exports){
-=======
-},{"./component":51}],61:[function(_dereq_,module,exports){
+},{"./component":50}],60:[function(_dereq_,module,exports){
 _dereq_('./pivot');
 
-},{"./pivot":62}],62:[function(_dereq_,module,exports){
+},{"./pivot":61}],61:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../../core/component').registerComponent;
 var THREE = _dereq_('../../lib/three');
 
@@ -65050,8 +62174,7 @@ registerComponent('pivot', {
   }
 });
 
-},{"../../core/component":51,"../../lib/three":99}],63:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../../core/component":50,"../../lib/three":93}],62:[function(_dereq_,module,exports){
 var ANode = _dereq_('../../core/a-node');
 var registerElement = _dereq_('../../core/a-register-element').registerElement;
 
@@ -65160,17 +62283,13 @@ module.exports = registerElement('a-event', {
   })
 });
 
-<<<<<<< HEAD
-},{"../../core/a-node":53,"../../core/a-register-element":54}],66:[function(_dereq_,module,exports){
-=======
-},{"../../core/a-node":49,"../../core/a-register-element":50}],64:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../../core/a-node":48,"../../core/a-register-element":49}],63:[function(_dereq_,module,exports){
 /**
  * Common mesh defaults, mappings, and transforms.
  */
 module.exports = function getMeshMixin () {
   return {
-    defaultAttributes: {
+    defaultComponents: {
       material: { }
     },
 
@@ -65197,58 +62316,24 @@ module.exports = function getMeshMixin () {
   };
 };
 
-},{}],65:[function(_dereq_,module,exports){
-_dereq_('./primitives/a-box');
+},{}],64:[function(_dereq_,module,exports){
 _dereq_('./primitives/a-camera');
-_dereq_('./primitives/a-circle');
 _dereq_('./primitives/a-collada-model');
-_dereq_('./primitives/a-cone');
-_dereq_('./primitives/a-cursor');
 _dereq_('./primitives/a-curvedimage');
-_dereq_('./primitives/a-cylinder');
 _dereq_('./primitives/a-image');
 _dereq_('./primitives/a-light');
-_dereq_('./primitives/a-model');
 _dereq_('./primitives/a-obj-model');
-_dereq_('./primitives/a-plane');
-_dereq_('./primitives/a-ring');
 _dereq_('./primitives/a-sky');
-_dereq_('./primitives/a-sphere');
-_dereq_('./primitives/a-torus');
+_dereq_('./primitives/a-sound');
 _dereq_('./primitives/a-video');
 _dereq_('./primitives/a-videosphere');
+_dereq_('./primitives/meshPrimitives');
 
-},{"./primitives/a-box":66,"./primitives/a-camera":67,"./primitives/a-circle":68,"./primitives/a-collada-model":69,"./primitives/a-cone":70,"./primitives/a-cursor":71,"./primitives/a-curvedimage":72,"./primitives/a-cylinder":73,"./primitives/a-image":74,"./primitives/a-light":75,"./primitives/a-model":76,"./primitives/a-obj-model":77,"./primitives/a-plane":78,"./primitives/a-ring":79,"./primitives/a-sky":80,"./primitives/a-sphere":81,"./primitives/a-torus":82,"./primitives/a-video":83,"./primitives/a-videosphere":84}],66:[function(_dereq_,module,exports){
-var getMeshMixin = _dereq_('../getMeshMixin');
-var registerPrimitive = _dereq_('../registerPrimitive');
-var utils = _dereq_('../../../utils/');
-
-var boxDefinition = utils.extendDeep({}, getMeshMixin(), {
-  defaultAttributes: {
-    geometry: {
-      primitive: 'box'
-    }
-  },
-
-  mappings: {
-    depth: 'geometry.depth',
-    height: 'geometry.height',
-    translate: 'geometry.translate',
-    width: 'geometry.width'
-  }
-});
-
-registerPrimitive('a-box', boxDefinition);
-
-<<<<<<< HEAD
-},{"../../../utils/":110,"../getMeshMixin":66,"../registerPrimitive":87}],69:[function(_dereq_,module,exports){
-=======
-},{"../../../utils/":112,"../getMeshMixin":64,"../registerPrimitive":85}],67:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"./primitives/a-camera":65,"./primitives/a-collada-model":66,"./primitives/a-curvedimage":67,"./primitives/a-image":68,"./primitives/a-light":69,"./primitives/a-obj-model":70,"./primitives/a-sky":71,"./primitives/a-sound":72,"./primitives/a-video":73,"./primitives/a-videosphere":74,"./primitives/meshPrimitives":75}],65:[function(_dereq_,module,exports){
 var registerPrimitive = _dereq_('../registerPrimitive');
 
 registerPrimitive('a-camera', {
-  defaultAttributes: {
+  defaultComponents: {
     camera: {},
     'look-controls': {},
     'wasd-controls': {}
@@ -65260,7 +62345,8 @@ registerPrimitive('a-camera', {
     fov: 'camera.fov',
     'look-controls-enabled': 'look-controls.enabled',
     near: 'camera.near',
-    'wasd-controls-enabled': 'wasd-controls.enabled'
+    'wasd-controls-enabled': 'wasd-controls.enabled',
+    zoom: 'camera.zoom'
   },
 
   deprecatedMappings: {
@@ -65273,31 +62359,7 @@ registerPrimitive('a-camera', {
   }
 });
 
-},{"../registerPrimitive":85}],68:[function(_dereq_,module,exports){
-var getMeshMixin = _dereq_('../getMeshMixin');
-var registerPrimitive = _dereq_('../registerPrimitive');
-var utils = _dereq_('../../../utils/');
-
-registerPrimitive('a-circle', utils.extendDeep({}, getMeshMixin(), {
-  defaultAttributes: {
-    geometry: {
-      primitive: 'circle'
-    }
-  },
-
-  mappings: {
-    'radius': 'geometry.radius',
-    'segments': 'geometry.segments',
-    'theta-length': 'geometry.theta-length',
-    'theta-start': 'geometry.theta-start'
-  }
-}));
-
-<<<<<<< HEAD
-},{"../../../utils/":110,"../getMeshMixin":66,"../registerPrimitive":87}],71:[function(_dereq_,module,exports){
-=======
-},{"../../../utils/":112,"../getMeshMixin":64,"../registerPrimitive":85}],69:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../registerPrimitive":76}],66:[function(_dereq_,module,exports){
 var getMeshMixin = _dereq_('../getMeshMixin');
 var registerPrimitive = _dereq_('../registerPrimitive');
 var utils = _dereq_('../../../utils/');
@@ -65308,86 +62370,13 @@ registerPrimitive('a-collada-model', utils.extendDeep({}, getMeshMixin(), {
   }
 }));
 
-<<<<<<< HEAD
-},{"../../../utils/":110,"../getMeshMixin":66,"../registerPrimitive":87}],72:[function(_dereq_,module,exports){
-=======
-},{"../../../utils/":112,"../getMeshMixin":64,"../registerPrimitive":85}],70:[function(_dereq_,module,exports){
->>>>>>> upstream/master
-var getMeshMixin = _dereq_('../getMeshMixin');
-var registerPrimitive = _dereq_('../registerPrimitive');
-var utils = _dereq_('../../../utils/');
-
-registerPrimitive('a-cone', utils.extendDeep({}, getMeshMixin(), {
-  defaultAttributes: {
-    geometry: {
-      primitive: 'cone'
-    }
-  },
-
-  mappings: {
-    height: 'geometry.height',
-    'open-ended': 'geometry.openEnded',
-    'radius-bottom': 'geometry.radiusBottom',
-    'radius-top': 'geometry.radiusTop',
-    'segments-height': 'geometry.segmentsHeight',
-    'segments-radial': 'geometry.segmentsRadial',
-    'theta-length': 'geometry.thetaLength',
-    'theta-start': 'geometry.thetaStart',
-    translate: 'geometry.translate'
-  }
-}));
-
-<<<<<<< HEAD
-},{"../../../utils/":110,"../getMeshMixin":66,"../registerPrimitive":87}],73:[function(_dereq_,module,exports){
-=======
-},{"../../../utils/":112,"../getMeshMixin":64,"../registerPrimitive":85}],71:[function(_dereq_,module,exports){
->>>>>>> upstream/master
-var getMeshMixin = _dereq_('../getMeshMixin');
-var registerPrimitive = _dereq_('../registerPrimitive');
-var utils = _dereq_('../../../utils/');
-
-registerPrimitive('a-cursor', utils.extendDeep({}, getMeshMixin(), {
-  defaultAttributes: {
-    cursor: {},
-    geometry: {
-      primitive: 'ring',
-      radiusOuter: 0.016,
-      radiusInner: 0.01,
-      segmentsTheta: 64
-    },
-    material: {
-      color: '#000',
-      shader: 'flat',
-      opacity: 0.8
-    },
-    position: {
-      x: 0,
-      y: 0,
-      z: -1
-    },
-    raycaster: {}
-  },
-
-  mappings: {
-    far: 'raycaster.far',
-    fuse: 'cursor.fuse',
-    interval: 'raycaster.interval',
-    objects: 'raycaster.objects',
-    timeout: 'cursor.timeout'
-  }
-}));
-
-<<<<<<< HEAD
-},{"../../../utils/":110,"../getMeshMixin":66,"../registerPrimitive":87}],74:[function(_dereq_,module,exports){
-=======
-},{"../../../utils/":112,"../getMeshMixin":64,"../registerPrimitive":85}],72:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../../../utils/":104,"../getMeshMixin":63,"../registerPrimitive":76}],67:[function(_dereq_,module,exports){
 var getMeshMixin = _dereq_('../getMeshMixin');
 var registerPrimitive = _dereq_('../registerPrimitive');
 var utils = _dereq_('../../../utils/');
 
 registerPrimitive('a-curvedimage', utils.extendDeep({}, getMeshMixin(), {
-  defaultAttributes: {
+  defaultComponents: {
     geometry: {
       height: 1,
       primitive: 'cylinder',
@@ -65419,46 +62408,13 @@ registerPrimitive('a-curvedimage', utils.extendDeep({}, getMeshMixin(), {
   }
 }));
 
-<<<<<<< HEAD
-},{"../../../utils/":110,"../getMeshMixin":66,"../registerPrimitive":87}],75:[function(_dereq_,module,exports){
-=======
-},{"../../../utils/":112,"../getMeshMixin":64,"../registerPrimitive":85}],73:[function(_dereq_,module,exports){
->>>>>>> upstream/master
-var getMeshMixin = _dereq_('../getMeshMixin');
-var registerPrimitive = _dereq_('../registerPrimitive');
-var utils = _dereq_('../../../utils/');
-
-registerPrimitive('a-cylinder', utils.extendDeep({}, getMeshMixin(), {
-  defaultAttributes: {
-    geometry: {
-      primitive: 'cylinder'
-    }
-  },
-
-  mappings: {
-    height: 'geometry.height',
-    'open-ended': 'geometry.openEnded',
-    radius: 'geometry.radius',
-    'radius-bottom': 'geometry.radiusBottom',
-    'radius-top': 'geometry.radiusTop',
-    'segments-radial': 'geometry.segmentsRadial',
-    'theta-length': 'geometry.thetaLength',
-    'theta-start': 'geometry.thetaStart',
-    translate: 'geometry.translate'
-  }
-}));
-
-<<<<<<< HEAD
-},{"../../../utils/":110,"../getMeshMixin":66,"../registerPrimitive":87}],76:[function(_dereq_,module,exports){
-=======
-},{"../../../utils/":112,"../getMeshMixin":64,"../registerPrimitive":85}],74:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../../../utils/":104,"../getMeshMixin":63,"../registerPrimitive":76}],68:[function(_dereq_,module,exports){
 var getMeshMixin = _dereq_('../getMeshMixin');
 var registerPrimitive = _dereq_('../registerPrimitive');
 var utils = _dereq_('../../../utils/');
 
 registerPrimitive('a-image', utils.extendDeep({}, getMeshMixin(), {
-  defaultAttributes: {
+  defaultComponents: {
     geometry: {
       primitive: 'plane'
     },
@@ -65472,20 +62428,15 @@ registerPrimitive('a-image', utils.extendDeep({}, getMeshMixin(), {
 
   mappings: {
     height: 'geometry.height',
-    translate: 'geometry.translate',
     width: 'geometry.width'
   }
 }));
 
-<<<<<<< HEAD
-},{"../../../utils/":110,"../getMeshMixin":66,"../registerPrimitive":87}],77:[function(_dereq_,module,exports){
-=======
-},{"../../../utils/":112,"../getMeshMixin":64,"../registerPrimitive":85}],75:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../../../utils/":104,"../getMeshMixin":63,"../registerPrimitive":76}],69:[function(_dereq_,module,exports){
 var registerPrimitive = _dereq_('../registerPrimitive');
 
 registerPrimitive('a-light', {
-  defaultAttributes: {
+  defaultComponents: {
     light: {}
   },
 
@@ -65501,34 +62452,7 @@ registerPrimitive('a-light', {
   }
 });
 
-},{"../registerPrimitive":85}],76:[function(_dereq_,module,exports){
-var getMeshMixin = _dereq_('../getMeshMixin');
-var registerPrimitive = _dereq_('../registerPrimitive');
-var utils = _dereq_('../../../utils/');
-
-registerPrimitive('a-model', utils.extend({}, getMeshMixin(), {
-  deprecated: '<a-model> is deprecated. Use <a-obj-model> or <a-collada-model> instead.',
-
-  defaultAttributes: {
-    loader: {
-      format: 'collada'
-    },
-    material: {
-      color: '#FFF'
-    }
-  },
-
-  mappings: {
-    src: 'loader.src',
-    format: 'loader.format'
-  }
-}));
-
-<<<<<<< HEAD
-},{"../../../utils/":110,"../getMeshMixin":66,"../registerPrimitive":87}],79:[function(_dereq_,module,exports){
-=======
-},{"../../../utils/":112,"../getMeshMixin":64,"../registerPrimitive":85}],77:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../registerPrimitive":76}],70:[function(_dereq_,module,exports){
 var meshMixin = _dereq_('../getMeshMixin')();
 var registerPrimitive = _dereq_('../registerPrimitive');
 var utils = _dereq_('../../../utils/');
@@ -65544,66 +62468,13 @@ registerPrimitive('a-obj-model', utils.extendDeep({}, meshMixin, {
   }
 }));
 
-<<<<<<< HEAD
-},{"../../../utils/":110,"../getMeshMixin":66,"../registerPrimitive":87}],80:[function(_dereq_,module,exports){
-=======
-},{"../../../utils/":112,"../getMeshMixin":64,"../registerPrimitive":85}],78:[function(_dereq_,module,exports){
->>>>>>> upstream/master
-var getMeshMixin = _dereq_('../getMeshMixin');
-var registerPrimitive = _dereq_('../registerPrimitive');
-var utils = _dereq_('../../../utils/');
-
-registerPrimitive('a-plane', utils.extendDeep({}, getMeshMixin(), {
-  defaultAttributes: {
-    geometry: {
-      primitive: 'plane'
-    }
-  },
-
-  mappings: {
-    height: 'geometry.height',
-    translate: 'geometry.translate',
-    width: 'geometry.width'
-  }
-}));
-
-<<<<<<< HEAD
-},{"../../../utils/":110,"../getMeshMixin":66,"../registerPrimitive":87}],81:[function(_dereq_,module,exports){
-=======
-},{"../../../utils/":112,"../getMeshMixin":64,"../registerPrimitive":85}],79:[function(_dereq_,module,exports){
->>>>>>> upstream/master
-var getMeshMixin = _dereq_('../getMeshMixin');
-var registerPrimitive = _dereq_('../registerPrimitive');
-var utils = _dereq_('../../../utils/');
-
-registerPrimitive('a-ring', utils.extendDeep({}, getMeshMixin(), {
-  defaultAttributes: {
-    geometry: {
-      primitive: 'ring'
-    }
-  },
-
-  mappings: {
-    'radius-inner': 'geometry.radiusInner',
-    'radius-outer': 'geometry.radiusOuter',
-    'segments-phi': 'geometry.segments-phi',
-    'segments-theta': 'geometry.segments-theta',
-    'theta-length': 'geometry.theta-length',
-    'theta-start': 'geometry.theta-start'
-  }
-}));
-
-<<<<<<< HEAD
-},{"../../../utils/":110,"../getMeshMixin":66,"../registerPrimitive":87}],82:[function(_dereq_,module,exports){
-=======
-},{"../../../utils/":112,"../getMeshMixin":64,"../registerPrimitive":85}],80:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../../../utils/":104,"../getMeshMixin":63,"../registerPrimitive":76}],71:[function(_dereq_,module,exports){
 var getMeshMixin = _dereq_('../getMeshMixin');
 var registerPrimitive = _dereq_('../registerPrimitive');
 var utils = _dereq_('../../../utils/');
 
 registerPrimitive('a-sky', utils.extendDeep({}, getMeshMixin(), {
-  defaultAttributes: {
+  defaultComponents: {
     geometry: {
       primitive: 'sphere',
       radius: 100,
@@ -65624,66 +62495,30 @@ registerPrimitive('a-sky', utils.extendDeep({}, getMeshMixin(), {
   }
 }));
 
-<<<<<<< HEAD
-},{"../../../utils/":110,"../getMeshMixin":66,"../registerPrimitive":87}],83:[function(_dereq_,module,exports){
-=======
-},{"../../../utils/":112,"../getMeshMixin":64,"../registerPrimitive":85}],81:[function(_dereq_,module,exports){
->>>>>>> upstream/master
-var getMeshMixin = _dereq_('../getMeshMixin');
+},{"../../../utils/":104,"../getMeshMixin":63,"../registerPrimitive":76}],72:[function(_dereq_,module,exports){
 var registerPrimitive = _dereq_('../registerPrimitive');
-var utils = _dereq_('../../../utils/');
 
-registerPrimitive('a-sphere', utils.extendDeep({}, getMeshMixin(), {
-  defaultAttributes: {
-    geometry: {
-      primitive: 'sphere'
-    }
+registerPrimitive('a-sound', {
+  defaultComponents: {
+    sound: {}
   },
 
   mappings: {
-    radius: 'geometry.radius',
-    'segments-height': 'geometry.segmentsHeight',
-    'segments-width': 'geometry.segmentsWidth',
-    translate: 'geometry.translate'
+    src: 'sound.src',
+    on: 'sound.on',
+    autoplay: 'sound.autoplay',
+    loop: 'sound.loop',
+    volume: 'sound.volume'
   }
-}));
+});
 
-<<<<<<< HEAD
-},{"../../../utils/":110,"../getMeshMixin":66,"../registerPrimitive":87}],84:[function(_dereq_,module,exports){
-=======
-},{"../../../utils/":112,"../getMeshMixin":64,"../registerPrimitive":85}],82:[function(_dereq_,module,exports){
->>>>>>> upstream/master
-var getMeshMixin = _dereq_('../getMeshMixin');
-var registerPrimitive = _dereq_('../registerPrimitive');
-var utils = _dereq_('../../../utils/');
-
-registerPrimitive('a-torus', utils.extendDeep({}, getMeshMixin(), {
-  defaultAttributes: {
-    geometry: {
-      primitive: 'torus'
-    }
-  },
-
-  mappings: {
-    'arc': 'geometry.arc',
-    'radius': 'geometry.radius',
-    'radius-tubular': 'geometry.radiusTubular',
-    'segments-radial': 'geometry.segmentsRadial',
-    'segments-tubular': 'geometry.segmentsTubular'
-  }
-}));
-
-<<<<<<< HEAD
-},{"../../../utils/":110,"../getMeshMixin":66,"../registerPrimitive":87}],85:[function(_dereq_,module,exports){
-=======
-},{"../../../utils/":112,"../getMeshMixin":64,"../registerPrimitive":85}],83:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../registerPrimitive":76}],73:[function(_dereq_,module,exports){
 var getMeshMixin = _dereq_('../getMeshMixin');
 var registerPrimitive = _dereq_('../registerPrimitive');
 var utils = _dereq_('../../../utils/');
 
 registerPrimitive('a-video', utils.extendDeep({}, getMeshMixin(), {
-  defaultAttributes: {
+  defaultComponents: {
     geometry: {
       primitive: 'plane'
     },
@@ -65697,27 +62532,22 @@ registerPrimitive('a-video', utils.extendDeep({}, getMeshMixin(), {
 
   mappings: {
     height: 'geometry.height',
-    translate: 'geometry.translate',
     width: 'geometry.width'
   }
 }));
 
-<<<<<<< HEAD
-},{"../../../utils/":110,"../getMeshMixin":66,"../registerPrimitive":87}],86:[function(_dereq_,module,exports){
-=======
-},{"../../../utils/":112,"../getMeshMixin":64,"../registerPrimitive":85}],84:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../../../utils/":104,"../getMeshMixin":63,"../registerPrimitive":76}],74:[function(_dereq_,module,exports){
 var getMeshMixin = _dereq_('../getMeshMixin');
 var registerPrimitive = _dereq_('../registerPrimitive');
 var utils = _dereq_('../../../utils/');
 
 registerPrimitive('a-videosphere', utils.extendDeep({}, getMeshMixin(), {
-  defaultAttributes: {
+  defaultComponents: {
     geometry: {
       primitive: 'sphere',
-      radius: 5000,
+      radius: 100,
       segmentsWidth: 64,
-      segmentsHeight: 64
+      segmentsHeight: 20
     },
     material: {
       color: '#FFF',
@@ -65733,11 +62563,47 @@ registerPrimitive('a-videosphere', utils.extendDeep({}, getMeshMixin(), {
   }
 }));
 
-<<<<<<< HEAD
-},{"../../../utils/":110,"../getMeshMixin":66,"../registerPrimitive":87}],87:[function(_dereq_,module,exports){
-=======
-},{"../../../utils/":112,"../getMeshMixin":64,"../registerPrimitive":85}],85:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../../../utils/":104,"../getMeshMixin":63,"../registerPrimitive":76}],75:[function(_dereq_,module,exports){
+/**
+ * Automated mesh primitive registration.
+ */
+var getMeshMixin = _dereq_('../getMeshMixin');
+var geometries = _dereq_('../../../core/geometry').geometries;
+var geometryNames = _dereq_('../../../core/geometry').geometryNames;
+var registerPrimitive = _dereq_('../registerPrimitive');
+var utils = _dereq_('../../../utils/');
+
+// For testing.
+var meshPrimitives = module.exports = {};
+
+// Generate primitive for each geometry type.
+geometryNames.forEach(function registerMeshPrimitive (geometryName) {
+  var geometry = geometries[geometryName];
+  var geometryHyphened = unCamelCase(geometryName);
+
+  // Generate mappings.
+  var mappings = {};
+  Object.keys(geometry.schema).forEach(function createMapping (property) {
+    mappings[unCamelCase(property)] = 'geometry.' + property;
+  });
+
+  // Register.
+  var tagName = 'a-' + geometryHyphened;
+  var primitive = registerPrimitive(tagName, utils.extendDeep({}, getMeshMixin(), {
+    defaultComponents: {geometry: {primitive: geometryName}},
+    mappings: mappings
+  }));
+  meshPrimitives[tagName] = primitive;
+});
+
+/**
+ * camelCase to hyphened-string.
+ */
+function unCamelCase (str) {
+  return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+}
+
+},{"../../../core/geometry":51,"../../../utils/":104,"../getMeshMixin":63,"../registerPrimitive":76}],76:[function(_dereq_,module,exports){
 var AEntity = _dereq_('../../core/a-entity');
 var components = _dereq_('../../core/component').components;
 var registerElement = _dereq_('../../core/a-register-element').registerElement;
@@ -65750,10 +62616,15 @@ module.exports = function registerPrimitive (name, definition) {
   name = name.toLowerCase();
   log('Registering <%s>', name);
 
+  // Deprecation warning for defaultAttributes usage.
+  if (definition.defaultAttributes) {
+    console.warn("The 'defaultAttributes' object is deprecated. Use 'defaultComponents' instead.");
+  }
+
   return registerElement(name, {
     prototype: Object.create(AEntity.prototype, {
-      defaultAttributes: {
-        value: definition.defaultAttributes || {}
+      defaultComponentsFromPrimitive: {
+        value: definition.defaultComponents || definition.defaultAttributes || {}
       },
 
       deprecated: {
@@ -65785,13 +62656,7 @@ module.exports = function registerPrimitive (name, definition) {
         value: function () {
           var self = this;
           var attributes = this.attributes;
-<<<<<<< HEAD
-
           this.applyDefaultComponents();
-
-=======
-          this.applyDefaultComponents();
->>>>>>> upstream/master
           // Apply initial attributes.
           Object.keys(attributes).forEach(function applyInitial (attributeName) {
             var attr = attributes[attributeName];
@@ -65812,38 +62677,24 @@ module.exports = function registerPrimitive (name, definition) {
       applyDefaultComponents: {
         value: function () {
           var self = this;
-          var defaultData = this.defaultAttributes;
-<<<<<<< HEAD
+          var defaultData = this.defaultComponentsFromPrimitive;
 
           // Apply default components.
           Object.keys(defaultData).forEach(function applyDefault (componentName) {
             var componentData = defaultData[componentName];
 
             // Set component properties individually to not overwrite user-defined components.
-            if (componentData instanceof Object && Object.keys(componentData).length) {
-              Object.keys(componentData).forEach(function setProperty (propName) {
-                // Check if component property already defined.
-                var definedData = self.getAttribute(componentName);
-                if (definedData && definedData[propName] !== undefined) { return; }
-
-                self.setAttribute(componentName, propName, componentData[propName]);
-              });
-=======
-          // Apply default components.
-          Object.keys(defaultData).forEach(function applyDefault (componentName) {
-            var componentData = defaultData[componentName];
-            // Set component properties individually to not overwrite user-defined components.
-            if (componentData instanceof Object && Object.keys(componentData).length) {
+            if (componentData instanceof Object) {
               var component = components[componentName];
               var attrValues = self.getAttribute(componentName) || {};
               var data = component.parse(attrValues);
+
+              // Check if component property already defined.
               Object.keys(componentData).forEach(function setProperty (propName) {
-                // Check if component property already defined.
                 if (data[propName]) { return; }
                 data[propName] = componentData[propName];
               });
               self.setAttribute(componentName, data);
->>>>>>> upstream/master
               return;
             }
 
@@ -65906,11 +62757,7 @@ module.exports = function registerPrimitive (name, definition) {
   });
 };
 
-<<<<<<< HEAD
-},{"../../core/a-entity":51,"../../core/a-register-element":54,"../../core/component":55,"../../utils/":110}],88:[function(_dereq_,module,exports){
-=======
-},{"../../core/a-entity":47,"../../core/a-register-element":50,"../../core/component":51,"../../utils/":112}],86:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../../core/a-entity":46,"../../core/a-register-element":49,"../../core/component":50,"../../utils/":104}],77:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -65918,7 +62765,10 @@ registerGeometry('box', {
   schema: {
     depth: {default: 1, min: 0},
     height: {default: 1, min: 0},
-    width: {default: 1, min: 0}
+    width: {default: 1, min: 0},
+    segmentsHeight: {default: 1, min: 1, max: 20, type: 'int'},
+    segmentsWidth: {default: 1, min: 1, max: 20, type: 'int'},
+    segmentsDepth: {default: 1, min: 1, max: 20, type: 'int'}
   },
 
   init: function (data) {
@@ -65926,11 +62776,7 @@ registerGeometry('box', {
   }
 });
 
-<<<<<<< HEAD
-},{"../core/geometry":56,"../lib/three":100}],89:[function(_dereq_,module,exports){
-=======
-},{"../core/geometry":52,"../lib/three":99}],87:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../core/geometry":51,"../lib/three":93}],78:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -65939,7 +62785,7 @@ var degToRad = THREE.Math.degToRad;
 registerGeometry('circle', {
   schema: {
     radius: {default: 1, min: 0},
-    segments: {default: 32, min: 0, type: 'int'},
+    segments: {default: 32, min: 3, type: 'int'},
     thetaLength: {default: 360, min: 0},
     thetaStart: {default: 0}
   },
@@ -65950,8 +62796,7 @@ registerGeometry('circle', {
   }
 });
 
-<<<<<<< HEAD
-},{"../core/geometry":56,"../lib/three":100}],90:[function(_dereq_,module,exports){
+},{"../core/geometry":51,"../lib/three":93}],79:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -65963,8 +62808,8 @@ registerGeometry('cone', {
     openEnded: {default: false},
     radiusBottom: {default: 1, min: 0},
     radiusTop: {default: 0.8, min: 0},
-    segmentsHeight: {default: 18, min: 0, type: 'int'},
-    segmentsRadial: {default: 36, min: 0, type: 'int'},
+    segmentsHeight: {default: 18, min: 1, type: 'int'},
+    segmentsRadial: {default: 36, min: 3, type: 'int'},
     thetaLength: {default: 360, min: 0},
     thetaStart: {default: 0}
   },
@@ -65977,7 +62822,7 @@ registerGeometry('cone', {
   }
 });
 
-},{"../core/geometry":56,"../lib/three":100}],91:[function(_dereq_,module,exports){
+},{"../core/geometry":51,"../lib/three":93}],80:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -65988,8 +62833,8 @@ registerGeometry('cylinder', {
     height: {default: 1, min: 0},
     openEnded: {default: false},
     radius: {default: 1, min: 0},
-    segmentsHeight: {default: 18, min: 0, type: 'int'},
-    segmentsRadial: {default: 36, min: 0, type: 'int'},
+    segmentsHeight: {default: 18, min: 1, type: 'int'},
+    segmentsRadial: {default: 36, min: 3, type: 'int'},
     thetaLength: {default: 360, min: 0},
     thetaStart: {default: 0}
   },
@@ -66001,119 +62846,28 @@ registerGeometry('cylinder', {
   }
 });
 
-},{"../core/geometry":56,"../lib/three":100}],92:[function(_dereq_,module,exports){
-_dereq_('./box.js');
-_dereq_('./circle.js');
-_dereq_('./cone.js');
-_dereq_('./cylinder.js');
-_dereq_('./plane.js');
-_dereq_('./ring.js');
-_dereq_('./sphere.js');
-_dereq_('./torus.js');
-_dereq_('./torusKnot.js');
-
-},{"./box.js":88,"./circle.js":89,"./cone.js":90,"./cylinder.js":91,"./plane.js":93,"./ring.js":94,"./sphere.js":95,"./torus.js":96,"./torusKnot.js":97}],93:[function(_dereq_,module,exports){
+},{"../core/geometry":51,"../lib/three":93}],81:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
-registerGeometry('plane', {
+registerGeometry('dodecahedron', {
   schema: {
-    height: {default: 1, min: 0},
-    width: {default: 1, min: 0}
+    detail: {default: 0, min: 0, max: 5, type: 'int'},
+    radius: {default: 1, min: 0}
   },
 
   init: function (data) {
-    this.geometry = new THREE.PlaneGeometry(data.width, data.height);
+    this.geometry = new THREE.DodecahedronGeometry(data.radius, data.detail);
   }
 });
 
-},{"../core/geometry":56,"../lib/three":100}],94:[function(_dereq_,module,exports){
-var registerGeometry = _dereq_('../core/geometry').registerGeometry;
-var THREE = _dereq_('../lib/three');
-
-var degToRad = THREE.Math.degToRad;
-
-registerGeometry('ring', {
-  schema: {
-    radiusInner: {default: 0.8, min: 0},
-    radiusOuter: {default: 1.2, min: 0},
-    segmentsPhi: { default: 8, min: 0, type: 'int' },
-    segmentsTheta: {default: 32, min: 0, type: 'int'},
-    thetaLength: {default: 360, min: 0},
-    thetaStart: {default: 0}
-  },
-
-  init: function (data) {
-    this.geometry = new THREE.RingGeometry(
-        data.radiusInner, data.radiusOuter, data.segmentsTheta, data.segmentsPhi,
-        degToRad(data.thetaStart), degToRad(data.thetaLength));
-  }
-});
-
-},{"../core/geometry":56,"../lib/three":100}],95:[function(_dereq_,module,exports){
-var registerGeometry = _dereq_('../core/geometry').registerGeometry;
-var THREE = _dereq_('../lib/three');
-
-var degToRad = THREE.Math.degToRad;
-
-=======
-},{"../core/geometry":52,"../lib/three":99}],88:[function(_dereq_,module,exports){
-var registerGeometry = _dereq_('../core/geometry').registerGeometry;
-var THREE = _dereq_('../lib/three');
-
-var degToRad = THREE.Math.degToRad;
-
-registerGeometry('cone', {
-  schema: {
-    height: {default: 1, min: 0},
-    openEnded: {default: false},
-    radiusBottom: {default: 1, min: 0},
-    radiusTop: {default: 0.8, min: 0},
-    segmentsHeight: {default: 18, min: 0, type: 'int'},
-    segmentsRadial: {default: 36, min: 0, type: 'int'},
-    thetaLength: {default: 360, min: 0},
-    thetaStart: {default: 0}
-  },
-
-  init: function (data) {
-    this.geometry = new THREE.CylinderGeometry(
-        data.radiusTop, data.radiusBottom, data.height, data.segmentsRadial,
-        data.segmentsHeight, data.openEnded, degToRad(data.thetaStart),
-        degToRad(data.thetaLength));
-  }
-});
-
-},{"../core/geometry":52,"../lib/three":99}],89:[function(_dereq_,module,exports){
-var registerGeometry = _dereq_('../core/geometry').registerGeometry;
-var THREE = _dereq_('../lib/three');
-
-var degToRad = THREE.Math.degToRad;
-
-registerGeometry('cylinder', {
-  schema: {
-    height: {default: 1, min: 0},
-    openEnded: {default: false},
-    radius: {default: 1, min: 0},
-    segmentsHeight: {default: 18, min: 0, type: 'int'},
-    segmentsRadial: {default: 36, min: 0, type: 'int'},
-    thetaLength: {default: 360, min: 0},
-    thetaStart: {default: 0}
-  },
-
-  init: function (data) {
-    this.geometry = new THREE.CylinderGeometry(
-        data.radius, data.radius, data.height, data.segmentsRadial, data.segmentsHeight,
-        data.openEnded, degToRad(data.thetaStart), degToRad(data.thetaLength));
-  }
-});
-
-},{"../core/geometry":52,"../lib/three":99}],90:[function(_dereq_,module,exports){
+},{"../core/geometry":51,"../lib/three":93}],82:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
 registerGeometry('icosahedron', {
   schema: {
-    detail: {default: 0, min: 0, max: 1},
+    detail: {default: 0, min: 0, max: 5, type: 'int'},
     radius: {default: 1, min: 0}
   },
 
@@ -66122,26 +62876,46 @@ registerGeometry('icosahedron', {
   }
 });
 
-},{"../core/geometry":52,"../lib/three":99}],91:[function(_dereq_,module,exports){
+},{"../core/geometry":51,"../lib/three":93}],83:[function(_dereq_,module,exports){
 _dereq_('./box.js');
 _dereq_('./circle.js');
 _dereq_('./cone.js');
 _dereq_('./cylinder.js');
+_dereq_('./dodecahedron.js');
 _dereq_('./icosahedron.js');
+_dereq_('./octahedron.js');
 _dereq_('./plane.js');
 _dereq_('./ring.js');
 _dereq_('./sphere.js');
+_dereq_('./tetrahedron.js');
 _dereq_('./torus.js');
 _dereq_('./torusKnot.js');
 
-},{"./box.js":86,"./circle.js":87,"./cone.js":88,"./cylinder.js":89,"./icosahedron.js":90,"./plane.js":92,"./ring.js":93,"./sphere.js":94,"./torus.js":95,"./torusKnot.js":96}],92:[function(_dereq_,module,exports){
+},{"./box.js":77,"./circle.js":78,"./cone.js":79,"./cylinder.js":80,"./dodecahedron.js":81,"./icosahedron.js":82,"./octahedron.js":84,"./plane.js":85,"./ring.js":86,"./sphere.js":87,"./tetrahedron.js":88,"./torus.js":89,"./torusKnot.js":90}],84:[function(_dereq_,module,exports){
+var registerGeometry = _dereq_('../core/geometry').registerGeometry;
+var THREE = _dereq_('../lib/three');
+
+registerGeometry('octahedron', {
+  schema: {
+    detail: {default: 0, min: 0, max: 5, type: 'int'},
+    radius: {default: 1, min: 0}
+  },
+
+  init: function (data) {
+    this.geometry = new THREE.OctahedronGeometry(data.radius, data.detail);
+  }
+});
+
+},{"../core/geometry":51,"../lib/three":93}],85:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
 registerGeometry('plane', {
   schema: {
     height: {default: 1, min: 0},
-    width: {default: 1, min: 0}
+    width: {default: 1, min: 0},
+    segmentsHeight: {default: 1, min: 1, max: 20, type: 'int'},
+    segmentsWidth: {default: 1, min: 1, max: 20, type: 'int'}
   },
 
   init: function (data) {
@@ -66149,7 +62923,7 @@ registerGeometry('plane', {
   }
 });
 
-},{"../core/geometry":52,"../lib/three":99}],93:[function(_dereq_,module,exports){
+},{"../core/geometry":51,"../lib/three":93}],86:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -66159,8 +62933,8 @@ registerGeometry('ring', {
   schema: {
     radiusInner: {default: 0.8, min: 0},
     radiusOuter: {default: 1.2, min: 0},
-    segmentsPhi: { default: 8, min: 0, type: 'int' },
-    segmentsTheta: {default: 32, min: 0, type: 'int'},
+    segmentsPhi: { default: 10, min: 1, type: 'int' },
+    segmentsTheta: {default: 32, min: 3, type: 'int'},
     thetaLength: {default: 360, min: 0},
     thetaStart: {default: 0}
   },
@@ -66172,23 +62946,21 @@ registerGeometry('ring', {
   }
 });
 
-},{"../core/geometry":52,"../lib/three":99}],94:[function(_dereq_,module,exports){
+},{"../core/geometry":51,"../lib/three":93}],87:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
 var degToRad = THREE.Math.degToRad;
 
->>>>>>> upstream/master
 registerGeometry('sphere', {
   schema: {
     radius: {default: 1, min: 0},
-    segments: {default: 32, min: 0, type: 'int'},
     phiLength: {default: 360},
     phiStart: {default: 0, min: 0},
     thetaLength: {default: 180, min: 0},
     thetaStart: {default: 0},
-    segmentsHeight: {default: 18, min: 0, type: 'int'},
-    segmentsWidth: {default: 36, min: 0, type: 'int'}
+    segmentsHeight: {default: 18, min: 2, type: 'int'},
+    segmentsWidth: {default: 36, min: 3, type: 'int'}
   },
 
   init: function (data) {
@@ -66198,11 +62970,22 @@ registerGeometry('sphere', {
   }
 });
 
-<<<<<<< HEAD
-},{"../core/geometry":56,"../lib/three":100}],96:[function(_dereq_,module,exports){
-=======
-},{"../core/geometry":52,"../lib/three":99}],95:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../core/geometry":51,"../lib/three":93}],88:[function(_dereq_,module,exports){
+var registerGeometry = _dereq_('../core/geometry').registerGeometry;
+var THREE = _dereq_('../lib/three');
+
+registerGeometry('tetrahedron', {
+  schema: {
+    detail: {default: 0, min: 0, max: 5, type: 'int'},
+    radius: {default: 1, min: 0}
+  },
+
+  init: function (data) {
+    this.geometry = new THREE.TetrahedronGeometry(data.radius, data.detail);
+  }
+});
+
+},{"../core/geometry":51,"../lib/three":93}],89:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -66213,8 +62996,8 @@ registerGeometry('torus', {
     arc: {default: 360},
     radius: {default: 1, min: 0},
     radiusTubular: {default: 0.2, min: 0},
-    segmentsRadial: {efault: 36, min: 0, type: 'int'},
-    segmentsTubular: {default: 32, min: 0, type: 'int'}
+    segmentsRadial: {efault: 36, min: 2, type: 'int'},
+    segmentsTubular: {default: 32, min: 3, type: 'int'}
   },
 
   init: function (data) {
@@ -66224,22 +63007,18 @@ registerGeometry('torus', {
   }
 });
 
-<<<<<<< HEAD
-},{"../core/geometry":56,"../lib/three":100}],97:[function(_dereq_,module,exports){
-=======
-},{"../core/geometry":52,"../lib/three":99}],96:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../core/geometry":51,"../lib/three":93}],90:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
 registerGeometry('torusKnot', {
   schema: {
-    p: {default: 2, type: 'int'},
-    q: {default: 3, type: 'int'},
+    p: {default: 2, min: 1, type: 'int'},
+    q: {default: 3, min: 1, type: 'int'},
     radius: {default: 1, min: 0},
     radiusTubular: {default: 0.2, min: 0},
-    segmentsRadial: {efault: 36, min: 0, type: 'int'},
-    segmentsTubular: {default: 32, min: 0, type: 'int'}
+    segmentsRadial: {default: 36, min: 3, type: 'int'},
+    segmentsTubular: {default: 100, min: 3, type: 'int'}
   },
 
   init: function (data) {
@@ -66249,11 +63028,7 @@ registerGeometry('torusKnot', {
   }
 });
 
-<<<<<<< HEAD
-},{"../core/geometry":56,"../lib/three":100}],98:[function(_dereq_,module,exports){
-=======
-},{"../core/geometry":52,"../lib/three":99}],97:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../core/geometry":51,"../lib/three":93}],91:[function(_dereq_,module,exports){
 // Polyfill `Promise`.
 window.Promise = window.Promise || _dereq_('promise-polyfill');
 
@@ -66297,17 +63072,6 @@ _dereq_('./systems/index'); // Register standard systems.
 var ANode = _dereq_('./core/a-node');
 var AEntity = _dereq_('./core/a-entity'); // Depends on ANode and core components.
 
-<<<<<<< HEAD
-// Webvr polyfill configuration.
-window.hasNonPolyfillWebVRSupport = !!navigator.getVRDevices;
-window.WebVRConfig = window.WebVRConfig || {
-  TOUCH_PANNER_DISABLED: true,
-  MOUSE_KEYBOARD_CONTROLS_DISABLED: true
-};
-_dereq_('webvr-polyfill');
-
-=======
->>>>>>> upstream/master
 _dereq_('./core/a-animation');
 _dereq_('./core/a-assets');
 _dereq_('./core/a-cubemap');
@@ -66332,6 +63096,9 @@ module.exports = window.AFRAME = {
   registerPrimitive: registerPrimitive,
   registerShader: registerShader,
   registerSystem: registerSystem,
+  primitives: {
+    getMeshMixin: _dereq_('./extras/primitives/getMeshMixin')
+  },
   shaders: shaders,
   systems: systems,
   THREE: THREE,
@@ -66340,11 +63107,7 @@ module.exports = window.AFRAME = {
   version: pkg.version
 };
 
-<<<<<<< HEAD
-},{"../package":23,"./components/index":28,"./core/a-animation":48,"./core/a-assets":49,"./core/a-cubemap":50,"./core/a-entity":51,"./core/a-mixin":52,"./core/a-node":53,"./core/component":55,"./core/geometry":56,"./core/scene/a-scene":58,"./core/shader":63,"./core/system":64,"./extras/declarative-events/":65,"./extras/primitives/":67,"./extras/primitives/registerPrimitive":87,"./geometries/index":92,"./lib/three":100,"./shaders/index":102,"./systems/index":105,"./utils/":110,"present":9,"promise-polyfill":10,"tween.js":21,"webvr-polyfill":22}],99:[function(_dereq_,module,exports){
-=======
-},{"../package":19,"./components/index":24,"./core/a-animation":44,"./core/a-assets":45,"./core/a-cubemap":46,"./core/a-entity":47,"./core/a-mixin":48,"./core/a-node":49,"./core/component":51,"./core/geometry":52,"./core/scene/a-scene":54,"./core/shader":59,"./core/system":60,"./extras/components/":61,"./extras/declarative-events/":63,"./extras/primitives/":65,"./extras/primitives/registerPrimitive":85,"./geometries/index":91,"./lib/three":99,"./shaders/index":101,"./style/aframe.css":103,"./style/rStats.css":104,"./systems/index":107,"./utils/":112,"present":9,"promise-polyfill":11,"tween.js":17,"webvr-polyfill":18}],98:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../package":18,"./components/index":23,"./core/a-animation":43,"./core/a-assets":44,"./core/a-cubemap":45,"./core/a-entity":46,"./core/a-mixin":47,"./core/a-node":48,"./core/component":50,"./core/geometry":51,"./core/scene/a-scene":53,"./core/shader":58,"./core/system":59,"./extras/components/":60,"./extras/declarative-events/":62,"./extras/primitives/":64,"./extras/primitives/getMeshMixin":63,"./extras/primitives/registerPrimitive":76,"./geometries/index":83,"./lib/three":93,"./shaders/index":95,"./systems/index":99,"./utils/":104,"present":8,"promise-polyfill":10,"tween.js":16,"webvr-polyfill":17}],92:[function(_dereq_,module,exports){
 window.aframeStats = function (scene) {
   var _rS = null;
   var _scene = scene;
@@ -66391,11 +63154,7 @@ if (typeof module === 'object') {
   };
 }
 
-<<<<<<< HEAD
-},{}],100:[function(_dereq_,module,exports){
-=======
-},{}],99:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{}],93:[function(_dereq_,module,exports){
 (function (global){
 var THREE = global.THREE = _dereq_('three');
 
@@ -66428,11 +63187,7 @@ module.exports = THREE;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-<<<<<<< HEAD
-},{"../../node_modules/three/examples/js/controls/VRControls":15,"../../node_modules/three/examples/js/effects/VREffect":16,"../../node_modules/three/examples/js/loaders/ColladaLoader":17,"../../node_modules/three/examples/js/loaders/MTLLoader":18,"../../node_modules/three/examples/js/loaders/OBJLoader":19,"three":20}],101:[function(_dereq_,module,exports){
-=======
-},{"../../vendor/VRControls":117,"../../vendor/VREffect":118,"three":16,"three/examples/js/loaders/ColladaLoader":13,"three/examples/js/loaders/MTLLoader":14,"three/examples/js/loaders/OBJLoader":15}],100:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../../vendor/VRControls":108,"../../vendor/VREffect":109,"three":15,"three/examples/js/loaders/ColladaLoader":12,"three/examples/js/loaders/MTLLoader":13,"three/examples/js/loaders/OBJLoader":14}],94:[function(_dereq_,module,exports){
 var registerShader = _dereq_('../core/shader').registerShader;
 var THREE = _dereq_('../lib/three');
 var utils = _dereq_('../utils/');
@@ -66458,46 +63213,14 @@ module.exports.Component = registerShader('flat', {
     this.textureSrc = null;
     this.material = new THREE.MeshBasicMaterial(getMaterialData(data));
     utils.material.updateMap(this, data);
-    return this.material;
   },
 
   update: function (data) {
     this.updateMaterial(data);
     utils.material.updateMap(this, data);
-    return this.material;
   },
 
   /**
-<<<<<<< HEAD
-   * Update or create material.
-   *
-   * @param {object|null} oldData
-   */
-  updateTexture: function (data) {
-    var el = this.el;
-    var src = data.src;
-    var material = this.material;
-    var materialSystem = el.sceneEl.systems.material;
-
-    if (src) {
-      if (src === this.textureSrc) { return; }
-      // Texture added or changed.
-      this.textureSrc = src;
-      utils.srcLoader.validateSrc(
-        src,
-        function loadImageCb (src) { materialSystem.loadImage(el, material, data, src); },
-        function loadVideoCb (src) { materialSystem.loadVideo(el, material, data, src); }
-      );
-      return;
-    }
-
-    // Texture removed.
-    utils.material.updateMaterialTexture(material, null);
-  },
-
-  /**
-=======
->>>>>>> upstream/master
    * Updating existing material.
    *
    * @param {object} data - Material component data.
@@ -66524,19 +63247,11 @@ function getMaterialData (data) {
   };
 }
 
-<<<<<<< HEAD
-},{"../core/shader":63,"../lib/three":100,"../utils/":110}],102:[function(_dereq_,module,exports){
+},{"../core/shader":58,"../lib/three":93,"../utils/":104}],95:[function(_dereq_,module,exports){
 _dereq_('./flat');
 _dereq_('./standard');
 
-},{"./flat":101,"./standard":103}],103:[function(_dereq_,module,exports){
-=======
-},{"../core/shader":59,"../lib/three":99,"../utils/":112}],101:[function(_dereq_,module,exports){
-_dereq_('./flat');
-_dereq_('./standard');
-
-},{"./flat":100,"./standard":102}],102:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"./flat":94,"./standard":96}],96:[function(_dereq_,module,exports){
 var registerShader = _dereq_('../core/shader').registerShader;
 var THREE = _dereq_('../lib/three');
 var utils = _dereq_('../utils/');
@@ -66567,46 +63282,15 @@ module.exports.Component = registerShader('standard', {
     this.material = new THREE.MeshStandardMaterial(getMaterialData(data));
     utils.material.updateMap(this, data);
     this.updateEnvMap(data);
-    return this.material;
   },
 
   update: function (data) {
     this.updateMaterial(data);
     utils.material.updateMap(this, data);
     this.updateEnvMap(data);
-    return this.material;
   },
 
   /**
-<<<<<<< HEAD
-   * Update or create material.
-   *
-   * @param {object|null} oldData
-   */
-  updateTexture: function (data) {
-    var el = this.el;
-    var src = data.src;
-    var material = this.material;
-    var materialSystem = el.sceneEl.systems.material;
-
-    if (src) {
-      if (src === this.textureSrc) { return; }
-      // Texture added or changed.
-      this.textureSrc = src;
-      utils.srcLoader.validateSrc(
-        src,
-        function loadImageCb (src) { materialSystem.loadImage(el, material, data, src); },
-        function loadVideoCb (src) { materialSystem.loadVideo(el, material, data, src); }
-      );
-    } else {
-      // Texture removed.
-      utils.material.updateMaterialTexture(material, null);
-    }
-  },
-
-  /**
-=======
->>>>>>> upstream/master
    * Updating existing material.
    *
    * @param {object} data - Material component data.
@@ -66674,15 +63358,7 @@ function getMaterialData (data) {
   };
 }
 
-<<<<<<< HEAD
-},{"../core/shader":63,"../lib/three":100,"../utils/":110}],104:[function(_dereq_,module,exports){
-=======
-},{"../core/shader":59,"../lib/three":99,"../utils/":112}],103:[function(_dereq_,module,exports){
-var css = "html{bottom:0;left:0;position:fixed;right:0;top:0}:-webkit-full-screen{background-color:transparent}body{height:100%;margin:0;overflow:hidden;padding:0;width:100%}.a-hidden{display:none!important}.a-canvas{height:100%;left:0;position:absolute;top:0;width:100%}a-assets,a-scene audio,a-scene img,a-scene video{display:none}.a-enter-vr-modal,.a-orientation-modal{font-family:Consolas,Andale Mono,Courier New,monospace}.a-enter-vr-modal{font-size:11px;line-height:15px}.a-enter-vr-modal a{border-bottom:1px solid #fff;padding:2px 0;text-decoration:none;transition:.1s color ease-in}.a-enter-vr-modal a:hover{background-color:#fff;color:#111;padding:2px 4px;position:relative;left:-4px}.a-enter-vr{align-items:flex-end;-webkit-align-items:flex-end;bottom:5px;display:flex;display:-webkit-flex;font-family:sans-serif,monospace;font-size:13px;font-weight:200;line-height:16px;height:72px;position:fixed;right:5px}.a-enter-vr-button,.a-enter-vr-modal,.a-enter-vr-modal a{color:#fff}.a-enter-vr-button{background:url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20245.82%20141.73%22%3E%3Cdefs%3E%3Cstyle%3E.a%7Bfill%3A%23fff%3Bfill-rule%3Aevenodd%3B%7D%3C%2Fstyle%3E%3C%2Fdefs%3E%3Ctitle%3Emask%3C%2Ftitle%3E%3Cpath%20class%3D%22a%22%20d%3D%22M175.56%2C111.37c-22.52%2C0-40.77-18.84-40.77-42.07S153%2C27.24%2C175.56%2C27.24s40.77%2C18.84%2C40.77%2C42.07S198.08%2C111.37%2C175.56%2C111.37ZM26.84%2C69.31c0-23.23%2C18.25-42.07%2C40.77-42.07s40.77%2C18.84%2C40.77%2C42.07-18.26%2C42.07-40.77%2C42.07S26.84%2C92.54%2C26.84%2C69.31ZM27.27%2C0C11.54%2C0%2C0%2C12.34%2C0%2C28.58V110.9c0%2C16.24%2C11.54%2C30.83%2C27.27%2C30.83H99.57c2.17%2C0%2C4.19-1.83%2C5.4-3.7L116.47%2C118a8%2C8%2C0%2C0%2C1%2C12.52-.18l11.51%2C20.34c1.2%2C1.86%2C3.22%2C3.61%2C5.39%2C3.61h72.29c15.74%2C0%2C27.63-14.6%2C27.63-30.83V28.58C245.82%2C12.34%2C233.93%2C0%2C218.19%2C0H27.27Z%22%2F%3E%3C%2Fsvg%3E) 50% 50%/70% 70% no-repeat rgba(0,0,0,.35);border:0;bottom:0;cursor:pointer;height:50px;position:absolute;right:0;transition:background-color .05s ease;-webkit-transition:background-color .05s ease;width:60px;z-index:999999}.a-enter-vr-button:active,.a-enter-vr-button:hover{background-color:#666}[data-a-enter-vr-no-webvr] .a-enter-vr-button{border-color:#666;opacity:.65}[data-a-enter-vr-no-webvr] .a-enter-vr-button:active,[data-a-enter-vr-no-webvr] .a-enter-vr-button:hover{background-color:rgba(0,0,0,.35);cursor:not-allowed}.a-enter-vr-modal{background-color:#666;border-radius:0;display:none;min-height:32px;margin-right:70px;padding:9px;width:280px;position:relative}.a-enter-vr-modal:after{border-bottom:10px solid transparent;border-left:10px solid #666;border-top:10px solid transparent;display:inline-block;content:'';position:absolute;right:-5px;top:5px;width:0;height:0}.a-enter-vr-modal a,.a-enter-vr-modal p{display:inline}.a-enter-vr-modal p{margin:0}.a-enter-vr-modal p:after{content:' '}[data-a-enter-vr-no-headset].a-enter-vr:hover .a-enter-vr-modal,[data-a-enter-vr-no-webvr].a-enter-vr:hover .a-enter-vr-modal{display:block}.a-orientation-modal{background:url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20version%3D%221.1%22%20x%3D%220px%22%20y%3D%220px%22%20viewBox%3D%220%200%2090%2090%22%20enable-background%3D%22new%200%200%2090%2090%22%20xml%3Aspace%3D%22preserve%22%3E%3Cpolygon%20points%3D%220%2C0%200%2C0%200%2C0%20%22%3E%3C/polygon%3E%3Cg%3E%3Cpath%20d%3D%22M71.545%2C48.145h-31.98V20.743c0-2.627-2.138-4.765-4.765-4.765H18.456c-2.628%2C0-4.767%2C2.138-4.767%2C4.765v42.789%20%20%20c0%2C2.628%2C2.138%2C4.766%2C4.767%2C4.766h5.535v0.959c0%2C2.628%2C2.138%2C4.765%2C4.766%2C4.765h42.788c2.628%2C0%2C4.766-2.137%2C4.766-4.765V52.914%20%20%20C76.311%2C50.284%2C74.173%2C48.145%2C71.545%2C48.145z%20M18.455%2C16.935h16.344c2.1%2C0%2C3.808%2C1.708%2C3.808%2C3.808v27.401H37.25V22.636%20%20%20c0-0.264-0.215-0.478-0.479-0.478H16.482c-0.264%2C0-0.479%2C0.214-0.479%2C0.478v36.585c0%2C0.264%2C0.215%2C0.478%2C0.479%2C0.478h7.507v7.644%20%20%20h-5.534c-2.101%2C0-3.81-1.709-3.81-3.81V20.743C14.645%2C18.643%2C16.354%2C16.935%2C18.455%2C16.935z%20M16.96%2C23.116h19.331v25.031h-7.535%20%20%20c-2.628%2C0-4.766%2C2.139-4.766%2C4.768v5.828h-7.03V23.116z%20M71.545%2C73.064H28.757c-2.101%2C0-3.81-1.708-3.81-3.808V52.914%20%20%20c0-2.102%2C1.709-3.812%2C3.81-3.812h42.788c2.1%2C0%2C3.809%2C1.71%2C3.809%2C3.812v16.343C75.354%2C71.356%2C73.645%2C73.064%2C71.545%2C73.064z%22%3E%3C/path%3E%3Cpath%20d%3D%22M28.919%2C58.424c-1.466%2C0-2.659%2C1.193-2.659%2C2.66c0%2C1.466%2C1.193%2C2.658%2C2.659%2C2.658c1.468%2C0%2C2.662-1.192%2C2.662-2.658%20%20%20C31.581%2C59.617%2C30.387%2C58.424%2C28.919%2C58.424z%20M28.919%2C62.786c-0.939%2C0-1.703-0.764-1.703-1.702c0-0.939%2C0.764-1.704%2C1.703-1.704%20%20%20c0.94%2C0%2C1.705%2C0.765%2C1.705%2C1.704C30.623%2C62.022%2C29.858%2C62.786%2C28.919%2C62.786z%22%3E%3C/path%3E%3Cpath%20d%3D%22M69.654%2C50.461H33.069c-0.264%2C0-0.479%2C0.215-0.479%2C0.479v20.288c0%2C0.264%2C0.215%2C0.478%2C0.479%2C0.478h36.585%20%20%20c0.263%2C0%2C0.477-0.214%2C0.477-0.478V50.939C70.131%2C50.676%2C69.917%2C50.461%2C69.654%2C50.461z%20M69.174%2C51.417V70.75H33.548V51.417H69.174z%22%3E%3C/path%3E%3Cpath%20d%3D%22M45.201%2C30.296c6.651%2C0%2C12.233%2C5.351%2C12.551%2C11.977l-3.033-2.638c-0.193-0.165-0.507-0.142-0.675%2C0.048%20%20%20c-0.174%2C0.198-0.153%2C0.501%2C0.045%2C0.676l3.883%2C3.375c0.09%2C0.075%2C0.198%2C0.115%2C0.312%2C0.115c0.141%2C0%2C0.273-0.061%2C0.362-0.166%20%20%20l3.371-3.877c0.173-0.2%2C0.151-0.502-0.047-0.675c-0.194-0.166-0.508-0.144-0.676%2C0.048l-2.592%2C2.979%20%20%20c-0.18-3.417-1.629-6.605-4.099-9.001c-2.538-2.461-5.877-3.817-9.404-3.817c-0.264%2C0-0.479%2C0.215-0.479%2C0.479%20%20%20C44.72%2C30.083%2C44.936%2C30.296%2C45.201%2C30.296z%22%3E%3C/path%3E%3C/g%3E%3C/svg%3E) center/50% 50% no-repeat rgba(244,244,244,1);font-size:14px;font-weight:600;height:100%;left:0;line-height:20px;position:absolute;top:0;width:100%}.a-orientation-modal:after{color:#666;content:\"Insert phone into Cardboard holder.\";display:block;position:absolute;text-align:center;top:70%;transform:translateY(-70%);width:100%}.a-orientation-modal button{background:url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20version%3D%221.1%22%20x%3D%220px%22%20y%3D%220px%22%20viewBox%3D%220%200%20100%20100%22%20enable-background%3D%22new%200%200%20100%20100%22%20xml%3Aspace%3D%22preserve%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M55.209%2C50l17.803-17.803c1.416-1.416%2C1.416-3.713%2C0-5.129c-1.416-1.417-3.713-1.417-5.129%2C0L50.08%2C44.872%20%20L32.278%2C27.069c-1.416-1.417-3.714-1.417-5.129%2C0c-1.417%2C1.416-1.417%2C3.713%2C0%2C5.129L44.951%2C50L27.149%2C67.803%20%20c-1.417%2C1.416-1.417%2C3.713%2C0%2C5.129c0.708%2C0.708%2C1.636%2C1.062%2C2.564%2C1.062c0.928%2C0%2C1.856-0.354%2C2.564-1.062L50.08%2C55.13l17.803%2C17.802%20%20c0.708%2C0.708%2C1.637%2C1.062%2C2.564%2C1.062s1.856-0.354%2C2.564-1.062c1.416-1.416%2C1.416-3.713%2C0-5.129L55.209%2C50z%22%3E%3C/path%3E%3C/svg%3E) no-repeat;border:none;height:50px;text-indent:-9999px;width:50px}@media (min-width:480px){.a-enter-vr{bottom:20px;right:20px}.a-enter-vr-modal{width:400px}}"; (_dereq_("browserify-css").createStyle(css, { "href": "src/style/aframe.css"})); module.exports = css;
-},{"browserify-css":1}],104:[function(_dereq_,module,exports){
-var css = ".rs-base{background-color:#EF2D5E;border-radius:0;font:10px monospace;left:5px;line-height:1em;opacity:.75;overflow:hidden;padding:10px;position:fixed;top:5px;width:300px;z-index:10000}.rs-base div.hidden{display:none}.rs-base h1{color:#fff;cursor:pointer;font-size:1.4em;font-weight:300;margin:0 0 5px;padding:0}.rs-group{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-flex-direction:column-reverse;flex-direction:column-reverse;margin-bottom:5px}.rs-group:last-child{margin-bottom:0}.rs-counter-base{align-items:center;display:-webkit-box;display:-webkit-flex;display:flex;height:10px;-webkit-justify-content:space-between;justify-content:space-between;margin:2px 0}.rs-counter-id{font-weight:300;-webkit-box-ordinal-group:0;-webkit-order:0;order:0;width:50px}.rs-counter-value{font-weight:300;-webkit-box-ordinal-group:1;-webkit-order:1;order:1;text-align:right;width:35px}.rs-canvas{-webkit-box-ordinal-group:2;-webkit-order:2;order:2}@media (min-width:480px){.rs-base{left:20px;top:20px}}"; (_dereq_("browserify-css").createStyle(css, { "href": "src/style/rStats.css"})); module.exports = css;
-},{"browserify-css":1}],105:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../core/shader":58,"../lib/three":93,"../utils/":104}],97:[function(_dereq_,module,exports){
 var registerSystem = _dereq_('../core/system').registerSystem;
 
 var DEFAULT_CAMERA_ATTR = 'data-aframe-default-camera';
@@ -66762,8 +63438,8 @@ module.exports.System = registerSystem('camera', {
 
     // Make new camera active.
     this.activeCameraEl = newCameraEl;
+    this.activeCameraEl.play();
     sceneEl.camera = newCamera;
-    sceneEl.emit('camera-set-active', {cameraEl: newCameraEl});
 
     // Disable current camera
     if (previousCamera) {
@@ -66776,6 +63452,7 @@ module.exports.System = registerSystem('camera', {
       cameraEl.setAttribute('camera', 'active', false);
       cameraEl.pause();
     }
+    sceneEl.emit('camera-set-active', {cameraEl: newCameraEl});
   }
 });
 
@@ -66795,10 +63472,7 @@ function removeDefaultCamera (sceneEl) {
   sceneEl.removeChild(defaultCameraWrapper);
 }
 
-<<<<<<< HEAD
-},{"../core/system":64}],105:[function(_dereq_,module,exports){
-=======
-},{"../core/system":60}],106:[function(_dereq_,module,exports){
+},{"../core/system":59}],98:[function(_dereq_,module,exports){
 var geometries = _dereq_('../core/geometry').geometries;
 var registerSystem = _dereq_('../core/system').registerSystem;
 var THREE = _dereq_('../lib/three');
@@ -66937,18 +63611,13 @@ function toBufferGeometry (geometry, doBuffer) {
   return bufferGeometry;
 }
 
-},{"../core/geometry":52,"../core/system":60,"../lib/three":99}],107:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../core/geometry":51,"../core/system":59,"../lib/three":93}],99:[function(_dereq_,module,exports){
 _dereq_('./camera');
 _dereq_('./geometry');
 _dereq_('./material');
 _dereq_('./light');
 
-<<<<<<< HEAD
-},{"./camera":104,"./light":106,"./material":107}],106:[function(_dereq_,module,exports){
-=======
-},{"./camera":105,"./geometry":106,"./light":108,"./material":109}],108:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"./camera":97,"./geometry":98,"./light":100,"./material":101}],100:[function(_dereq_,module,exports){
 var registerSystem = _dereq_('../core/system').registerSystem;
 
 var DEFAULT_LIGHT_ATTR = 'data-aframe-default-light';
@@ -66996,13 +63665,12 @@ module.exports.System = registerSystem('light', {
     var ambientLight = document.createElement('a-entity');
     var directionalLight = document.createElement('a-entity');
 
-    ambientLight.setAttribute('light',
-                              {color: '#fff', type: 'ambient'});
+    ambientLight.setAttribute('light', {color: '#BBB', type: 'ambient'});
     ambientLight.setAttribute(DEFAULT_LIGHT_ATTR, '');
     sceneEl.appendChild(ambientLight);
 
-    directionalLight.setAttribute('light', { color: '#fff', intensity: 0.2 });
-    directionalLight.setAttribute('position', { x: -1, y: 2, z: 1 });
+    directionalLight.setAttribute('light', {color: '#FFF', intensity: 0.6});
+    directionalLight.setAttribute('position', {x: -0.5, y: 1, z: 1});
     directionalLight.setAttribute(DEFAULT_LIGHT_ATTR, '');
     sceneEl.appendChild(directionalLight);
 
@@ -67010,21 +63678,11 @@ module.exports.System = registerSystem('light', {
   }
 });
 
-<<<<<<< HEAD
-},{"../core/system":64}],107:[function(_dereq_,module,exports){
-=======
-},{"../core/system":60}],109:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"../core/system":59}],101:[function(_dereq_,module,exports){
 var registerSystem = _dereq_('../core/system').registerSystem;
 var THREE = _dereq_('../lib/three');
 var utils = _dereq_('../utils/');
 
-<<<<<<< HEAD
-var EVENTS = {
-  TEXTURE_LOADED: 'material-texture-loaded'
-};
-=======
->>>>>>> upstream/master
 var debug = utils.debug;
 var error = debug('components:texture:error');
 var TextureLoader = new THREE.TextureLoader();
@@ -67050,50 +63708,6 @@ module.exports.System = registerSystem('material', {
   },
 
   /**
-<<<<<<< HEAD
-   * High-level function for loading image textures. Meat of logic is in `loadImageTexture`.
-   *
-   * @param {Element} el - Entity, used to emit event.
-   * @param {object} material - three.js material, bound by the A-Frame shader.
-   * @param {object} data - Shader data, bound by the A-Frame shader.
-   * @param {Element|string} src - Texture source, bound by `src-loader` utils.
-   */
-  loadImage: function (el, material, data, src) {
-    var repeat = data.repeat || '1 1';
-    var srcString = src;
-    var textureCache = this.textureCache;
-
-    if (typeof src !== 'string') { srcString = src.getAttribute('src'); }
-
-    // Another material is already loading this texture. Wait on promise.
-    if (textureCache[src] && textureCache[src][repeat]) {
-      textureCache[src][repeat].then(handleImageTextureLoaded);
-      return;
-    }
-
-    // Material instance is first to try to load this texture. Load it.
-    textureCache[srcString] = textureCache[srcString] || {};
-    textureCache[srcString][repeat] = textureCache[srcString][repeat] || {};
-    textureCache[srcString][repeat] = loadImageTexture(material, src, repeat);
-    textureCache[srcString][repeat].then(handleImageTextureLoaded);
-
-    function handleImageTextureLoaded (texture) {
-      utils.material.updateMaterialTexture(material, texture);
-      el.emit(EVENTS.TEXTURE_LOADED, { src: src, texture: texture });
-    }
-  },
-
-  /**
-   * Load video texture.
-   * Note that creating a video texture is more synchronous than creating an image texture.
-   *
-   * @param {Element} el - Entity, used to emit event.
-   * @param {object} material - three.js material.
-   * @param data {object} - Shader data, bound by the A-Frame shader.
-   * @param src {Element|string} - Texture source, bound by `src-loader` utils.
-   */
-  loadVideo: function (el, material, data, src) {
-=======
    * Determine whether `src` is a image or video. Then try to load the asset, then call back.
    *
    * @param {string} src - Texture URL.
@@ -67141,19 +63755,12 @@ module.exports.System = registerSystem('material', {
    * @param {function} cb - Callback to pass texture to.
    */
   loadVideo: function (src, data, cb) {
->>>>>>> upstream/master
     var hash;
     var texture;
     var textureCache = this.textureCache;
     var videoEl;
     var videoTextureResult;
 
-<<<<<<< HEAD
-    if (typeof src !== 'string') {
-      // Check cache before creating texture.
-      videoEl = src;
-      hash = calculateVideoCacheHash(videoEl);
-=======
     function handleVideoTextureLoaded (result) {
       result.texture.needsUpdate = true;
       cb(result.texture, result.videoEl);
@@ -67164,7 +63771,6 @@ module.exports.System = registerSystem('material', {
       // Check cache before creating texture.
       videoEl = src;
       hash = this.hashVideo(data, videoEl);
->>>>>>> upstream/master
       if (textureCache[hash]) {
         textureCache[hash].then(handleVideoTextureLoaded);
         return;
@@ -67173,19 +63779,11 @@ module.exports.System = registerSystem('material', {
       fixVideoAttributes(videoEl);
     }
 
-<<<<<<< HEAD
-    // Use video element to create texture.
-    videoEl = videoEl || createVideoEl(material, src, data.width, data.height);
-
-    // Generated video element already cached. Use that.
-    hash = calculateVideoCacheHash(videoEl);
-=======
     // Only URL provided. Use video element to create texture.
     videoEl = videoEl || createVideoEl(src, data.width, data.height);
 
     // Generated video element already cached. Use that.
     hash = this.hashVideo(data, videoEl);
->>>>>>> upstream/master
     if (textureCache[hash]) {
       textureCache[hash].then(handleVideoTextureLoaded);
       return;
@@ -67194,30 +63792,6 @@ module.exports.System = registerSystem('material', {
     // Create new video texture.
     texture = new THREE.VideoTexture(videoEl);
     texture.minFilter = THREE.LinearFilter;
-<<<<<<< HEAD
-
-    // Cache as promise to be consistent with image texture caching.
-    videoTextureResult = {
-      texture: texture,
-      videoEl: videoEl
-    };
-    textureCache[hash] = Promise.resolve(videoTextureResult);
-    handleVideoTextureLoaded(videoTextureResult);
-
-    function handleVideoTextureLoaded (res) {
-      texture = res.texture;
-      videoEl = res.videoEl;
-      utils.material.updateMaterialTexture(material, texture);
-      el.emit(EVENTS.TEXTURE_LOADED, { element: videoEl, src: src });
-      videoEl.addEventListener('loadeddata', function () {
-        el.emit('material-video-loadeddata', { element: videoEl, src: src });
-      });
-      videoEl.addEventListener('ended', function () {
-        // Works for non-looping videos only.
-        el.emit('material-video-ended', { element: videoEl, src: src });
-      });
-    }
-=======
     setTextureProperties(texture, data);
 
     // Cache as promise to be consistent with image texture caching.
@@ -67232,7 +63806,6 @@ module.exports.System = registerSystem('material', {
 
   hashVideo: function (data, videoEl) {
     return calculateVideoCacheHash(data, videoEl);
->>>>>>> upstream/master
   },
 
   /**
@@ -67269,18 +63842,11 @@ module.exports.System = registerSystem('material', {
  * If the video element has an ID, use that.
  * Else build a hash that looks like `src:myvideo.mp4;height:200;width:400;`.
  *
-<<<<<<< HEAD
- * @param videoEl {Element} - Video element.
- * @returns {string}
- */
-function calculateVideoCacheHash (videoEl) {
-=======
  * @param data {object} - Texture data such as repeat.
  * @param videoEl {Element} - Video element.
  * @returns {string}
  */
 function calculateVideoCacheHash (data, videoEl) {
->>>>>>> upstream/master
   var i;
   var id = videoEl.getAttribute('id');
   var hash;
@@ -67290,11 +63856,7 @@ function calculateVideoCacheHash (data, videoEl) {
 
   // Calculate hash using sorted video attributes.
   hash = '';
-<<<<<<< HEAD
-  videoAttributes = {};
-=======
   videoAttributes = data || {};
->>>>>>> upstream/master
   for (i = 0; i < videoEl.attributes.length; i++) {
     videoAttributes[videoEl.attributes[i].name] = videoEl.attributes[i].value;
   }
@@ -67306,18 +63868,6 @@ function calculateVideoCacheHash (data, videoEl) {
 }
 
 /**
-<<<<<<< HEAD
- * Set image texture on material as `map`.
- *
- * @private
- * @param {object} el - Entity element.
- * @param {object} material - three.js material.
- * @param {string|object} src - An <img> element or url to an image file.
- * @param {string} repeat - X and Y value for size of texture repeating (in UV units).
- * @returns {Promise} Resolves once texture is loaded.
- */
-function loadImageTexture (material, src, repeat) {
-=======
  * Load image texture.
  *
  * @private
@@ -67326,17 +63876,11 @@ function loadImageTexture (material, src, repeat) {
  * @returns {Promise} Resolves once texture is loaded.
  */
 function loadImageTexture (src, data) {
->>>>>>> upstream/master
   return new Promise(doLoadImageTexture);
 
   function doLoadImageTexture (resolve, reject) {
     var isEl = typeof src !== 'string';
 
-<<<<<<< HEAD
-    // Create texture from an element.
-    if (isEl) {
-      createTexture(src);
-=======
     function resolveTexture (texture) {
       setTextureProperties(texture, data);
       texture.needsUpdate = true;
@@ -67346,7 +63890,6 @@ function loadImageTexture (src, data) {
     // Create texture from an element.
     if (isEl) {
       resolveTexture(new THREE.Texture(src));
->>>>>>> upstream/master
       return;
     }
 
@@ -67354,38 +63897,13 @@ function loadImageTexture (src, data) {
     // Use THREE.TextureLoader (src, onLoad, onProgress, onError) to load texture.
     TextureLoader.load(
       src,
-<<<<<<< HEAD
-      createTexture,
-=======
       resolveTexture,
->>>>>>> upstream/master
       function () { /* no-op */ },
       function (xhr) {
         error('`$s` could not be fetched (Error code: %s; Response: %s)', xhr.status,
               xhr.statusText);
       }
     );
-<<<<<<< HEAD
-
-    /**
-     * Texture loaded. Set it.
-     */
-    function createTexture (texture) {
-      var repeatXY;
-      if (!(texture instanceof THREE.Texture)) { texture = new THREE.Texture(texture); }
-
-      // Handle UV repeat.
-      repeatXY = repeat.split(' ');
-      if (repeatXY.length === 2) {
-        texture.wrapS = THREE.RepeatWrapping;
-        texture.wrapT = THREE.RepeatWrapping;
-        texture.repeat.set(parseInt(repeatXY[0], 10), parseInt(repeatXY[1], 10));
-      }
-
-      resolve(texture);
-    }
-  }
-=======
   }
 }
 
@@ -67405,39 +63923,16 @@ function setTextureProperties (texture, data) {
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.RepeatWrapping;
   texture.repeat.set(parseInt(repeatXY[0], 10), parseInt(repeatXY[1], 10));
->>>>>>> upstream/master
 }
 
 /**
  * Create video element to be used as a texture.
  *
-<<<<<<< HEAD
- * @param {object} material - three.js material.
-=======
->>>>>>> upstream/master
  * @param {string} src - Url to a video file.
  * @param {number} width - Width of the video.
  * @param {number} height - Height of the video.
  * @returns {Element} Video element.
  */
-<<<<<<< HEAD
-function createVideoEl (material, src, width, height) {
-  var el = material.videoEl || document.createElement('video');
-  el.width = width;
-  el.height = height;
-  if (el !== this.videoEl) {
-    el.setAttribute('webkit-playsinline', '');  // To support inline videos in iOS webviews.
-    el.autoplay = true;
-    el.loop = true;
-    el.crossOrigin = true;
-    el.addEventListener('error', function () {
-      warn('`$s` is not a valid video', src);
-    }, true);
-    material.videoEl = el;
-  }
-  el.src = src;
-  return el;
-=======
 function createVideoEl (src, width, height) {
   var videoEl = document.createElement('video');
   videoEl.width = width;
@@ -67451,7 +63946,6 @@ function createVideoEl (src, width, height) {
   }, true);
   videoEl.src = src;
   return videoEl;
->>>>>>> upstream/master
 }
 
 /**
@@ -67481,15 +63975,10 @@ function fixVideoAttributes (videoEl) {
   videoEl.setAttribute('webkit-playsinline', '');
   return videoEl;
 }
-<<<<<<< HEAD
 
-},{"../core/system":64,"../lib/three":100,"../utils/":110}],108:[function(_dereq_,module,exports){
-=======
-
-},{"../core/system":60,"../lib/three":99,"../utils/":112}],110:[function(_dereq_,module,exports){
+},{"../core/system":59,"../lib/three":93,"../utils/":104}],102:[function(_dereq_,module,exports){
 /* global THREE */
 
->>>>>>> upstream/master
 // Coordinate string regex. Handles negative, positive, and decimals.
 var regex = /\s*(-?\d*\.{0,1}\d+)\s+(-?\d*\.{0,1}\d+)\s+(-?\d*\.{0,1}\d+)\s*/;
 module.exports.regex = regex;
@@ -67554,9 +64043,6 @@ function vecParseFloat (vec) {
   return vec;
 }
 
-<<<<<<< HEAD
-},{}],109:[function(_dereq_,module,exports){
-=======
 /**
  * Converts {x, y, z} object to three.js Vector3.
  */
@@ -67564,8 +64050,7 @@ module.exports.toVector3 = function (vec3) {
   return new THREE.Vector3(vec3.x, vec3.y, vec3.z);
 };
 
-},{}],111:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{}],103:[function(_dereq_,module,exports){
 (function (process){
 var debugLib = _dereq_('debug');
 var extend = _dereq_('object-assign');
@@ -67662,11 +64147,7 @@ module.exports = debug;
 
 }).call(this,_dereq_('_process'))
 
-<<<<<<< HEAD
-},{"_process":1,"debug":2,"object-assign":8}],110:[function(_dereq_,module,exports){
-=======
-},{"_process":10,"debug":2,"object-assign":8}],112:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"_process":9,"debug":1,"object-assign":7}],104:[function(_dereq_,module,exports){
 /* global CustomEvent, location */
 /* Centralized place to reference utilities since utils is exposed to the user. */
 
@@ -67677,10 +64158,6 @@ module.exports.coordinates = _dereq_('./coordinates');
 module.exports.debug = _dereq_('./debug');
 module.exports.material = _dereq_('./material');
 module.exports.styleParser = _dereq_('./styleParser');
-<<<<<<< HEAD
-=======
-module.exports.queryParams = _dereq_('./queryParams');
->>>>>>> upstream/master
 
 /**
  * Fires a custom DOM event.
@@ -67697,29 +64174,6 @@ module.exports.fireEvent = function (el, name, data) {
   var evt = new CustomEvent(name, data);
   evt.target = el;
   el.dispatchEvent(evt);
-};
-
-/**
- * Throws an error given a message.
- *
- * @param {String} msg Error message.
- */
-module.exports.error = function (msg) {
-  throw new Error(msg);
-};
-
-/**
- * Emits a console warning given passed message argument(s).
- */
-module.exports.warn = function () {
-  console.warn.apply(console, arguments);
-};
-
-/**
- * Emits a console log given passed message argument(s).
- */
-module.exports.log = function () {
-  console.log.apply(console, arguments);
 };
 
 /**
@@ -67887,28 +64341,7 @@ module.exports.isIframed = function () {
 // Must be at bottom to avoid circular dependency.
 module.exports.srcLoader = _dereq_('./src-loader');
 
-<<<<<<< HEAD
-},{"./coordinates":108,"./debug":109,"./material":111,"./src-loader":112,"./styleParser":113,"deep-assign":5,"object-assign":8}],111:[function(_dereq_,module,exports){
-/**
- * Set material texture and update if necessary.
- *
- * @param {object} material
- * @param {object} texture
- */
-module.exports.updateMaterialTexture = function (material, texture) {
-  var oldMap = material.map;
-  if (texture) { texture.needsUpdate = true; }
-  material.map = texture;
-
-  // Only need to update three.js material if presence or not of texture has changed.
-  if (oldMap === null && material.map || material.map === null && oldMap) {
-    material.needsUpdate = true;
-  }
-};
-
-},{}],112:[function(_dereq_,module,exports){
-=======
-},{"./coordinates":110,"./debug":111,"./material":113,"./queryParams":114,"./src-loader":115,"./styleParser":116,"deep-assign":4,"object-assign":8}],113:[function(_dereq_,module,exports){
+},{"./coordinates":102,"./debug":103,"./material":105,"./src-loader":106,"./styleParser":107,"deep-assign":3,"object-assign":7}],105:[function(_dereq_,module,exports){
 /**
  * Update `material.map` given `data.src`. For standard and flat shaders.
  *
@@ -67962,30 +64395,7 @@ function handleTextureEvents (el, texture) {
 }
 module.exports.handleTextureEvents = handleTextureEvents;
 
-},{}],114:[function(_dereq_,module,exports){
-module.exports = (function () {
-  var query_string = {};
-  var query = window.location.search.substring(1);
-  var vars = query.split('&');
-  for (var i = 0; i < vars.length; i++) {
-    var pair = vars[i].split('=');
-        // If first entry with this name
-    if (typeof query_string[pair[0]] === 'undefined') {
-      query_string[pair[0]] = decodeURIComponent(pair[1]);
-        // If second entry with this name
-    } else if (typeof query_string[pair[0]] === 'string') {
-      var arr = [query_string[pair[0]], decodeURIComponent(pair[1])];
-      query_string[pair[0]] = arr;
-        // If third or later entry with this name
-    } else {
-      query_string[pair[0]].push(decodeURIComponent(pair[1]));
-    }
-  }
-  return query_string;
-})();
-
-},{}],115:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{}],106:[function(_dereq_,module,exports){
 /* global Image */
 var debug = _dereq_('./debug');
 
@@ -68130,11 +64540,7 @@ module.exports = {
   validateCubemapSrc: validateCubemapSrc
 };
 
-<<<<<<< HEAD
-},{"./debug":109}],113:[function(_dereq_,module,exports){
-=======
-},{"./debug":111}],116:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{"./debug":103}],107:[function(_dereq_,module,exports){
 /* Utils for parsing style-like strings (e.g., "primitive: box; width: 5; height: 4.5"). */
 var styleParser = _dereq_('style-attr');
 
@@ -68194,10 +64600,7 @@ function transformKeysToCamelCase (obj) {
 }
 module.exports.transformKeysToCamelCase = transformKeysToCamelCase;
 
-<<<<<<< HEAD
-},{"style-attr":14}],114:[function(_dereq_,module,exports){
-=======
-},{"style-attr":12}],117:[function(_dereq_,module,exports){
+},{"style-attr":11}],108:[function(_dereq_,module,exports){
 /**
  * @author dmarcos / https://github.com/dmarcos
  * @author mrdoob / http://mrdoob.com
@@ -68374,7 +64777,7 @@ THREE.VRControls = function ( object, onError ) {
 
 };
 
-},{}],118:[function(_dereq_,module,exports){
+},{}],109:[function(_dereq_,module,exports){
 /**
  * @author dmarcos / https://github.com/dmarcos
  * @author mrdoob / http://mrdoob.com
@@ -68780,8 +65183,7 @@ THREE.VREffect = function ( renderer, onError ) {
 
 };
 
-},{}],119:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{}],110:[function(_dereq_,module,exports){
 window.glStats = function () {
 
     var _rS = null;
@@ -69046,11 +65448,7 @@ if (typeof module === 'object') {
   };
 }
 
-<<<<<<< HEAD
-},{}],115:[function(_dereq_,module,exports){
-=======
-},{}],120:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{}],111:[function(_dereq_,module,exports){
 // performance.now() polyfill from https://gist.github.com/paulirish/5438650
 'use strict';
 
@@ -69505,11 +65903,7 @@ if (typeof module === 'object') {
   module.exports = window.rStats;
 }
 
-<<<<<<< HEAD
-},{}],116:[function(_dereq_,module,exports){
-=======
-},{}],121:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{}],112:[function(_dereq_,module,exports){
 /*
  * Copyright 2015 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -69571,11 +65965,7 @@ Util.isLandscapeMode = function() {
 
 module.exports = Util;
 
-<<<<<<< HEAD
-},{}],117:[function(_dereq_,module,exports){
-=======
-},{}],122:[function(_dereq_,module,exports){
->>>>>>> upstream/master
+},{}],113:[function(_dereq_,module,exports){
 /*
  * Copyright 2015 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -69651,10 +66041,6 @@ function getWakeLock() {
 
 module.exports = getWakeLock();
 
-<<<<<<< HEAD
-},{"./util.js":116}]},{},[98])(98)
-=======
-},{"./util.js":121}]},{},[97])(97)
->>>>>>> upstream/master
+},{"./util.js":112}]},{},[91])(91)
 });
 //# sourceMappingURL=aframe.js.map
