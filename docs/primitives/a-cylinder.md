@@ -3,14 +3,14 @@ title: <a-cylinder>
 type: primitives
 layout: docs
 parent_section: primitives
-order: 9
+source_code: src/extras/primitives/primitives/meshPrimitives.js
 ---
 
-The cylinder primitive is an entity that prescribes the [geometry](../components/geometry.md) with its geometric primitive set to `cylinder`. It can be used to create tubes and curved surfaces.
+The cylinder primitive is used to create tubes and curved surfaces.
 
 ## Examples
 
-The cylinder primitive is versatile and can actually be used to create various shapes:
+The cylinder primitive is versatile and can be used to create different kinds of shapes:
 
 ```html
 <!-- Basic cylinder. -->
@@ -28,14 +28,37 @@ The cylinder primitive is versatile and can actually be used to create various s
 
 ## Attributes
 
-Note that the cylinder primitive inherits common [mesh attributes](./mesh-attributes.md).
-
-| Attribute       | Component Mapping       | Default Value |
-|-----------------|-------------------------|---------------|
-| height          | geometry.height         | 1.5           |
-| open-ended      | geometry.openEnded      | false         |
-| radius          | geometry.radius         | 0.75          |
-| segments-height | geometry.segmentsHeight | 1             |
-| segments-radial | geometry.segmentsRadial | 36            |
-| theta-length    | geometry.thetaLength    | 360           |
-| theta-start     | geometry.thetaStart     | 0             |
+| Attribute                        | Component Mapping                      | Default Value |
+| --------                         | -----------------                      | ------------- |
+| ambient-occlusion-map            | material.ambientOcclusionMap           | None          |
+| ambient-occlusion-map-intensity  | material.ambientOcclusionMapIntensity  | 1             |
+| ambient-occlusion-texture-offset | material.ambientOcclusionTextureOffset | 0 0           |
+| ambient-occlusion-texture-repeat | material.ambientOcclusionTextureRepeat | 1 1           |
+| color                            | material.color                         | #FFF          |
+| displacement-bias                | material.displacementBias              | 0.5           |
+| displacement-map                 | material.displacementMap               | None          |
+| displacement-scale               | material.displacementScale             | 1             |
+| displacement-texture-offset      | material.displacementTextureOffset     | 0 0           |
+| displacement-texture-repeat      | material.displacementTextureRepeat     | 1 1           |
+| env-map                          | material.envMap                        | None          |
+| fog                              | material.fog                           | true          |
+| height                           | geometry.height                        | 1             |
+| metalness                        | material.metalness                     | 0             |
+| normal-map                       | material.normalMap                     | None          |
+| normal-scale                     | material.normalScale                   | 1 1           |
+| normal-texture-offset            | material.normalTextureOffset           | 0 0           |
+| normal-texture-repeat            | material.normalTextureRepeat           | 1 1           |
+| open-ended                       | geometry.openEnded                     | false         |
+| radius-bottom                    | geometry.radiusBottom                  | 1             |
+| radius-top                       | geometry.radiusTop                     | 0.8           |
+| repeat                           | material.repeat                        | 1 1           |
+| roughness                        | material.roughness                     | 0.5           |
+| segments-height                  | geometry.segmentsHeight                | 18            |
+| segments-radial                  | geometry.segmentsRadial                | 36            |
+| spherical-env-map                | material.sphericalEnvMap               | None          |
+| src                              | material.src                           | None          |
+| theta-length                     | geometry.thetaLength                   | 360           |
+| theta-start                      | geometry.thetaStart                    | 0             |
+| width                            | material.width                         | 512           |
+| wireframe                        | material.wireframe                     | false         |
+| wireframe-linewidth              | material.wireframeLinewidth            | 2             |

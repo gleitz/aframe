@@ -5,17 +5,17 @@ var THREE = require('../lib/three');
 var warn = debug('components:obj-model:warn');
 
 module.exports.Component = registerComponent('obj-model', {
-  dependencies: ['material'],
-
   schema: {
-    mtl: { type: 'src' },
-    obj: { type: 'src' }
+    mtl: {type: 'model'},
+    obj: {type: 'model'}
   },
 
   init: function () {
     this.model = null;
     this.objLoader = new THREE.OBJLoader();
     this.mtlLoader = new THREE.MTLLoader(this.objLoader.manager);
+    // Allow cross-origin images to be loaded.
+    this.mtlLoader.crossOrigin = '';
   },
 
   update: function () {
@@ -41,7 +41,7 @@ module.exports.Component = registerComponent('obj-model', {
       if (el.hasAttribute('material')) {
         warn('Material component properties are ignored when a .MTL is provided');
       }
-      mtlLoader.setBaseUrl(mtlUrl.substr(0, mtlUrl.lastIndexOf('/') + 1));
+      mtlLoader.setTexturePath(mtlUrl.substr(0, mtlUrl.lastIndexOf('/') + 1));
       mtlLoader.load(mtlUrl, function (materials) {
         materials.preload();
         objLoader.setMaterials(materials);
@@ -55,7 +55,7 @@ module.exports.Component = registerComponent('obj-model', {
     }
 
     // .OBJ only.
-    objLoader.load(objUrl, function (objModel) {
+    objLoader.load(objUrl, function loadObjOnly (objModel) {
       // Apply material.
       var material = el.components.material;
       if (material) {

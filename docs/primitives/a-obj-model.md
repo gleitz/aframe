@@ -3,10 +3,16 @@ title: <a-obj-model>
 type: primitives
 layout: docs
 parent_section: primitives
-order: 12
+source_code: src/extras/primitives/primitives/a-obj-model.js
 ---
 
-The .OBJ model primitive displays a 3D Wavefront model. It is an entity that maps the `src` and `mtl` attributes to the [obj-model component's][objcomponent] `obj` and `mtl` properties respectively.
+> We recommend glTF for distributing assets in production over the web. Check
+> out using the [glTF model primitive](a-gltf-model.md). You can
+> either instead export to COLLADA and use [the
+> converter](https://cesiumjs.org/convertmodel.html) or try out the [OBJ
+> converter](https://github.com/AnalyticalGraphicsInc/OBJ2GLTF).
+
+The .OBJ model primitive displays a 3D Wavefront model.
 
 ## Example
 
@@ -27,8 +33,6 @@ The .OBJ model primitive displays a 3D Wavefront model. It is an entity that map
 
 ## Attribute
 
-Note that the .OBJ model primitive inherits common [mesh attributes][mesh]:
-
 | Attribute | Component Mapping | Default Value |
 |-----------|-------------------|---------------|
 | mtl       | obj-model.mtl     | null          |
@@ -36,7 +40,5 @@ Note that the .OBJ model primitive inherits common [mesh attributes][mesh]:
 
 ## Troubleshooting
 
-If you don't see your model, try scaling it down. OBJ models generally have extremely large scales in comparison to A-Frame's scale.
-
-[mesh]: ./mesh-attributes.md
-[objcomponent]: ../components/obj-model.md
+If you don't see your model, try scaling it down. OBJ models generally have
+extremely large scales in comparison to A-Frame's scale.

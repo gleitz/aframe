@@ -1,6 +1,10 @@
-/* global HTMLElement, MutationObserver */
+/* global MutationObserver */
 var registerElement = require('./a-register-element').registerElement;
+var isNode = require('./a-register-element').isNode;
 var utils = require('../utils/');
+
+var bind = utils.bind;
+var warn = utils.debug('core:a-node:warn');
 
 /**
  * Base class for A-Frame that manages loading of objects.
@@ -9,28 +13,54 @@ var utils = require('../utils/');
  * Nodes emit a `loaded` event when they and their children have initialized.
  */
 module.exports = registerElement('a-node', {
-  prototype: Object.create(HTMLElement.prototype, {
+  prototype: Object.create(window.HTMLElement.prototype, {
     createdCallback: {
       value: function () {
         this.hasLoaded = false;
         this.isNode = true;
         this.mixinEls = [];
         this.mixinObservers = {};
-      }
+      },
+      writable: window.debug
     },
 
     attachedCallback: {
       value: function () {
-        var mixins = this.getAttribute('mixin');
-        this.sceneEl = this.tagName === 'A-SCENE' ? this : this.closest('a-scene');
+        var mixins;
+        this.sceneEl = this.closestScene();
+
+        if (!this.sceneEl) {
+          warn('You are attempting to attach <' + this.tagName + '> outside of an A-Frame ' +
+               'scene. Append this element to `<a-scene>` instead.');
+        }
+
+        this.hasLoaded = false;
         this.emit('nodeready', {}, false);
+
+        mixins = this.getAttribute('mixin');
         if (mixins) { this.updateMixins(mixins); }
-      }
+      },
+      writable: window.debug
     },
 
     attributeChangedCallback: {
       value: function (attr, oldVal, newVal) {
         if (attr === 'mixin') { this.updateMixins(newVal, oldVal); }
+      }
+    },
+
+   /**
+    * Returns the first scene by traversing up the tree starting from and
+    * including receiver element.
+    */
+    closestScene: {
+      value: function closest () {
+        var element = this;
+        while (element) {
+          if (element.isScene) { break; }
+          element = element.parentElement;
+        }
+        return element;
       }
     },
 
@@ -54,7 +84,9 @@ module.exports = registerElement('a-node', {
     },
 
     detachedCallback: {
-      value: function () { /* no-op */ }
+      value: function () {
+        this.hasLoaded = false;
+      }
     },
 
     /**
@@ -70,8 +102,7 @@ module.exports = registerElement('a-node', {
         if (this.hasLoaded) { return; }
 
         // Default to waiting for all nodes.
-        childFilter = childFilter || function (el) { return el.isNode; };
-
+        childFilter = childFilter || isNode;
         // Wait for children to load (if any), then load.
         children = this.getChildren();
         childrenLoaded = children.filter(childFilter).map(function (child) {
@@ -84,7 +115,7 @@ module.exports = registerElement('a-node', {
         Promise.all(childrenLoaded).then(function emitLoaded () {
           self.hasLoaded = true;
           if (cb) { cb(); }
-          self.emit('loaded', {}, false);
+          self.emit('loaded', undefined, false);
         });
       },
       writable: true
@@ -92,51 +123,27 @@ module.exports = registerElement('a-node', {
 
     getChildren: {
       value: function () {
-        var children = [];
-        for (var i = 0; i < this.children.length; i++) {
-          children.push(this.children[i]);
-        }
-        return children;
+        return Array.prototype.slice.call(this.children, 0);
       }
     },
 
+    /**
+     * Remove old mixins and mixin listeners.
+     * Add new mixins and mixin listeners.
+     */
     updateMixins: {
       value: function (newMixins, oldMixins) {
-        var newMixinsIds = newMixins.split(' ');
-        var oldMixinsIds = oldMixins ? oldMixins.split(' ') : [];
-        // To determine what listeners will be removed
-        var diff = oldMixinsIds.filter(function (i) { return newMixinsIds.indexOf(i) < 0; });
+        var newMixinIds = newMixins ? newMixins.trim().split(/\s+/) : [];
+        var oldMixinIds = oldMixins ? oldMixins.trim().split(/\s+/) : [];
+
+        // Unregister old mixins.
+        oldMixinIds.filter(function (i) {
+          return newMixinIds.indexOf(i) < 0;
+        }).forEach(bind(this.unregisterMixin, this));
+
+        // Register new mixins.
         this.mixinEls = [];
-        diff.forEach(this.unregisterMixin.bind(this));
-        newMixinsIds.forEach(this.registerMixin.bind(this));
-      }
-    },
-
-    addMixin: {
-      value: function (mixinId) {
-        var mixins = this.getAttribute('mixin');
-        var mixinIds = mixins.split(' ');
-        var i;
-        for (i = 0; i < mixinIds.length; ++i) {
-          if (mixinIds[i] === mixinId) { return; }
-        }
-        mixinIds.push(mixinId);
-        this.setAttribute('mixin', mixinIds.join(' '));
-      }
-    },
-
-    removeMixin: {
-      value: function (mixinId) {
-        var mixins = this.getAttribute('mixin');
-        var mixinIds = mixins.split(' ');
-        var i;
-        for (i = 0; i < mixinIds.length; ++i) {
-          if (mixinIds[i] === mixinId) {
-            mixinIds.splice(i, 1);
-            this.setAttribute('mixin', mixinIds.join(' '));
-            return;
-          }
-        }
+        newMixinIds.forEach(bind(this.registerMixin, this));
       }
     },
 
@@ -153,7 +160,7 @@ module.exports = registerElement('a-node', {
     setAttribute: {
       value: function (attr, newValue) {
         if (attr === 'mixin') { this.updateMixins(newValue); }
-        HTMLElement.prototype.setAttribute.call(this, attr, newValue);
+        window.HTMLElement.prototype.setAttribute.call(this, attr, newValue);
       }
     },
 
@@ -191,7 +198,7 @@ module.exports = registerElement('a-node', {
         if (currentObserver) { return; }
         var observer = new MutationObserver(function (mutations) {
           var attr = mutations[0].attributeName;
-          self.applyMixin(attr);
+          self.handleMixinUpdate(attr);
         });
         var config = { attributes: true };
         observer.observe(mixinEl, config);
@@ -199,34 +206,32 @@ module.exports = registerElement('a-node', {
       }
     },
 
-    applyMixin: {
+    handleMixinUpdate: {
       value: function () { /* no-op */ }
     },
 
     /**
-     * Emits a DOM event.
+     * Emit a DOM event.
      *
-     * @param {String} name
-     *   Name of event (use a space-delimited string for multiple events).
-     * @param {Object=} [detail={}]
-     *   Custom data to pass as `detail` to the event.
-     * @param {Boolean=} [bubbles=true]
-     *   Whether the event should bubble.
+     * @param {string} name - Name of event.
+     * @param {object} [detail={}] - Custom data to pass as `detail` to the event.
+     * @param {boolean} [bubbles=true] - Whether the event should bubble.
+     * @param {object} [extraData] - Extra data to pass to the event, if any.
      */
     emit: {
-      value: function (name, detail, bubbles) {
+      value: function (name, detail, bubbles, extraData) {
+        var data;
         var self = this;
-        detail = detail || {};
         if (bubbles === undefined) { bubbles = true; }
-        var data = { bubbles: !!bubbles, detail: detail };
-        return name.split(' ').map(function (eventName) {
-          return utils.fireEvent(self, eventName, data);
-        });
-      }
+        data = {bubbles: !!bubbles, detail: detail};
+        if (extraData) { utils.extend(data, extraData); }
+        return utils.fireEvent(self, name, data);
+      },
+      writable: window.debug
     },
 
     /**
-     * Returns a closure that emits a DOM event.
+     * Return a closure that emits a DOM event.
      *
      * @param {String} name
      *   Name of event (use a space-delimited string for multiple events).

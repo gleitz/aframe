@@ -2,16 +2,20 @@
 var entityFactory = require('../../helpers').entityFactory;
 
 suite('fog', function () {
-  'use strict';
-
-  setup(function () {
+  setup(function (done) {
     this.entityEl = entityFactory();
     var el = this.el = this.entityEl.parentNode;
-    this.updateMaterialsSpy = this.sinon.spy(el.systems.material, 'updateMaterials');
+    var self = this;
 
-    // Stub scene load to avoid WebGL code.
-    el.hasLoaded = true;
-    el.setAttribute('fog', '');
+    el.addEventListener('loaded', function () {
+      self.updateMaterialsSpy = self.sinon.spy(el.systems.material, 'updateMaterials');
+
+      // Stub scene load to avoid WebGL code.
+      el.hasLoaded = true;
+      el.setAttribute('fog', '');
+
+      done();
+    });
   });
 
   test('does not set fog for entities', function () {
@@ -44,10 +48,13 @@ suite('fog', function () {
 
     test('can update fog type', function () {
       var el = this.el;
-      el.setAttribute('fog', 'type: exponential; density: 0.25');
-      el.setAttribute('fog', 'density: 0.25');
+      assert.equal(el.getAttribute('fog').type, 'linear');
       assert.notOk('density' in el.object3D.fog);
       assert.ok('near' in el.object3D.fog);
+      el.setAttribute('fog', 'type: exponential; density: 0.25');
+      assert.equal(el.getAttribute('fog').type, 'exponential');
+      assert.ok('density' in el.object3D.fog);
+      assert.notOk('near' in el.object3D.fog);
     });
 
     test('can remove and add linear fog', function () {
@@ -62,14 +69,15 @@ suite('fog', function () {
       var el = this.el;
       el.removeAttribute('fog');
       assert.equal(el.object3D.fog.far, 0);
-      assert.equal(el.object3D.fog.near, 0);
+      assert.equal(el.object3D.fog.near, 0.1);
     });
 
     test('removes exp. fog when detaching fog', function () {
       var el = this.el;
       el.setAttribute('fog', 'type: exponential');
       el.removeAttribute('fog');
-      assert.equal(el.object3D.fog.density, 0);
+      assert.equal(el.object3D.fog.far, 0);
+      assert.equal(el.object3D.fog.near, 0.1);
     });
   });
 });

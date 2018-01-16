@@ -35,7 +35,7 @@ module.exports.System = registerSystem('geometry', {
     var hash;
 
     // Skip all caching logic.
-    if (data.skipCache) { return createGeometry(data); }
+    if (data.skipCache || data.mergeTo) { return createGeometry(data); }
 
     // Try to retrieve from cache first.
     hash = this.hash(data);
@@ -61,7 +61,7 @@ module.exports.System = registerSystem('geometry', {
     var geometry;
     var hash;
 
-    if (data.skipCache) { return; }
+    if (data.skipCache || data.mergeTo) { return; }
 
     hash = this.hash(data);
 
@@ -132,6 +132,7 @@ function toBufferGeometry (geometry, doBuffer) {
   if (!doBuffer) { return geometry; }
 
   bufferGeometry = new THREE.BufferGeometry().fromGeometry(geometry);
+  bufferGeometry.metadata = {type: geometry.type, parameters: geometry.parameters || {}};
   geometry.dispose();  // Dispose no longer needed non-buffer geometry.
   return bufferGeometry;
 }

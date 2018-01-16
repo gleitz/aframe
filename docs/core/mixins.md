@@ -4,9 +4,17 @@ type: core
 layout: docs
 parent_section: core
 order: 7
+source_code: src/core/a-mixin.js
+examples:
+  - title: Animated Lights
+    src: https://glitch.com/edit/#!/aframe-animated-lights?path=index.html
 ---
 
-Mixins provide a way to compose and reuse commonly-used sets of component properties. They are defined using the `<a-mixin>` element and are placed in [`<a-assets>`][assets]. Mixins should be set with an `id`, and when an entity sets that `id` as its `mixin` attribute, the entity will absorb all of the mixin's attributes.
+Mixins provide a way to compose and reuse commonly-used sets of component
+properties. They are defined using the `<a-mixin>` element and are placed in
+[`<a-assets>`][assets]. Mixins should be set with an `id`, and when an entity
+sets that `id` as its `mixin` attribute, the entity will absorb all of the
+mixin's attributes.
 
 ```html
 <a-scene>
@@ -21,18 +29,22 @@ Mixins provide a way to compose and reuse commonly-used sets of component proper
 </a-scene>
 ```
 
-The entity with `red cube` will take the properties from the `red` mixin and the `cube` mixin in that order. Likewise with the `blue cube`. Conceptually, the entities above expand to:
+The entity with `red cube` will take the properties from the `red` mixin and
+the `cube` mixin in that order. Likewise with the `blue cube`. Conceptually,
+the entities above expand to:
 
 ```html
 <a-entity material="color: red" geometry="primitive: box"></a-entity>
 <a-entity material="color: blue" geometry="primitive: box"></a-entity>
 ```
 
+<!--toc-->
+
 ## Merging Component Properties
 
 Properties of a multi-property component will merge if defined by multiple mixins and/or the entity. For example:
 
-```
+```html
 <a-scene>
   <a-assets>
     <a-mixin id="box" geometry="primitive: box"></a-mixin>
@@ -46,7 +58,7 @@ Properties of a multi-property component will merge if defined by multiple mixin
 
 All of the geometry component properties will merge since they are included as mixins and defined on the entity. The entity would then be equivalent to:
 
-```
+```html
 <a-entity geometry="primitive: box; height: 10; depth: 2; width: 10"></a-entity>
 ```
 
@@ -83,4 +95,4 @@ If an entity itself defines a property that is already defined by a mixin, the e
 </a-scene>
 ```
 
-[assets]: ./assets.md
+[assets]: ./asset-management-system.md

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Physically-Based Materials</title>
     <meta name="description" content="Physically-Based Materials - A-Frame">
-    <script src="../../../dist/aframe.js"></script>
+    <script src="../../../dist/aframe-master.js"></script>
   </head>
   <body>
     <a-scene stats>
@@ -23,11 +23,6 @@
                  material="shader: flat"></a-mixin>
         <a-mixin id="sphere" geometry="primitive: sphere; radius: 5"></a-mixin>
       </a-assets>
-
-      <!-- Camera. -->
-      <a-entity position="0 1.8 0" rotation="0 0 0">
-        <a-entity camera look-controls wasd-controls></a-entity>
-      </a-entity>
 
       <!-- Skysphere. -->
       <a-entity geometry="primitive: sphere; radius: 500"

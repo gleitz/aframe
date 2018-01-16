@@ -2,20 +2,15 @@
 
 ## Top-Level Goals
 
-- Performance: run fast at low latency
-- Extensibility: enable reusable components, shaders, and snippets
-- Ecosystem: enable discovery and distribution of assets, components, scenes, shaders, and snippets
+- **Community:** help people get involved with WebVR in a fun and welcoming environment
+- **Performance:** maintain high framerate with low latency
+- **Ecosystem:** enable discovery and distribution of reusable components
 
-## Short-Term
+## 0.7.0 (est. Oct 2017)
 
-Check the A-Frame milestones (https://github.com/aframevr/aframe/milestones) to see what work is specifically queued for upcoming releases.
-
-- Performance: solve low-hanging performance issues
-- Controls: make controls easier to configure
-- Interactivity: improve raycaster, cursor, and add desktop cursor mode
-
-## Long-Term
-
-- Scene editor and inspector
-- Asset discovery service
-- Multi-user support
+- Vive tracker support (#2582)
+- glTF 2.0 support (#2693)
+- Replace VREffect / VRControls with new three.js WebVR API
+- System API enhancements (e.g., refactor to inherit from component API, entity added and removed handlers)
+- Asset management improvements (e.g., loading screen, duplicate requests in FileLoader)
+- Entity re-parenting

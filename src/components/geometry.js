@@ -13,10 +13,10 @@ var warn = debug('components:geometry:warn');
  */
 module.exports.Component = registerComponent('geometry', {
   schema: {
-    buffer: { default: true },
-    mergeTo: { type: 'selector' },
-    primitive: { default: 'box', oneOf: geometryNames },
-    skipCache: { default: false }
+    buffer: {default: true},
+    mergeTo: {type: 'selector'},
+    primitive: {default: 'box', oneOf: geometryNames},
+    skipCache: {default: false}
   },
 
   init: function () {
@@ -55,7 +55,7 @@ module.exports.Component = registerComponent('geometry', {
     var mesh = el.getObject3D('mesh');
     var toMesh;
 
-    if (!toEl) {
+    if (!toEl || !toEl.isEntity) {
       warn('There is not a valid entity to merge the geometry to');
       return;
     }
@@ -69,7 +69,7 @@ module.exports.Component = registerComponent('geometry', {
     toMesh = toEl.getObject3D('mesh');
     if (!toMesh) {
       toMesh = toEl.getOrCreateObject3D('mesh', THREE.Mesh);
-      toEl.setAttribute('material', el.getComputedAttribute('material'));
+      toEl.setAttribute('material', el.getAttribute('material'));
       return;
     }
 

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Animation</title>
     <meta name="description" content="Animation - A-Frame">
-    <script src="../../../dist/aframe.js"></script>
+    <script src="../../../dist/aframe-master.js"></script>
   </head>
   <body>
     <a-scene stats>
@@ -17,7 +17,7 @@
       </a-assets>
 
       <a-entity position="0 0 80">
-        <a-entity camera look-controls wasd-controls></a-entity>
+        <a-camera></a-camera>
       </a-entity>
 
       <a-entity id="fans"></a-entity>
@@ -62,7 +62,7 @@
               ballEl.setAttribute('position', { x: ballInitX + 3 * j, y: 0, z: 0 });
               ballEl.innerHTML = ball;
               animationEl = ballEl.querySelector('a-animation');
-              animationEl.setAttribute('begin', Math.random() * 2000);
+              animationEl.setAttribute('delay', Math.random() * 2000);
               rowEl.appendChild(ballEl);
             }
             fanEl.appendChild(rowEl);

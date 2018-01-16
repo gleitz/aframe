@@ -3,12 +3,13 @@
 
 ( function () {
 
-    // prepare base perf object
-    if ( typeof window.performance === 'undefined' ) {
+    if ( 'performance' in window == false ) {
         window.performance = {};
     }
 
-    if ( !window.performance.now ) {
+    var performance = window.performance;
+
+    if ( 'now' in performance == false ) {
 
         var nowOffset = Date.now();
 
@@ -16,18 +17,18 @@
             nowOffset = performance.timing.navigationStart;
         }
 
-        window.performance.now = function now () {
+        performance.now = function now () {
             return Date.now() - nowOffset;
         };
 
     }
 
-    if( !window.performance.mark ) {
-        window.performance.mark = function(){}
+    if( !performance.mark ) {
+        performance.mark = function(){}
     }
 
-    if( !window.performance.measure ) {
-        window.performance.measure = function(){}
+    if( !performance.measure ) {
+        performance.measure = function(){}
     }
 
 } )();
@@ -194,8 +195,6 @@ window.rStats = function rStats ( settings ) {
             _graph = new Graph( _dom, _id, _def ),
             _started = false;
 
-        _dom.className = 'rs-counter-base';
-
         _spanId.className = 'rs-counter-id';
         _spanId.textContent = ( _def && _def.caption ) ? _def.caption : _id;
 
@@ -250,7 +249,8 @@ window.rStats = function rStats ( settings ) {
             _spanValueText.nodeValue = Math.round( v * 100 ) / 100;
             var a = ( _def && ( ( _def.below && _value < _def.below ) || ( _def.over && _value > _def.over ) ) );
             _graph.draw( _value, a );
-            _dom.style.color = a ? '#b70000' : '#ffffff';
+            _dom.className = a ? 'rs-counter-base alarm' : 'rs-counter-base';
+
         }
 
         function _frame () {

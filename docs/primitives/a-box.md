@@ -1,12 +1,15 @@
 ---
 title: <a-box>
+section_title: Primitives
 type: primitives
 layout: docs
-parent_section: primitives
-order: 3
+parent_section: docs
+order: 1
+section_order: 5
+source_code: src/extras/primitives/primitives/meshPrimitives.js
 ---
 
-The box primitive, formerly called `<a-cube>`, creates shapes such as boxes, cubes, or walls. It is an entity that prescribes the [geometry](../components/geometry.md) with its geometric primitive set to `box`.
+The box primitive creates shapes such as boxes, cubes, or walls.
 
 ## Example
 
@@ -24,10 +27,34 @@ The box primitive, formerly called `<a-cube>`, creates shapes such as boxes, cub
 
 ## Attributes
 
-Note that the box primitive inherits common [mesh attributes](./mesh-attributes.md).
-
-| Attribute | Component Mapping | Default Value |
-|-----------|-------------------|---------------|
-| depth     | geometry.depth    | 1             |
-| height    | geometry.height   | 1             |
-| width     | geometry.width    | 1             |
+| Attribute                        | Component Mapping                      | Default Value |
+| --------                         | -----------------                      | ------------- |
+| ambient-occlusion-map            | material.ambientOcclusionMap           | None          |
+| ambient-occlusion-map-intensity  | material.ambientOcclusionMapIntensity  | 1             |
+| ambient-occlusion-texture-offset | material.ambientOcclusionTextureOffset | 0 0           |
+| ambient-occlusion-texture-repeat | material.ambientOcclusionTextureRepeat | 1 1           |
+| color                            | material.color                         | #FFF          |
+| depth                            | geometry.depth                         | 1             |
+| displacement-bias                | material.displacementBias              | 0.5           |
+| displacement-map                 | material.displacementMap               | None          |
+| displacement-scale               | material.displacementScale             | 1             |
+| displacement-texture-offset      | material.displacementTextureOffset     | 0 0           |
+| displacement-texture-repeat      | material.displacementTextureRepeat     | 1 1           |
+| env-map                          | material.envMap                        | None          |
+| fog                              | material.fog                           | true          |
+| height                           | geometry.height                        | 1             |
+| metalness                        | material.metalness                     | 0             |
+| normal-map                       | material.normalMap                     | None          |
+| normal-scale                     | material.normalScale                   | 1 1           |
+| normal-texture-offset            | material.normalTextureOffset           | 0 0           |
+| normal-texture-repeat            | material.normalTextureRepeat           | 1 1           |
+| repeat                           | material.repeat                        | 1 1           |
+| roughness                        | material.roughness                     | 0.5           |
+| segments-depth                   | geometry.segmentsDepth                 | 1             |
+| segments-height                  | geometry.segmentsHeight                | 1             |
+| segments-width                   | geometry.segmentsWidth                 | 1             |
+| spherical-env-map                | material.sphericalEnvMap               | None          |
+| src                              | material.src                           | None          |
+| width                            | geometry.width                         | 1             |
+| wireframe                        | material.wireframe                     | false         |
+| wireframe-linewidth              | material.wireframeLinewidth            | 2             |

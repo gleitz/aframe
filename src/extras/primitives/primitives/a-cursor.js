@@ -1,5 +1,5 @@
 var getMeshMixin = require('../getMeshMixin');
-var registerPrimitive = require('../registerPrimitive');
+var registerPrimitive = require('../primitives').registerPrimitive;
 var utils = require('../../../utils/');
 
 registerPrimitive('a-cursor', utils.extendDeep({}, getMeshMixin(), {
@@ -9,7 +9,7 @@ registerPrimitive('a-cursor', utils.extendDeep({}, getMeshMixin(), {
       primitive: 'ring',
       radiusOuter: 0.016,
       radiusInner: 0.01,
-      segmentsTheta: 64
+      segmentsTheta: 32
     },
     material: {
       color: '#000',
@@ -20,15 +20,14 @@ registerPrimitive('a-cursor', utils.extendDeep({}, getMeshMixin(), {
       x: 0,
       y: 0,
       z: -1
-    },
-    raycaster: {}
+    }
   },
 
   mappings: {
     far: 'raycaster.far',
     fuse: 'cursor.fuse',
+    'fuse-timeout': 'cursor.fuseTimeout',
     interval: 'raycaster.interval',
-    objects: 'raycaster.objects',
-    timeout: 'cursor.timeout'
+    objects: 'raycaster.objects'
   }
 }));

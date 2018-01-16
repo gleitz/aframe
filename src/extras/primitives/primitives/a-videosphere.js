@@ -1,18 +1,19 @@
 var getMeshMixin = require('../getMeshMixin');
-var registerPrimitive = require('../registerPrimitive');
+var registerPrimitive = require('../primitives').registerPrimitive;
 var utils = require('../../../utils/');
 
 registerPrimitive('a-videosphere', utils.extendDeep({}, getMeshMixin(), {
   defaultComponents: {
     geometry: {
       primitive: 'sphere',
-      radius: 100,
+      radius: 5000,
       segmentsWidth: 64,
-      segmentsHeight: 20
+      segmentsHeight: 32
     },
     material: {
       color: '#FFF',
-      shader: 'flat'
+      shader: 'flat',
+      npot: true
     },
     scale: '-1 1 1'
   },

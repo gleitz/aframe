@@ -34,6 +34,13 @@ suite('geometry system', function () {
       assert.notOk(system.cache[hash]);
     });
 
+    test('does not hash on cache if mergeTo is defined', function () {
+      var data = {primitive: 'box', mergeTo: {}};
+      var system = this.system;
+      system.getOrCreateGeometry(data);
+      assert.equal(Object.keys(system.cache).length, 0);
+    });
+
     test('caches identical geometries', function () {
       var data = {primitive: 'box', width: 5};
       var geometry1;
@@ -49,6 +56,13 @@ suite('geometry system', function () {
 
       assert.equal(geometry1, geometry2);
       assert.equal(system.cacheCount[hash], 2);
+    });
+
+    test('preserves original metadata on BufferGeometry', function () {
+      var data = {primitive: 'box', width: 5, buffer: true};
+      var geometry = this.system.getOrCreateGeometry(data);
+      assert.equal(geometry.metadata.type, 'BoxGeometry');
+      assert.equal(geometry.metadata.parameters.width, 5);
     });
   });
 

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Merge Geometries Test</title>
     <meta name="description" content="Merge Geometry - A-Frame">
-    <script src="../../../dist/aframe.js"></script>
+    <script src="../../../dist/aframe-master.js"></script>
     <style>
       body { background-color: black; }
     </style>
@@ -18,7 +18,7 @@
                  material="color: #167341; roughness: 1.0; metalness: 0.2;"></a-mixin>
       </a-assets>
       <a-entity position="0 20 0">
-        <a-entity camera wasd-controls look-controls></a-entity>
+        <a-camera user-height="0"></a-camera>
       </a-entity>
       <a-entity id="boxes" material="color: #167341; roughness: 1.0; metalness: 0.2;"></a-entity>
     </a-scene>

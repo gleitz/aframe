@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Curved Images</title>
     <meta name="description" content="Curved Images - A-Frame">
-    <script src="../../../dist/aframe.js"></script>
+    <script src="../../../dist/aframe-master.js"></script>
   </head>
   <body>
     <a-scene>
@@ -27,7 +27,9 @@
 
       <a-image position="0 -5 0" src="#shadow2" rotation="-90 0 0" scale="6 6 6"></a-image>
       <a-sky color="#fff"></a-sky>
-      <a-camera position="0 1.8 1.5"></a-camera>
+      <a-entity position="0 0 1.5">
+        <a-camera></a-camera>
+      </a-entity>
     </a-scene>
   </body>
 </html>

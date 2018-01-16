@@ -3,11 +3,18 @@ title: <a-curvedimage>
 type: primitives
 layout: docs
 parent_section: primitives
-order: 8
+source_code: src/extras/primitives/primitives/a-curvedimage.js
 ---
 
 
-The curved image primitive creates images that bend around the user. Curved images arranged around the camera can be pleasing for legibility since each pixel sits at the same distance from the user. They can be a better choice than angled flat planes for complex layouts because they ensure a smooth surface rather than a series of awkward seams between planes. It is an entity that prescribes a double-sided open-ended cylinder with the [geometry component](../components/geometry.md) and rendering textures on the inside of the cylinder with the [material component](../components/material.md).
+The curved image primitive creates images that bend around the user. Curved
+images arranged around the camera can be pleasing for legibility since each
+pixel sits at the same distance from the user. They can be a better choice than
+angled flat planes for complex layouts because they ensure a smooth surface
+rather than a series of awkward seams between planes.
+
+Under the hood, a curved image is a double-sided open-ended cylinder with
+textures mapped to the inside of the cylinder.
 
 ## Example
 
@@ -22,22 +29,34 @@ The curved image primitive creates images that bend around the user. Curved imag
                  rotation="0 100 0" scale="0.8 0.8 0.8"></a-curvedimage>
 
   <!-- Defining the URL inline. Not recommended but more comfortable for web developers. -->
-  <a-curvedimage src="another-image.png"></a-curved-image>
+  <a-curvedimage src="another-image.png"></a-curvedimage>
 </a-scene>
 ```
 
 ## Attributes
 
-Note that the curved image primitive inherits common [mesh attributes](./mesh-attributes.md).
-
-| Attribute       | Component Mapping       | Default Value   |
-|-----------------|-------------------------|-----------------|
-| height          | geometry.height         | 1               |
-| radius          | geometry.radius         | 2               |
-| segments-radial | geometry.segmentsRadial | 48              |
-| theta-length    | geometry.thetaLength    | 270             |
-| theta-start     | geometry.thetaStart     | 0               |
+| Attribute       | Component Mapping       | Default Value |
+| --------        | -----------------       | ------------- |
+| color           | material.color          | #FFF          |
+| height          | geometry.height         | 1             |
+| metalness       | material.metalness      | 0             |
+| opacity         | material.opacity        | 1             |
+| open-ended      | geometry.openEnded      | true          |
+| radius          | geometry.radius         | 2             |
+| repeat          | material.repeat         | None          |
+| roughness       | material.roughness      | 0.5           |
+| segments-height | geometry.segmentsHeight | 18            |
+| segments-radial | geometry.segmentsRadial | 48            |
+| shader          | material.shader         | flat          |
+| side            | material.side           | double        |
+| src             | material.src            | None          |
+| theta-length    | geometry.thetaLength    | 270           |
+| theta-start     | geometry.thetaStart     | 0             |
+| transparent     | material.transparent    | true          |
 
 ## Fine-Tuning
 
-Ensuring that the image is not distorted by stretching requires us to carefully set the `height`, `radius`, and `theta-length` attributes with respect to the image aspect ratio. Once those values are fine-tuned to avoid distortion, `scale` can then be used to safely adjust the distance of the curved image relative to the user.
+Ensuring that the image is not distorted by stretching requires us to carefully
+set the `height`, `radius`, and `theta-length` attributes relative to the image
+aspect ratio. Once those values are fine-tuned to avoid distortion, we can use
+`scale` to safely adjust the distance of the curved image relative to the user.

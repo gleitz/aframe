@@ -3,10 +3,10 @@ title: <a-light>
 type: primitives
 layout: docs
 parent_section: primitives
-order: 11
+source_code: src/extras/primitives/primitives/a-light.js
 ---
 
-The light primitive adjusts the lighting setup of the scene. It is an entity that maps attributes to properties of the [light component](../components/light.md).
+A light changes the lighting and shading of the scene.
 
 ## Examples
 
@@ -30,11 +30,13 @@ The light primitive adjusts the lighting setup of the scene. It is an entity tha
 | color        | light.color       | #fff          |
 | decay        | light.decay       | 1             |
 | distance     | light.distance    | 0.0           |
-| exponent     | light.exponent    | 10.0          |
 | ground-color | light.groundColor | #fff          |
 | intensity    | light.intensity   | 1.0           |
+| penumbra     | light.penumbra    | 0.0           |
 | type         | light.type        | directional   |
+| target       | light.target      | null          |
 
 ## Differences with the Default Lighting
 
-When we add a light, A-Frame will remove the default lighting setup (i.e., one directional light from the top-left, and one small ambient light).
+When we add a light, A-Frame will remove the default lighting setup (i.e., one
+directional light from the top-left, and one small ambient light).

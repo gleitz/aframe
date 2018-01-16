@@ -1,4 +1,7 @@
 require('./camera');
 require('./geometry');
-require('./material');
 require('./light');
+require('./material');
+require('./shadow');
+require('./tracked-controls');
+

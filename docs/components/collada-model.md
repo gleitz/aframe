@@ -3,7 +3,8 @@ title: collada-model
 type: components
 layout: docs
 parent_section: components
-order: 3
+source_code: src/components/collada-model.js
+examples: []
 ---
 
 The collada-model component loads a 3D model using a [COLLADA][wiki-collada] (.DAE) file.
@@ -43,7 +44,7 @@ We can also load a COLLADA model by specifying the path directly within `url()`.
 <a-entity collada-model="url(/path/to/tree.dae)"></a-entity>
 ```
 
-## Additional Resources
+## More Resources
 
 We can find and download models on the web to drop into our scenes:
 
@@ -53,6 +54,5 @@ We can find and download models on the web to drop into our scenes:
 
 [blender]: https://www.blender.org/
 [clara]: https://clara.io
-[obj-model]: ./obj-model.md
 [sketchup]: https://3dwarehouse.sketchup.com
 [wiki-collada]: https://en.wikipedia.org/wiki/COLLADA
